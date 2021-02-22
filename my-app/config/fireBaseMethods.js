@@ -1,16 +1,15 @@
-import * as firebase from "firebase";
-import "firebase/firestore";
 import { Alert } from "react-native";
+import { firebaseApp, auth, firestore } from "../config/firbase";
 
-export async function registration({ email, password }) {
+export async function registration(firstName, familyName, email, password) {
   try {
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
-    const currentUser = firebase.auth().currentUser;
+    await auth.createUserWithEmailAndPassword(email, password);
+    const currentUser = auth.currentUser;
 
-    const db = firebase.firestore();
+    const db = firestore;
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
-      lastName: lastName,
+      lastName: familyName,
       firstName: firstName,
     });
   } catch (err) {
@@ -20,7 +19,7 @@ export async function registration({ email, password }) {
 
 export async function signIn(email, password) {
   try {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
+    await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
     Alert.alert("There is something wrong!", err.message);
   }
@@ -28,7 +27,7 @@ export async function signIn(email, password) {
 
 export async function loggingOut() {
   try {
-    await firebase.auth().signOut();
+    await auth.signOut();
   } catch (err) {
     Alert.alert("There is something wrong!", err.message);
   }

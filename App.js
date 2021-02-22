@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import NewPage from "./components/NewPage";
 
 const Stack = createStackNavigator();
 
@@ -11,6 +12,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name={"Home"} component={SignInUp} />
+        <Stack.Screen name={"NewPage"} component={NewPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

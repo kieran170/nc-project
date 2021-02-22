@@ -1,17 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
-import { registration } from "../my-app/config/fireBaseMethods";
+import { registration, signIn } from "../my-app/config/fireBaseMethods";
 
 //set matching password - maybe some verification steps?
-export default function App() {
+export default function App({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState({});
   const [signUp, setSignUp] = useState(true);
-  const [newUser, setNewUser] = useState({});
 
   const handlePressSignIn = () => {
     if (!email) {
@@ -20,9 +18,11 @@ export default function App() {
     if (!password) {
       Alert.alert("Password field is required");
     }
-    setUser({ email, password });
+    signIn(email, password);
     setEmail("");
     setPassword("");
+
+    navigation.navigate("NewPage");
   };
 
   const handlePressSignUp = () => {
@@ -38,8 +38,7 @@ export default function App() {
     if (!familyName) {
       Alert.alert("Family Name field is required");
     }
-    setNewUser({ firstName, familyName, email, password });
-    registration(newUser);
+    registration(firstName, familyName, email, password);
     setFirstName("");
     setFamilyName("");
     setEmail("");
