@@ -4,7 +4,7 @@
     "slug": "nc-project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/my-app/assets/icon.png",
+    "icon": "./my-app/assets/icon.png",
     "splash": {
       "image": "./my-app/assets/splash.png",
       "resizeMode": "contain",
