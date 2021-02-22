@@ -5,4 +5,11 @@ export const getFirst15Events = () => {
     .then(({data}) => {
         return data._embedded.events
     })
+    .then((events) => {
+        return events.map((event) => {
+            return { name: event.name, date: event.dates.start.localDate, time: event.dates.start.localTime, 
+            venue: `${event._embedded.venues[0].name}, ${event._embedded.venues[0].city.name}`, postCode: event._embedded.venues[0].postalCode, location: event._embedded.venues[0].location }
+            }
+        )}
+    )
 }

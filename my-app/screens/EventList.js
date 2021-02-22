@@ -1,6 +1,6 @@
 import * as api from '../api/ticketmaster';
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 export default class EventList extends Component {
 
@@ -8,9 +8,24 @@ export default class EventList extends Component {
         events: []
     }
 
+    componentDidMount() {
+        
+       api.getFirst15Events().then((events) => {
+            this.setState({events})
+        })
+    }
+
     render() {
+
+        const { events } = this.state;
+
         return (
-            <Text>Hello hello hello</Text>
+            <View>
+                {events.map((event) => {
+                    return <Text>Event: {event.name}, Date & Time: {event.date} {event.time}, 
+                            Venue: {event.venue}, Post Code: {event.postCode}</Text>
+                })}
+            </View>
         )
     }
 }
