@@ -5,10 +5,14 @@ import { auth, firestore } from "../my-app/config/firbase";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
 
 export default function NewPage({ navigation }) {
-  let currentUserUID = auth.currentUser.uid;
+  let currentUserUID = auth.currentUser?.uid;
 
   const [firstName, setFirstName] = useState("");
 
+  const handleLogOut = () => {
+    loggingOut();
+    navigation.navigate("Home");
+  };
   useEffect(() => {
     async function getUserInfo() {
       let doc = await firebase
@@ -29,9 +33,8 @@ export default function NewPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Dashboard</Text>
-      <Text style={styles.text}>Hi {firstName}</Text>
-      <Button title="log out" onPress={loggingOut} />
+      <Text>Hello {firstName}</Text>
+      <Button title="log out" onPress={handleLogOut} />
     </View>
   );
 }

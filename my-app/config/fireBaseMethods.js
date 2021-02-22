@@ -22,6 +22,7 @@ export async function signIn(email, password) {
     await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
     Alert.alert("There is something wrong!", err.message);
+    navigation.navigate("SignInUp");
   }
 }
 

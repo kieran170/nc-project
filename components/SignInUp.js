@@ -18,11 +18,11 @@ export default function App({ navigation }) {
     if (!password) {
       Alert.alert("Password field is required");
     }
-    signIn(email, password);
-    setEmail("");
-    setPassword("");
-
-    navigation.navigate("NewPage");
+    signIn(email, password).then(() => {
+      setEmail("");
+      setPassword("");
+      navigation.navigate("NewPage");
+    });
   };
 
   const handlePressSignUp = () => {
