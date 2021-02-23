@@ -1,6 +1,6 @@
 import * as api from '../api/ticketmaster';
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView, TextInput, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default class EventList extends Component {
@@ -8,58 +8,93 @@ export default class EventList extends Component {
     state = {
         events: [],
         defaultRegion: {
-            latitude: 53.48,
-            longitude: -2.21,
-            latitudeDelta: 0.1, 
-            longitudeDelta: 0.1
+            latitude: 0,
+            longitude: 0,
+            latitudeDelta: 250, 
+            longitudeDelta: 250
         },
-        newRegion: {}
+        newRegion: {},
+        errMsg: '',
+        userInput: ''
     }
 
     componentDidMount() {
         
        api.getEvents().then((events) => {
-           const newRegion = {longitude: +events[0].location.longitude, latitude: +events[0].location.latitude, latitudeDelta: 0.1, longitudeDelta: 0.1}
-           console.log(newRegion)
+           if (events.length) {
+            const newRegion = {longitude: +events[0].location.longitude, latitude: +events[0].location.latitude, latitudeDelta: 0.1, longitudeDelta: 0.1}
             this.setState({events, newRegion})
+           } else {
+            this.setState({errMsg: events.errMsg})
+           }
         })
     }
 
     render() {
 
-        const { events, defaultRegion, newRegion } = this.state;
+        const { events, defaultRegion, newRegion, errMsg, userInput } = this.state;
 
         return (
             <SafeAreaView style={styles.page}>
             <View style={styles.header}><Text>{"\n"}{"\n"}{"\t"}Header goes here! NC-Proj</Text></View>
+            <TextInput style={styles.textInput} value={userInput} onChangeText={text => this.setState({userInput: text})}/>
+            <Button style={styles.button} title='search' onPress={this.handleSearch}>Search</Button>
             <MapView 
                 style={styles.map} 
-                region={newRegion}
+                region={newRegion.latitude ? newRegion : defaultRegion}
             >
                 {events.map((event) => {
                     return <Marker image={require('../assets/small-guitar-icon.png')} key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
                 })}
             </MapView>
             <ScrollView style={styles.container}>
-                {events.map((event) => {
-                    return <View key={event.id} style={styles.eventText}>
+                {
+                    errMsg ? <View style={styles.eventText}><Text>{errMsg}</Text></View>
+                    : events.map((event) => {
+                      return <View key={event.id} style={styles.eventText}>
                                 <Text>
                                   <Text style={styles.eventName}>{event.name}</Text> {"\n"}
                                   <Text style={styles.eventDate}>Date: {event.date} {event.time}</Text> {"\n"}
                                   Venue: {event.venue} {"\n"}Post Code: {event.postCode}
                                 </Text>
-                            </View>
+                             </View>
                 })}
             </ScrollView>
             </SafeAreaView>
         )
     }
+
+    handleSearch = () => {
+        const { userInput } = this.state;
+
+        api.getEvents(userInput).then((events) => {
+            if (events.length) {
+             const newRegion = {longitude: +events[0].location.longitude, latitude: +events[0].location.latitude, latitudeDelta: 0.1, longitudeDelta: 0.1}
+             this.setState({events, newRegion, userInput: ''})
+            } else {
+             this.setState({errMsg: events.errMsg, userInput: ''})
+            }
+         })
+    }
 }
 
 const styles = StyleSheet.create({
+    page: {
+        width: '100%',
+        height: '100%',
+    },
     header: {
         flex: 0.2,
-        backgroundColor: 'pink'
+        backgroundColor: 'pink',
+        paddingBottom: 20
+    },
+    textInput: {
+        flex: 0.1,
+        height: 1,
+        width: '75%',
+    },
+    button: {
+        flex: 0.1
     },
     container: {
         flex: 1,
