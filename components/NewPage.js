@@ -36,7 +36,7 @@ export default function NewPage({ navigation }) {
       <Text>Hello {firstName}</Text>
       <Button title="log out" onPress={handleLogOut} />
       <Button title="Group Chat" onPress={()=>{
-        navigation.navigate("GroupChat")
+        navigation.navigate("GroupChat",{displayName:firstName})
       }} />
     </View>
   );
