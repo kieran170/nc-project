@@ -9,13 +9,11 @@ import {GiftedChat} from "react-native-gifted-chat"
 
 
 const chatsRef = firestore.collection("chats")
-firebase.auth().onAuthStateChanged(function(user) {
-    const currentUser=user;
-});
+
 export default function App() {
    
     //var currentUser = auth.currentUser;
-  const [user,setUser] = useState(currentUser);
+  const [user,setUser] = useState("ola");
   const [name,setName] = useState("");
   const [messages,setMessages]=useState([])
 
@@ -51,6 +49,11 @@ const appendMessages = useCallback(
     await AsyncStorage.setItem('user', JSON.stringify(user))
     setUser(user)
 }*/
+async function readUser() {
+    firebase.auth().onAuthStateChanged(function(user) {
+    const currentUser=user;
+});
+}
 async function handleSend(messages) {
     const writes = messages.map((m) => chatsRef.add(m))
     await Promise.all(writes)
