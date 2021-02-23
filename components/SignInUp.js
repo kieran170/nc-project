@@ -65,6 +65,7 @@ export default function App({ navigation }) {
 
   return signUp ? (
     <View style={styles.container}>
+      <Text>Gig Buddy</Text>
       <TextInput
         placeholder="First Name"
         value={firstName}
@@ -106,6 +107,7 @@ export default function App({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
+      <Text>Gig Buddy</Text>
       <TextInput
         placeholder="E-mail"
         value={email}
