@@ -12,7 +12,7 @@ export async function registration(firstName, familyName, email, password) {
       lastName: familyName,
       firstName: firstName,
     });
-    Alert.alert("Sign Up Successful, Please sign in");
+    Alert.alert("Sign Up Successful");
   } catch (err) {
     if (err) return err;
   }
@@ -22,8 +22,7 @@ export async function signIn(email, password) {
   try {
     await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
-    Alert.alert("There is something wrong!", err.message);
-    navigation.navigate("SignInUp");
+    if (err) return err;
   }
 }
 

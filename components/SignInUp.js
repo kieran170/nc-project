@@ -18,10 +18,15 @@ export default function App({ navigation }) {
     if (!password) {
       Alert.alert("Password field is required");
     }
-    signIn(email, password).then(() => {
-      setEmail("");
-      setPassword("");
-      navigation.navigate("NewPage");
+    signIn(email, password).then((err) => {
+      if (err) {
+        Alert.alert("There is something wrong!", err.message);
+      }
+      if (!err) {
+        setEmail("");
+        setPassword("");
+        navigation.navigate("NewPage");
+      }
     });
   };
 
@@ -50,7 +55,6 @@ export default function App({ navigation }) {
         Alert.alert("There is something wrong!!!!", err.message);
       }
     });
-    // if (familyName && password && firstName && email) setSignUp(false);
   };
 
   const handleClick = () => {
