@@ -43,18 +43,20 @@ export default function App({ navigation }) {
     if (!familyName) {
       Alert.alert("Family Name field is required");
     }
-    registration(firstName, familyName, email, password).then((err) => {
-      if (!err) {
-        setFirstName("");
-        setFamilyName("");
-        setEmail("");
-        setPassword("");
-        setSignUp(false);
-      }
-      if (err) {
-        Alert.alert("There is something wrong!!!!", err.message);
-      }
-    });
+    if (firstName && familyName) {
+      registration(firstName, familyName, email, password).then((err) => {
+        if (!err) {
+          setFirstName("");
+          setFamilyName("");
+          setEmail("");
+          setPassword("");
+          setSignUp(false);
+        }
+        if (err) {
+          Alert.alert("There is something wrong!!!!", err.message);
+        }
+      });
+    }
   };
 
   const handleClick = () => {
