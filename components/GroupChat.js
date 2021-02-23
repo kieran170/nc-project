@@ -4,24 +4,17 @@ import * as firebase from "firebase";
 import { auth,firestore} from "../my-app/config/firbase";
 import {GiftedChat} from "react-native-gifted-chat";
 
-
-
-
-
-
 const chatsRef = firestore.collection("chats")
 
 export default function App(props) {
-
-   
-    
-  const [user,setUser] = useState(props.route.params.displayName);
+       
+  const [user,setUser] = useState(props.route.params);
   const [name,setName] = useState("");
   const [messages,setMessages]=useState([])
 
   useEffect(() => {
       
-      
+  
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
         const messagesFirestore = querySnapshot
             .docChanges()

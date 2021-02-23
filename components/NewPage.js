@@ -6,6 +6,7 @@ import { loggingOut } from "../my-app/config/fireBaseMethods";
 
 export default function NewPage({ navigation }) {
   let currentUserUID = auth.currentUser?.uid;
+  
 
   const [firstName, setFirstName] = useState("");
 
@@ -14,6 +15,7 @@ export default function NewPage({ navigation }) {
     navigation.navigate("Home");
   };
   useEffect(() => {
+  
     async function getUserInfo() {
       let doc = await firebase
         .firestore()
@@ -36,7 +38,7 @@ export default function NewPage({ navigation }) {
       <Text>Hello {firstName}</Text>
       <Button title="log out" onPress={handleLogOut} />
       <Button title="Group Chat" onPress={()=>{
-        navigation.navigate("GroupChat",{displayName:firstName})
+        navigation.navigate("GroupChat",{name:firstName,_id:currentUserUID})
       }} />
     </View>
   );
