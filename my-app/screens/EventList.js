@@ -7,33 +7,37 @@ export default class EventList extends Component {
 
     state = {
         events: [],
-        initialLatitude: 53.48,
-        initialLongitude: -2.24
+        defaultRegion: {
+            latitude: 53.48,
+            longitude: -2.21,
+            latitudeDelta: 0.1, 
+            longitudeDelta: 0.1
+        },
+        newRegion: {}
     }
 
     componentDidMount() {
         
-       api.getFirst15Events().then((events) => {
-            this.setState({events, initialLatitude: +events[0].location.latitude, initialLongitude: +events[0].location.longitude})
+       api.getEvents().then((events) => {
+           const newRegion = {longitude: +events[0].location.longitude, latitude: +events[0].location.latitude, latitudeDelta: 0.1, longitudeDelta: 0.1}
+           console.log(newRegion)
+            this.setState({events, newRegion})
         })
     }
 
     render() {
 
-        const { events, initialLatitude, initialLongitude } = this.state;
+        const { events, defaultRegion, newRegion } = this.state;
 
         return (
             <SafeAreaView style={styles.page}>
             <View style={styles.header}><Text>{"\n"}{"\n"}{"\t"}Header goes here! NC-Proj</Text></View>
-            <MapView style={styles.map} 
-            initialRegion={{
-            latitude: initialLatitude,
-            longitude: initialLongitude,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05
-            }}>
+            <MapView 
+                style={styles.map} 
+                region={newRegion} 
+            >
                 {events.map((event) => {
-                    return <Marker key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
+                    return <Marker image={require('../assets/small-guitar-icon.png')} key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
                 })}
             </MapView>
             <ScrollView style={styles.container}>
