@@ -1,5 +1,5 @@
 import * as api from '../api/ticketmaster';
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -34,7 +34,7 @@ export default class EventList extends Component {
             <View style={styles.header}><Text>{"\n"}{"\n"}{"\t"}Header goes here! NC-Proj</Text></View>
             <MapView 
                 style={styles.map} 
-                region={newRegion} 
+                region={newRegion}
             >
                 {events.map((event) => {
                     return <Marker image={require('../assets/small-guitar-icon.png')} key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
@@ -80,6 +80,5 @@ const styles = StyleSheet.create({
     eventName: {
         fontWeight: "bold",
         fontSize: 20
-    },
-
+    }
 })

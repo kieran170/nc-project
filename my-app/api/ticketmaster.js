@@ -6,7 +6,7 @@ const request = axios.create({
 })
 
 export const getEvents = (size = 20) => { 
-    return request.get(`/events.json?classificationName=music&city=manchester&size=${size}&${apiKey}`)
+    return request.get(`/events.json?classificationName=music&city=leeds&size=${size}&${apiKey}`)
     .then(({data: { _embedded: { events } } }) => {
         return events.map((event) => {
             return { 
