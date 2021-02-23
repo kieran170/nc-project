@@ -1,4 +1,4 @@
-import * as api from '../api/ticketmaster';
+import * as api from '../my-app/api/ticketmaster';
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView, TextInput, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -44,7 +44,7 @@ export default class EventList extends Component {
                 region={newRegion.latitude ? newRegion : defaultRegion}
             >
                 {events.map((event) => {
-                    return <Marker image={require('../assets/small-guitar-icon.png')} key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
+                    return <Marker image={require('../my-app/assets/small-guitar-icon.png')} key={event.id} coordinate={{latitude: +event.location.latitude, longitude: +event.location.longitude}}/>
                 })}
             </MapView>
             <ScrollView style={styles.container}>

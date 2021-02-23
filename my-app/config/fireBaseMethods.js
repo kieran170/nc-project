@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { firebaseApp, auth, firestore } from "../config/firbase";
+import { firebaseApp, auth, firestore } from "./firbase";
 
 export async function registration(firstName, familyName, email, password) {
   try {
