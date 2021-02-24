@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, Alert, Image } from "react-native";
 import { registration, signIn } from "../my-app/config/fireBaseMethods";
 
 //set matching password - maybe some verification steps?
@@ -65,7 +65,7 @@ export default function App({ navigation }) {
 
   return signUp ? (
     <View style={styles.container}>
-      <Text>Gig Buddy</Text>
+      <Image style={styles.image} source={require('../my-app/assets/logo-first-draft.png')}/>
       <TextInput
         placeholder="First Name"
         value={firstName}
@@ -107,7 +107,7 @@ export default function App({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <Text>Gig Buddy</Text>
+      <Image style={styles.image} source={require('../my-app/assets/logo-first-draft.png')}/>
       <TextInput
         placeholder="E-mail"
         value={email}
@@ -147,4 +147,11 @@ const styles = StyleSheet.create({
     width: 100,
     marginBottom: 10,
   },
+  image: {
+    position: 'absolute',
+    top: 50,
+    left: 0,
+    height: 180,
+    width: 360
+  }
 });
