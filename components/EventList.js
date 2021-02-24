@@ -1,17 +1,22 @@
 import * as api from '../my-app/api/ticketmaster';
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView, TextInput, Button } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView, TextInput, Button, Platform } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default class EventList extends Component {
 
     state = {
         events: [],
-        defaultRegion: {
+        defaultRegion: Platform.OS === 'android' ? {
             latitude: 0,
             longitude: 0,
             latitudeDelta: 250, 
             longitudeDelta: 250
+        } : {
+            latitude: 0,
+            longitude: 0,
+            latitudeDelta: 0,
+            longitudeDelta: 0
         },
         newRegion: {},
         errMsg: '',
