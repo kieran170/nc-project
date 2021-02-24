@@ -6,18 +6,17 @@ import {GiftedChat} from "react-native-gifted-chat";
 import {GroupChat} from "../components/GroupChat";
 
 
+
 const chatsRef = firestore.collection("chats");
-export default function ChatRoom (props){
-    console.log(props)
-    const [Room,setRoom]=useState(props._id)
-    console.log(Room)
-    const handlePress =()=>{
+export default function ChatRoom ({firstName, _id, navigation}){
+    const [Room,setRoom]=useState(_id)
+    const handlePress = () => {
         chatsRef.doc(Room).set({});
-        props.navigation.navigate("GroupChat",{user:{name:props.firstName,_id:props[_id]},chatsRef:Room})
+        navigation.navigate("GroupChat", {user:{name : firstName, _id},chatsRef:Room})
     }
     return (
         
-        <Button onPress={handlePress}>Start a chat</Button>
+        <Button onPress={handlePress} title="Start a chat"></Button>
         
         
     )

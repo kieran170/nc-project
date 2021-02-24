@@ -8,7 +8,6 @@ import ChatRoom from "../components/ChatRoom"
 export default function NewPage({ navigation }) {
   let currentUserUID = auth.currentUser?.uid;
   
-
   const [firstName, setFirstName] = useState("");
 
   const handleLogOut = () => {

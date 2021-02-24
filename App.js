@@ -16,7 +16,6 @@ export default function App() {
         <Stack.Screen name={"Home"} component={SignInUp} />
         <Stack.Screen name={"NewPage"} component={NewPage} />
         <Stack.Screen name={"GroupChat"} component={GroupChat} ></Stack.Screen>
-        
       </Stack.Navigator>
     </NavigationContainer>
   );
