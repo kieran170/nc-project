@@ -57,6 +57,11 @@ export default class EventList extends Component {
                                   <Text style={styles.eventDate}>Date: {event.date} {event.time}</Text> {"\n"}
                                   Venue: {event.venue} {"\n"}Post Code: {event.postCode}
                                 </Text>
+                                <Button 
+                                    title='more info' 
+                                    onPress={() => this.props.navigation.navigate("EventPage", event)}>
+                                    More Info
+                                    </Button>
                              </View>
                 })}
             </ScrollView>
