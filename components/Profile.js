@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
 import DialogInput from "react-native-dialog-input";
@@ -28,6 +28,8 @@ export default function App(props) {
   const handleImageChange = () => {
     isDialogVisible(true);
   };
+
+  const user = { userAvatar: avatar, userBio: bio };
 
   return (
     <ScrollView style={styles.container}>
@@ -115,6 +117,7 @@ export default function App(props) {
         {"\n"}
         {"\n"}
       </Text>
+      {/* <Button title="save" onPress={() => {}}> */}
     </ScrollView>
   );
 }
