@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, Alert, Button } from "react-native";
 import * as firebase from "firebase";
 import { auth, firestore } from "../my-app/config/firbase";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
-import ChatRoom from "../components/ChatRoom"
+import ChatRoom from "../components/ChatRoom";
+
 
 export default function NewPage({ navigation }) {
   let currentUserUID = auth.currentUser?.uid;
   
+
   const [firstName, setFirstName] = useState("");
 
   const handleLogOut = () => {
@@ -31,7 +33,7 @@ export default function NewPage({ navigation }) {
       }
     }
     getUserInfo();
-  });
+  },[]);
 
   return (
     <View style={styles.container}>
@@ -40,7 +42,7 @@ export default function NewPage({ navigation }) {
       <Button title="Group Chat" onPress={()=>{
         navigation.navigate("GroupChat",{name:firstName,_id:currentUserUID})
       }} />
-      <ChatRoom name={firstName} _id={currentUserUID}>start a conversation</ChatRoom>
+      <ChatRoom name={firstName} _id={currentUserUID} navigation={navigation}>start a conversation</ChatRoom>
 
     </View>
   );

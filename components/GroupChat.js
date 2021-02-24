@@ -9,15 +9,16 @@ import {GiftedChat} from "react-native-gifted-chat";
 //maybe pass this down props later to take user to right chat room.
 export default function App(props) {
     const chatsRef = props.route.params.chatsRef;
-    console.log(props)
+
+    
        
   const [user,setUser] = useState(props.route.params.user);
-  const [name,setName] = useState("");
   const [messages,setMessages]=useState([])
 
   useEffect(() => {
+     console.log(chatsRef)
       
-    const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
+    const unsubscribe = chatsRef.collection("messages-collection").onSnapshot((querySnapshot) => {
         const messagesFirestore = querySnapshot
             .docChanges()
             .filter(({ type }) => type === 'added')

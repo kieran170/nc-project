@@ -8,11 +8,17 @@ import {GroupChat} from "../components/GroupChat";
 
 
 const chatsRef = firestore.collection("chats");
-export default function ChatRoom ({firstName, _id, navigation}){
+export default function ChatRoom (props){
+    const {navigation}=props;
+    const {firstName,_id}=props;
+  
     const [Room,setRoom]=useState(_id)
     const handlePress = () => {
         chatsRef.doc(Room).set({});
-        navigation.navigate("GroupChat", {user:{name : firstName, _id},chatsRef:Room})
+        const chatsRefPassed= firestore.collection("chats").doc(Room);
+        console.log(chatsRefPassed)
+
+        navigation.navigate("GroupChat", {user:{name : firstName, _id},chatsRef:chatsRefPassed})
     }
     return (
         
