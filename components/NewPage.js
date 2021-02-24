@@ -13,6 +13,7 @@ export default function NewPage({ navigation }) {
     loggingOut();
     navigation.navigate("Home");
   };
+  
   useEffect(() => {
     async function getUserInfo() {
       let doc = await firebase
@@ -29,7 +30,7 @@ export default function NewPage({ navigation }) {
       }
     }
     getUserInfo();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>

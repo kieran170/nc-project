@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Image, SafeAreaView, Text, StyleSheet } from 'react-native';
+import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default class EventPage extends Component {
 
-
+    state = {
+        users: []
+    }
 
     render() {
 
@@ -12,7 +14,11 @@ export default class EventPage extends Component {
 
         return (
             <SafeAreaView>
-            <Text>{name}</Text>
+            <Text style={styles.eventName}>{name}</Text>
+            <Text>{"\n"}</Text>
+            <Button style={styles.button} title="attending">I'm attending</Button>
+            <Text>{"\n"}</Text>
+            <Button style={styles.button} title="buddy">Find a buddy</Button>
             <Text>{venue}, {postCode}</Text>
             <Text>{date}, {time}</Text>
             <Text>Genre: {genre} / {subGenre}</Text>
@@ -40,5 +46,12 @@ const styles = StyleSheet.create({
     map: {
         width: '100%',
         height: 200
+    },
+    eventName: {
+        fontWeight: "bold",
+        fontSize: 20
+    },
+    button: {
+        flex: 0.1
     }
 })
