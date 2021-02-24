@@ -4,7 +4,8 @@ import SignInUp from "./components/SignInUp";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import NewPage from "./components/NewPage";
-import GroupChat from "./components/GroupChat"
+import GroupChat from "./components/GroupChat";
+import ChatRoom from "./components/ChatRoom"
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
         <Stack.Screen name={"Home"} component={SignInUp} />
         <Stack.Screen name={"NewPage"} component={NewPage} />
         <Stack.Screen name={"GroupChat"} component={GroupChat} ></Stack.Screen>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

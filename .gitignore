@@ -13,4 +13,7 @@ web-build/
 .DS_Store
 
 .package-lock.json
+/my-app/config/firbase.js
+
+
 

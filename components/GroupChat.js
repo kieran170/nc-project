@@ -4,17 +4,19 @@ import * as firebase from "firebase";
 import { auth,firestore} from "../my-app/config/firbase";
 import {GiftedChat} from "react-native-gifted-chat";
 
-const chatsRef = firestore.collection("chats")
 
+
+//maybe pass this down props later to take user to right chat room.
 export default function App(props) {
+    const chatsRef = props.route.params.chatsRef;
+    console.log(props)
        
-  const [user,setUser] = useState(props.route.params);
+  const [user,setUser] = useState(props.route.params.user);
   const [name,setName] = useState("");
   const [messages,setMessages]=useState([])
 
   useEffect(() => {
       
-  
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
         const messagesFirestore = querySnapshot
             .docChanges()
@@ -38,12 +40,7 @@ const appendMessages = useCallback(
     [messages]
 )
 
-
-
-
-
 async function handleSend(messages) {
-    console.log(user)
     const writes = messages.map((m) => chatsRef.add(m))
     await Promise.all(writes)
 }
