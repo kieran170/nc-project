@@ -27,7 +27,9 @@ export const getEvents = (city = 'manchester', size = 20) => {
                     postCode: event._embedded.venues[0].postalCode, 
                     location: event._embedded.venues[0].location,
                     image: findImage(event.images),
-                    id: event.id }
+                    id: event.id,
+                    genre: event.classifications[0].genre.name, 
+                    subGenre: event.classifications[0].subGenre.name }
                 }
             )
         } else {

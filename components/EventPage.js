@@ -8,13 +8,14 @@ export default class EventPage extends Component {
 
     render() {
 
-        const {name, date, time, venue, postCode, image, location, id} = this.props.route.params
+        const {name, date, time, venue, postCode, image, location, id, genre, subGenre} = this.props.route.params
 
         return (
             <SafeAreaView>
             <Text>{name}</Text>
             <Text>{venue}, {postCode}</Text>
             <Text>{date}, {time}</Text>
+            <Text>Genre: {genre} / {subGenre}</Text>
             <Image style={styles.image} source={{uri: image}}/>
             <MapView
             style={styles.map}
