@@ -35,6 +35,8 @@ export default function NewPage({ navigation }) {
     getUserInfo();
   },[]);
 
+  const chatsRef = firestore.collection("chats").doc("7COD5MpThDQB1XtBs6JOywn59h32");
+
   return (
     <View style={styles.container}>
       <Text>Hello {firstName}</Text>
@@ -42,7 +44,8 @@ export default function NewPage({ navigation }) {
       <Button title="Group Chat" onPress={()=>{
         navigation.navigate("GroupChat",{name:firstName,_id:currentUserUID})
       }} />
-      <ChatRoom name={firstName} _id={currentUserUID} navigation={navigation}>start a conversation</ChatRoom>
+      <ChatRoom name={firstName} _id={currentUserUID} navigation={navigation}/>
+      <Button title="Join New Room" onPress={() => { navigation.navigate("GroupChat", {user: {name:firstName,_id:currentUserUID}, chatsRef})}} />
 
     </View>
   );

@@ -16,8 +16,6 @@ export default function App(props) {
   const [messages,setMessages]=useState([])
 
   useEffect(() => {
-     console.log(chatsRef)
-      
     const unsubscribe = chatsRef.collection("messages-collection").onSnapshot((querySnapshot) => {
         const messagesFirestore = querySnapshot
             .docChanges()
@@ -42,7 +40,7 @@ const appendMessages = useCallback(
 )
 
 async function handleSend(messages) {
-    const writes = messages.map((m) => chatsRef.add(m))
+    const writes = messages.map((m) => chatsRef.collection("messages-collection").add(m))
     await Promise.all(writes)
 }
 
