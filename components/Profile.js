@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  Alert,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
+import DialogInput from "react-native-dialog-input";
 
 export default function App(props) {
   const { navigation } = props;
@@ -19,6 +13,7 @@ export default function App(props) {
   const [addBio, setAddBio] = useState(true);
   const [bio, onChangeText] = useState("");
   const [haveBio, setHaveBio] = useState(false);
+  const [dialogVisible, isDialogVisible] = useState(false);
 
   const handlePress = () => {
     setAddBio(false);
@@ -31,55 +26,96 @@ export default function App(props) {
   };
 
   const handleImageChange = () => {
-    setAvatar("https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg");
+    isDialogVisible(true);
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Gig Buddy</Text>
-      <Button title="logout" onPress={handleLogOut} />
+    <ScrollView style={styles.container}>
+      <View
+        style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
+      >
+        <TouchableHighlight style={styles.chatButton}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Chats</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttonLogoutContainer}
+          onPress={handleLogOut}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
       <Image
         style={styles.avatar}
         source={{ height: 180, width: 180, uri: avatar }}
       />
-      <Button
+      <TouchableHighlight
         onPress={handleImageChange}
-        style={styles.changeImage}
-        title="change image"
-      />
-      <Text>
+        style={styles.buttonImageContainer}
+      >
+        <View style={styles.button}>
+          <Text style={styles.ImageButtonText}>Change Image</Text>
+        </View>
+      </TouchableHighlight>
+      <Text style={styles.name}>
         {firstName} {lastName}
         {"\n"}
       </Text>
       {addBio && (
         <>
-          <Text style={styles.bioTitle}>Add a Bio</Text>
+          <Text style={styles.bioTitle}>Add A Bio</Text>
           <TextInput
             style={styles.inputbox}
             multiline
-            numberOfLines={4}
+            numberOfLines={10}
             onChangeText={(text) => onChangeText(text)}
             value={bio}
           />
           {bio.length > 0 && (
-            <Button
-              style={styles.bioButton}
+            <TouchableHighlight
               onPress={handlePress}
-              title="Add bio"
-            />
+              style={styles.buttonBioContainer}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Add Bio</Text>
+              </View>
+            </TouchableHighlight>
           )}
         </>
       )}
       {haveBio && (
         <>
-          <Text>
-            About me {"\n"}
-            {"\n"}
-            {bio}
-          </Text>
+          <View style={styles.aboutMeContainer}>
+            <Text style={styles.aboutMeTitle}>About Me {"\n"}</Text>
+            <Text style={styles.aboutMe}>{bio}</Text>
+          </View>
+          <View>
+            <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+          </View>
         </>
       )}
-    </View>
+      <DialogInput
+        isDialogVisible={dialogVisible}
+        title={"Please Add Avatar URL"}
+        submitInput={(inputText) => {
+          setAvatar(inputText);
+          isDialogVisible(false);
+        }}
+        closeDialog={() => {
+          isDialogVisible(false);
+        }}
+      ></DialogInput>
+      <Text>
+        {"\n"}
+        {"\n"}
+        {"\n"}
+        {"\n"}
+        {"\n"}
+      </Text>
+    </ScrollView>
   );
 }
 
@@ -89,17 +125,74 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
   },
+  title: {
+    fontSize: 30,
+    textAlign: "center",
+    marginBottom: 20,
+  },
   avatar: {
-    marginTop: 50,
     borderRadius: 100,
+    marginLeft: 5,
   },
   inputbox: {
     borderWidth: 1,
     width: "50%",
     height: 200,
+    marginLeft: 5,
+    paddingLeft: 5,
   },
   bioTitle: {
-    marginTop: 20,
+    marginTop: 10,
+    marginLeft: 5,
+    fontSize: 20,
   },
-  changeImage: {},
+  aboutMeContainer: {
+    marginLeft: 5,
+    marginRight: 5,
+    width: "60%",
+  },
+  button: {
+    borderWidth: 1,
+    width: 130,
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+  },
+  buttonLogoutContainer: {
+    marginLeft: 140,
+  },
+  buttonImageContainer: {
+    marginTop: 5,
+    marginLeft: 30,
+  },
+  buttonBioContainer: {
+    marginTop: 10,
+    marginLeft: 5,
+  },
+  name: {
+    marginTop: 5,
+    marginLeft: 5,
+    fontSize: 35,
+  },
+  aboutMeTitle: {
+    fontSize: 20,
+  },
+  buttonChatContainer: {
+    width: 100,
+  },
+  ImageButtonText: {
+    fontSize: 15,
+    textAlign: "center",
+  },
+  previousGigTitle: {
+    marginTop: 20,
+    fontSize: 20,
+    marginLeft: 5,
+  },
+  chatButton: {
+    marginLeft: 5,
+  },
 });

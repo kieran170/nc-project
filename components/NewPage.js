@@ -31,7 +31,7 @@ export default function NewPage({ navigation }) {
       }
     }
     getUserInfo();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>

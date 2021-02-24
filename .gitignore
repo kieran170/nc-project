@@ -8,6 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-
+/my-app/config/firbase.js
+*.package-lock.json
 # macOS
 .DS_Store
