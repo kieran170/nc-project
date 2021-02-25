@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { getEventBuddySeekers } from '../my-app/config/fireBaseMethods';
 
 export default class EventPage extends Component {
 
     state = {
-        users: []
+        buddySeekers: [],
+    }
+
+    componentDidMount() {
+        getEventBuddySeekers('test-event')
+            .then((data) => {
+                console.log('DATA --->', data)
+            })
     }
 
     render() {
@@ -16,9 +24,9 @@ export default class EventPage extends Component {
             <SafeAreaView>
             <Text style={styles.eventName}>{name}</Text>
             <Text>{"\n"}</Text>
-            <Button style={styles.button} title="attending">I'm attending</Button>
+            <Button style={styles.button} title="i'm attending" />
             <Text>{"\n"}</Text>
-            <Button style={styles.button} title="buddy">Find a buddy</Button>
+            <Button style={styles.button} title="i'm looking for a buddy" />
             <Text>{venue}, {postCode}</Text>
             <Text>{date}, {time}</Text>
             <Text>Genre: {genre} / {subGenre}</Text>
