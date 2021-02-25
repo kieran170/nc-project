@@ -27,12 +27,12 @@ export default function App(props) {
   const handlePress = () => {
     setAddBio(false);
     setHaveBio(true);
-    const res = firestore.collection("users").doc(userUid).update(user);
+    handlesUpdateProfile();
   };
 
   const handleLogOut = () => {
     loggingOut();
-    const res = firestore.collection("users").doc(userUid).update(user);
+    handlesUpdateProfile();
     navigation.navigate("Home");
   };
 
@@ -42,8 +42,14 @@ export default function App(props) {
   };
 
   const handleImageConfirm = () => {
-    const res = firestore.collection("users").doc(userUid).update(user);
+    handlesUpdateProfile();
     setImageSave(false);
+  };
+
+  const handlesUpdateProfile = () => {
+    if (bio.length > 1) {
+      const res = firestore.collection("users").doc(userUid).update(user);
+    }
   };
 
   useEffect(() => {
@@ -79,7 +85,7 @@ export default function App(props) {
       >
         <TouchableHighlight
           onPress={() => {
-            const res = firestore.collection("users").doc(userUid).update(user);
+            handlesUpdateProfile();
           }}
           style={styles.chatButton}
         >
