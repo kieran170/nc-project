@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
 import DialogInput from "react-native-dialog-input";
+import { firebaseApp } from "../my-app/config/firbase";
 
 export default function App(props) {
   const { navigation } = props;
@@ -27,6 +28,10 @@ export default function App(props) {
 
   const handleImageChange = () => {
     isDialogVisible(true);
+  };
+
+  const handleSave = () => {
+    console.log(user);
   };
 
   const user = { userAvatar: avatar, userBio: bio };
@@ -117,7 +122,7 @@ export default function App(props) {
         {"\n"}
         {"\n"}
       </Text>
-      {/* <Button title="save" onPress={() => {}}> */}
+      <Button title="save" onPress={handleSave} />
     </ScrollView>
   );
 }
