@@ -10,30 +10,32 @@ export default function ContactList(props) {
     const [contact, setContact] = useState("");
     const [secondUser, setSecondUser] = useState("");
 
-    useEffect(() => {
+useEffect(() => {
     async function getUserData(){ 
         let doc = await contactsRef
         .get();
    
         let dataObj = doc.data();
         setContact(dataObj.contact);
-    } getUserData();
-} ,[]);
+    }  getUserData();
+}, []);
+
+console.log(contact[0])
 
 useEffect(() => {
-    async function getContactData(){ 
-        let doc = await firestore
+async function getContactData(){ 
+    let docTwo = await firestore
         .collection("users")
-        .doc(contact)
+        .doc(contact[0])
         .get();
-   
-        let dataObj = doc.data();
-        setSecondUser(dataObj);
+
+        let dataObjTwo = docTwo.data();
+        setSecondUser(dataObjTwo);
+        console.log(secondUser)
     } getContactData();
-} ,[]);
+}, []);
 
-
-    return (
+return (
         <View>
             <Text>Contacts</Text>
             <Button title={contact}></Button>
