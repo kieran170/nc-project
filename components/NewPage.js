@@ -14,8 +14,12 @@ export default function NewPage({ navigation }) {
     loggingOut();
     navigation.navigate("Home");
   };
+
   useEffect(() => {
     async function getUserInfo() {
+
+      console.log('getting user info')
+
       let doc = await firebase
         .firestore()
         .collection("users")

@@ -3,7 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import NewPage from "./components/NewPage";
+import EventList from "./components/EventList";
+import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
 
 const Stack = createStackNavigator();
@@ -13,7 +14,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name={"Home"} component={SignInUp} />
-        <Stack.Screen name={"Profile"} component={Profile} />
+        <Stack.Screen name={"EventList"} component={EventList} />
+        <Stack.Screen name={"EventPage"} component={EventPage} />
+        <Stack.Screen name={"ProfilePage"} component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
