@@ -3,7 +3,10 @@ import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
 import DialogInput from "react-native-dialog-input";
-import { firebaseApp } from "../my-app/config/firbase";
+import { firestore } from "../my-app/config/firbase";
+import * as firebase from "firebase";
+import "firebase/auth";
+import "firebase/firestore";
 
 export default function App(props) {
   const { navigation } = props;
@@ -15,33 +18,67 @@ export default function App(props) {
   const [bio, onChangeText] = useState("");
   const [haveBio, setHaveBio] = useState(false);
   const [dialogVisible, isDialogVisible] = useState(false);
+  const [imageChange, setImageSave] = useState(false);
+
+  const userUid = firebase.auth().currentUser.uid;
+  const user = { userAvatar: avatar, userBio: bio };
 
   const handlePress = () => {
     setAddBio(false);
     setHaveBio(true);
+    const res = firestore.collection("users").doc(userUid).update(user);
   };
 
   const handleLogOut = () => {
     loggingOut();
+    const res = firestore.collection("users").doc(userUid).update(user);
     navigation.navigate("Home");
   };
 
   const handleImageChange = () => {
     isDialogVisible(true);
+    setImageSave(true);
   };
 
-  const handleSave = () => {
-    console.log(user);
+  const handleImageConfirm = () => {
+    const res = firestore.collection("users").doc(userUid).update(user);
+    setImageSave(false);
   };
 
-  const user = { userAvatar: avatar, userBio: bio };
+  useEffect(() => {
+    async function getUserInfo() {
+      let doc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(userUid)
+        .get();
+
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
+      } else {
+        let dataObj = doc.data();
+        if (dataObj.userAvatar && dataObj.userBio !== undefined) {
+          setAvatar(dataObj.userAvatar);
+          onChangeText(dataObj.userBio);
+          setHaveBio(true);
+          setAddBio(false);
+        }
+      }
+    }
+    getUserInfo();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
       <View
         style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
       >
-        <TouchableHighlight style={styles.chatButton}>
+        <TouchableHighlight
+          onPress={() => {
+            const res = firestore.collection("users").doc(userUid).update(user);
+          }}
+          style={styles.chatButton}
+        >
           <View style={styles.button}>
             <Text style={styles.buttonText}>Chats</Text>
           </View>
@@ -67,6 +104,16 @@ export default function App(props) {
           <Text style={styles.ImageButtonText}>Change Image</Text>
         </View>
       </TouchableHighlight>
+      {imageChange === true && (
+        <TouchableHighlight
+          onPress={handleImageConfirm}
+          style={styles.buttonImageContainer}
+        >
+          <View style={styles.button}>
+            <Text style={styles.ImageButtonText}>Confirm Image</Text>
+          </View>
+        </TouchableHighlight>
+      )}
       <Text style={styles.name}>
         {firstName} {lastName}
         {"\n"}
@@ -81,7 +128,7 @@ export default function App(props) {
             onChangeText={(text) => onChangeText(text)}
             value={bio}
           />
-          {bio.length > 0 && (
+          {bio.length > 1 && (
             <TouchableHighlight
               onPress={handlePress}
               style={styles.buttonBioContainer}
@@ -122,7 +169,6 @@ export default function App(props) {
         {"\n"}
         {"\n"}
       </Text>
-      <Button title="save" onPress={handleSave} />
     </ScrollView>
   );
 }
