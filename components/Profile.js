@@ -10,7 +10,6 @@ import "firebase/firestore";
 
 export default function App(props) {
   const { navigation } = props;
-  const { email, firstName, lastName } = props.route.params.newUser;
   const [avatar, setAvatar] = useState(
     "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
   );
@@ -19,6 +18,8 @@ export default function App(props) {
   const [haveBio, setHaveBio] = useState(false);
   const [dialogVisible, isDialogVisible] = useState(false);
   const [imageChange, setImageSave] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const userUid = firebase.auth().currentUser.uid;
   const user = { userAvatar: avatar, userBio: bio };
@@ -57,6 +58,9 @@ export default function App(props) {
         Alert.alert("No user data found!");
       } else {
         let dataObj = doc.data();
+        setFirstName(dataObj.firstName);
+        setLastName(dataObj.lastName);
+
         if (dataObj.userAvatar && dataObj.userBio !== undefined) {
           setAvatar(dataObj.userAvatar);
           onChangeText(dataObj.userBio);

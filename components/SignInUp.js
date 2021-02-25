@@ -25,7 +25,7 @@ export default function App({ navigation }) {
       if (!err) {
         setEmail("");
         setPassword("");
-        navigation.navigate("NewPage");
+        navigation.navigate("Profile");
       }
     });
   };
