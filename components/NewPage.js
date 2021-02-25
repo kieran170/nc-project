@@ -43,10 +43,9 @@ export default function NewPage({ navigation }) {
       <Button title="Group Chat" onPress={()=>{
         navigation.navigate("GroupChat",{name:firstName,_id:currentUserUID})
       }} />
-      <ChatRoom name={firstName} _id={currentUserUID} navigation={navigation}/>
       <Button title="Join New Room" onPress={() => { navigation.navigate("GroupChat", {user: {name:firstName,_id:currentUserUID}, chatsRef})}} />
       <Button title="Contact List" onPress={() => {
-         navigation.navigate("ContactList", {user: {name: firstName, _id: currentUserUID}})
+         navigation.navigate("ContactList", {user: {name: firstName, _id: currentUserUID }})
       }}/>
 
     </View>
