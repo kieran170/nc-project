@@ -5,6 +5,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
+import Profile from "./components/Profile";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,8 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name={"Home"} component={SignInUp} />
         <Stack.Screen name={"EventList"} component={EventList} />
-        <Stack.Screen name={"EventPage"} component={EventPage}/>
+        <Stack.Screen name={"EventPage"} component={EventPage} />
+        <Stack.Screen name={"Profile"} component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

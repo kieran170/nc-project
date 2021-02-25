@@ -8,6 +8,7 @@ export default function NewPage({ navigation }) {
   let currentUserUID = auth.currentUser?.uid;
 
   const [firstName, setFirstName] = useState("");
+  const [user, setUser] = useState("");
 
   const handleLogOut = () => {
     loggingOut();
@@ -30,6 +31,7 @@ export default function NewPage({ navigation }) {
       } else {
         let dataObj = doc.data();
         setFirstName(dataObj.firstName);
+        setUser(dataObj);
       }
     }
     getUserInfo();
@@ -38,6 +40,12 @@ export default function NewPage({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Hello {firstName}</Text>
+      <Button
+        title="Profile"
+        onPress={() => {
+          navigation.navigate("Profile", { newUser: user });
+        }}
+      />
       <Button title="log out" onPress={handleLogOut} />
     </View>
   );
