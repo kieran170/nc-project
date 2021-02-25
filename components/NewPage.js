@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Alert, Button } from "react-native";
-import * as firebase from "firebase";
+import { firebase } from "firebase";
 import { auth, firestore } from "../my-app/config/firbase";
 import { loggingOut } from "../my-app/config/fireBaseMethods";
 import ChatRoom from "../components/ChatRoom";
+import ContactList from "../components/ContactList"
 
 
 export default function NewPage({ navigation }) {
   let currentUserUID = auth.currentUser?.uid;
   
-
   const [firstName, setFirstName] = useState("");
 
   const handleLogOut = () => {
@@ -19,8 +19,7 @@ export default function NewPage({ navigation }) {
   useEffect(() => {
   
     async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
+      let doc = await firestore
         .collection("users")
         .doc(currentUserUID)
         .get();
@@ -46,6 +45,9 @@ export default function NewPage({ navigation }) {
       }} />
       <ChatRoom name={firstName} _id={currentUserUID} navigation={navigation}/>
       <Button title="Join New Room" onPress={() => { navigation.navigate("GroupChat", {user: {name:firstName,_id:currentUserUID}, chatsRef})}} />
+      <Button title="Contact List" onPress={() => {
+         navigation.navigate("ContactList", {user: {name: firstName, _id: currentUserUID}})
+      }}/>
 
     </View>
   );
