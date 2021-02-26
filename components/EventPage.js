@@ -44,9 +44,29 @@ export default class EventPage extends Component {
                 this.setState({buddySeekers, attendees})
             })
     }
-    // handleBuddy=()=>{
-        
-    // }
+    handleBuddy=()=>{
+        async function getUserInfo(uid) {
+            let doc = await firebase
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
+            return {userData: doc.data(), uid};
+        }
+        const currentUser = this.props.app.user;
+        const currentUserinfo= getUserInfo(currentUser)
+        const isLookingForBuddy = this.state.buddySeekers.findIndex((buddySeeker)=>{
+          return  buddySeeker.uid === currentUser
+        })
+        if(isLookingForBuddy === -1){
+            Promise.resolve(getUserInfo(currentUser)).then((userInfo) =>  {this.setState((currentState)=>{
+                return(
+                    {buddySeekers: [...currentState.buddySeekers, userInfo]}
+                )
+            })}); 
+           
+        }
+    }
 
     render() {
 
