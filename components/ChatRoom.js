@@ -9,7 +9,6 @@ import {GroupChat} from "../components/GroupChat";
 
 const chatsRef = firestore.collection("chats");
 export default function ChatRoom (props){
-    console.log(props)
     
     const {navigation}= props;
     const {currentUser}= props;
@@ -17,7 +16,6 @@ export default function ChatRoom (props){
     const firstName=currentUser.firstName;
     const _id = currentUser._id;
 
-   
 
     const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState("");
     const [Room, setRoom] = useState("");
@@ -28,7 +26,7 @@ export default function ChatRoom (props){
             .collection("users")
             .doc(currentUser._id)
             .get()
-            //dataObj coming up as undefined on the latest console.log()
+
             let dataObj = doc.data();
             setChatroomsCurrentUser(dataObj.chatrooms);
         }  getUserData();
@@ -58,7 +56,7 @@ export default function ChatRoom (props){
     const handlePress = () => {
         chatsRef.doc(Room).set({});
         const chatsRefPassed= firestore.collection("chats").doc(Room);
-        navigation.navigate("GroupChat", {user:{name : name, _id}, chatsRef:chatsRefPassed})
+        navigation.navigate("GroupChat", {user:{name : firstName, _id}, chatsRef:chatsRefPassed})
     }
 
 
