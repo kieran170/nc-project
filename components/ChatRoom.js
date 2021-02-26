@@ -12,6 +12,7 @@ export default function ChatRoom (props){
     const {navigation}= props;
     const {currentUser}= props;
     let {secondUser} = props;
+    console.log(secondUser)
     const firstName=currentUser.firstName;
     const _id = currentUser._id;
     const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
@@ -48,19 +49,17 @@ export default function ChatRoom (props){
         return ;
     }
 
-    
     matchUsersRooms(chatRoomsCurrentUser, secondUser)
     const handlePress = () => {
-        if (Room ==="room not found"){
+        if (Room === "room not found"){
             //add two users ids together  and save it as room-name ;
             //push the room-name at the array of the both users;
             //
-            const newRoom =currentUser._id + secondUser[0]._id;    
-            async function updateUsers(chatRoomsCurrentUser,secondUser){
-                secondUser = secondUser[0];    
+            const newRoom = currentUser._id + secondUser._id;    
+            async function updateUsers(chatRoomsCurrentUser,secondUser) {  
                 const updatedChatRoomsCurrentUser = chatRoomsCurrentUser;
                 const updatedChatRoomsSecondUser = secondUser.chatrooms;
-                console.log(updatedChatRoomsSecondUser)
+
                 updatedChatRoomsCurrentUser.push(newRoom);
                 updatedChatRoomsSecondUser.push(newRoom);
                 

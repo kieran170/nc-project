@@ -23,9 +23,11 @@ useEffect(() => {
 return (
         <View>
             <Text>Contacts</Text>
-   
-            <ChatRoom  secondUser={secondUser} currentUser={{firstName : props.route.params.user.name, _id : props.route.params.user._id }} navigation={navigation} ></ChatRoom>
-            
+            {secondUser.length ?
+            <ChatRoom  secondUser={secondUser[0]} currentUser={{firstName : props.route.params.user.name, _id : props.route.params.user._id }} navigation={navigation} ></ChatRoom>
+            :
+            <Text>Loading Contacts</Text>
+            }
         </View>
     )
 }
