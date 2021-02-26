@@ -8,17 +8,14 @@ import {GroupChat} from "../components/GroupChat";
 
 
 const chatsRef = firestore.collection("chats");
-export default function ChatRoom (props){
-    
+export default function ChatRoom (props){ 
     const {navigation}= props;
     const {currentUser}= props;
-    const {secondUser} = props;
+    let {secondUser} = props;
     const firstName=currentUser.firstName;
     const _id = currentUser._id;
-
-
-    const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState("");
-    const [Room, setRoom] = useState("");
+    const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
+    const [Room, setRoom] = useState("room not found");
 
     useEffect(() => {
         async function getUserData(){ 
@@ -32,13 +29,9 @@ export default function ChatRoom (props){
         }  getUserData();
     }, []);
 
- 
-    
-    
-
     const matchUsersRooms = (chatRoomsCurrentUser, secondUser) => {
         for (let i = 0; i < chatRoomsCurrentUser.length; i++) {
-            if (!Room) {
+            if ((!Room && chatRoomsCurrentUser.length)  ) {
                 for (let j = 0; j < secondUser.chatrooms.length; j++) {
                     if(chatRoomsCurrentUser[i] === secondUser.chatrooms[j]) {
                     const room = chatRoomsCurrentUser[i];
@@ -46,7 +39,11 @@ export default function ChatRoom (props){
                     };
                }
             }
-            else break;   
+            else {
+            
+                break;
+            }
+             
         };
         return ;
     }
@@ -54,9 +51,37 @@ export default function ChatRoom (props){
     
     matchUsersRooms(chatRoomsCurrentUser, secondUser)
     const handlePress = () => {
+        if (Room ==="room not found"){
+            //add two users ids together  and save it as room-name ;
+            //push the room-name at the array of the both users;
+            //
+            const newRoom =currentUser._id + secondUser[0]._id;    
+            async function updateUsers(chatRoomsCurrentUser,secondUser){
+                secondUser = secondUser[0];    
+                const updatedChatRoomsCurrentUser = chatRoomsCurrentUser;
+                const updatedChatRoomsSecondUser = secondUser.chatrooms;
+                console.log(updatedChatRoomsSecondUser)
+                updatedChatRoomsCurrentUser.push(newRoom);
+                updatedChatRoomsSecondUser.push(newRoom);
+                
+                const currentUserRef = firestore.collection('users').doc(currentUser._id);
+                const res1 =  await currentUserRef.update({ chatrooms:updatedChatRoomsCurrentUser  }) 
+                const secondUserRef = firestore.collection('users').doc(secondUser._id);
+                const res2 = await  secondUserRef.update({ chatrooms: updatedChatRoomsSecondUser}) 
+            
+            }
+            updateUsers(chatRoomsCurrentUser,secondUser);
+
+            chatsRef.doc(newRoom).set({});
+            const chatsRefPassed= firestore.collection("chats").doc();
+            navigation.navigate("GroupChat", {user:{name : firstName, _id}, chatsRef:chatsRefPassed})
+        }
+        else {
+
         chatsRef.doc(Room).set({});
         const chatsRefPassed= firestore.collection("chats").doc(Room);
         navigation.navigate("GroupChat", {user:{name : firstName, _id}, chatsRef:chatsRefPassed})
+        }
     }
 
 
