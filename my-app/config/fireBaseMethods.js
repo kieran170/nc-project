@@ -43,7 +43,7 @@ export async function loggingOut() {
   }
 }
 
-export async function getEventBuddySeekers(eventID) {
+export async function getEventUsers(eventID) {
 
   console.log('getting buddy seekers...')
 

@@ -1,24 +1,53 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { getEventBuddySeekers } from '../my-app/config/fireBaseMethods';
+import { getEventUsers } from '../my-app/config/fireBaseMethods';
+import { firestore } from "../my-app/config/firbase";
+import * as firebase from "firebase";
+import "firebase/auth";
+import "firebase/firestore";
 
 export default class EventPage extends Component {
 
     state = {
         buddySeekers: [],
+        attendees: [],
     }
 
     componentDidMount() {
-        getEventBuddySeekers('test-event')
+
+        async function getUserInfo(uid) {
+            let doc = await firebase
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
+            return {userData: doc.data(), uid};
+        }
+
+        getEventUsers('test-event')
             .then((data) => {
-                console.log('DATA --->', data)
+                const buddySeekers = data.buddySeekers.map((uid) => getUserInfo(uid));
+                const attendees = data.attendees.map((uid) => getUserInfo(uid));
+
+                const buddyLength = buddySeekers.length;
+                const attendeesLength = attendees.length;
+                
+                return Promise.all([attendeesLength, buddyLength, ...attendees, ...buddySeekers])
+            })
+            .then((users) => {
+
+                const buddySeekers = users.splice(-users[1])
+                const attendees = users.splice(-users[0])
+
+                this.setState({buddySeekers, attendees})
             })
     }
 
     render() {
 
-        const {name, date, time, venue, postCode, image, location, id, genre, subGenre} = this.props.route.params
+        const {name, date, time, venue, postCode, image, location, id, genre, subGenre} = this.props.route.params;
+        console.log(this.state)
 
         return (
             <SafeAreaView>
