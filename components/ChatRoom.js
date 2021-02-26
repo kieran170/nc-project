@@ -31,11 +31,13 @@ export default function ChatRoom (props){
     }, []);
 
     const matchUsersRooms = (chatRoomsCurrentUser, secondUser) => {
+   
         for (let i = 0; i < chatRoomsCurrentUser.length; i++) {
-            if ((!Room && chatRoomsCurrentUser.length)  ) {
+            if ((Room==="room not found" && chatRoomsCurrentUser.length)  ) {
                 for (let j = 0; j < secondUser.chatrooms.length; j++) {
                     if(chatRoomsCurrentUser[i] === secondUser.chatrooms[j]) {
                     const room = chatRoomsCurrentUser[i];
+                    console.log(room)
                         setRoom(room)
                     };
                }
@@ -48,8 +50,9 @@ export default function ChatRoom (props){
         };
         return ;
     }
-
     matchUsersRooms(chatRoomsCurrentUser, secondUser)
+    
+    
     const handlePress = () => {
         if (Room === "room not found"){
             //add two users ids together  and save it as room-name ;
