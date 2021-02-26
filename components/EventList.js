@@ -53,6 +53,7 @@ export default class EventList extends Component {
 
   render() {
     const { events, defaultRegion, newRegion, errMsg, userInput } = this.state;
+    //console.log(this.props.app)
 
     return (
       <SafeAreaView style={styles.page}>
