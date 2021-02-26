@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
-import { loggingOut } from "../my-app/config/fireBaseMethods";
 import DialogInput from "react-native-dialog-input";
 import { firestore } from "../my-app/config/firbase";
 import * as firebase from "firebase";
@@ -31,7 +30,7 @@ export default function App(props) {
   };
 
   const handleLogOut = () => {
-    loggingOut();
+    props.logout()
     const res = firestore.collection("users").doc(userUid).update(user);
     navigation.navigate("Home");
   };

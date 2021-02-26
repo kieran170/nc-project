@@ -12,7 +12,7 @@ import {
 import { registration, signIn } from "../my-app/config/fireBaseMethods";
 
 //set matching password - maybe some verification steps?
-export default function App({ navigation }) {
+export default function App({ navigation, login }) {
   const [firstName, setFirstName] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +31,7 @@ export default function App({ navigation }) {
         Alert.alert("There is something wrong!", err.message);
       }
       if (!err) {
+        login()
         setEmail("");
         setPassword("");
         navigation.navigate("EventList");
