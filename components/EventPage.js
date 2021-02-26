@@ -6,6 +6,7 @@ import { firestore } from "../my-app/config/firbase";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
+import { FlatList } from 'react-native-gesture-handler';
 
 export default class EventPage extends Component {
 
@@ -43,19 +44,22 @@ export default class EventPage extends Component {
                 this.setState({buddySeekers, attendees})
             })
     }
+    // handleBuddy=()=>{
+        
+    // }
 
     render() {
 
         const {name, date, time, venue, postCode, image, location, id, genre, subGenre} = this.props.route.params;
         console.log(this.state)
-
+        const listItem= ({item})=>(<Text>{item.userData.firstName}</Text>)
         return (
             <SafeAreaView>
             <Text style={styles.eventName}>{name}</Text>
             <Text>{"\n"}</Text>
             <Button style={styles.button} title="i'm attending"/>
             <Text>{"\n"}</Text>
-            <Button style={styles.button} title="i'm looking for a buddy" />
+            <Button style={styles.button} title="i'm looking for a buddy" onPress={this.handleBuddy}/>
             <Text>{venue}, {postCode}</Text>
             <Text>{date}, {time}</Text>
             <Text>Genre: {genre} / {subGenre}</Text>
@@ -70,6 +74,10 @@ export default class EventPage extends Component {
             >
                 <Marker image={require('../my-app/assets/small-guitar-icon.png')} key={id} coordinate={{latitude: +location.latitude, longitude: +location.longitude}}/>
             </MapView>
+            <FlatList styles={{flex: 1}}data={this.state.buddySeekers} 
+                      renderItem={listItem} keyExtractor={item=> item.uid}/>
+                      <FlatList styles={{flex: 1}}data={this.state.attendees} 
+                      renderItem={listItem} keyExtractor={item=> item.uid}/>
             </SafeAreaView>
         )
     }
