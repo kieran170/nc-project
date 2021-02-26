@@ -16,6 +16,18 @@ export default function App(props) {
   const [messages,setMessages]=useState([])
 
   useEffect(() => {
+    setMessages([
+        {
+          _id: 1,
+          text: 'Please dont exchange numbers or meet in private with someone you dont know well',
+          
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        },
+      ])
     const unsubscribe = chatsRef.collection("messages-collection").onSnapshot((querySnapshot) => {
         const messagesFirestore = querySnapshot
             .docChanges()
