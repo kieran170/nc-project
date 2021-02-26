@@ -23,8 +23,8 @@ export default function App(props) {
           
           user: {
             _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
+            name: 'Safety Bot',
+            avatar: 'https://cdn.dribbble.com/users/79449/screenshots/14019420/bot_4x.png',
           },
         },
       ])
