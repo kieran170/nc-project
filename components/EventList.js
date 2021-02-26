@@ -14,6 +14,9 @@ import {
 import MapView, { Marker } from "react-native-maps";
 
 export default class EventList extends Component {
+
+  // need to return to this and adjust the default map values so it looks good on both platforms!!!
+
   state = {
     events: [],
     defaultRegion:
@@ -57,13 +60,6 @@ export default class EventList extends Component {
 
     return (
       <SafeAreaView style={styles.page}>
-        <View style={styles.header}>
-          <Text>
-            {"\n"}
-            {"\n"}
-            {"\t"}Header goes here! NC-Proj
-          </Text>
-        </View>
         <TextInput
           style={styles.textInput}
           value={userInput}
@@ -73,9 +69,7 @@ export default class EventList extends Component {
           style={styles.button}
           title="search"
           onPress={this.handleSearch}
-        >
-          Search
-        </Button>
+        />
         <Button
           title="My Profile"
           onPress={() => {
@@ -121,9 +115,7 @@ export default class EventList extends Component {
                     onPress={() =>
                       this.props.navigation.navigate("EventPage", event)
                     }
-                  >
-                    More Info
-                  </Button>
+                  />
                 </View>
               );
             })

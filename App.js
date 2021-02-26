@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
-import * as firebaseMethods from "./my-app/config/fireBaseMethods";
+import { loggingOut, getUserInfo } from "./my-app/config/fireBaseMethods";
 import * as firebase from "firebase";
 import "firebase/auth";
 
@@ -16,18 +16,19 @@ export default class App extends Component {
 
   state = {
     isLoggedIn: false,
-    user: ''
+    currentUser: {}
   }
 
   handleLogIn = () => {
 
-    const user = firebase.auth().currentUser.uid;
-
-    this.setState({isLoggedIn: true, user})
+    const uid = firebase.auth().currentUser.uid;
+    Promise.resolve(getUserInfo(uid)).then((userInfo) => {
+      this.setState({isLoggedIn: true, currentUser: {uid, ...userInfo}})
+    })
   }
 
   handleLogOut = () => {
-    firebaseMethods.loggingOut();
+    loggingOut();
     this.setState({isLoggedIn: false, user: ''})
   }
 

@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { firebaseApp, auth, firestore } from "./firbase";
+import { firebaseApp, auth, firestore } from "./firebase";
 
 export async function registration(firstName, familyName, email, password) {
 
@@ -60,4 +60,27 @@ export async function getEventUsers(eventID) {
   }
 }
 
+export async function getUserInfo(uid) {
+  let doc = await firebaseApp
+      .firestore()
+      .collection("users")
+      .doc(uid)
+      .get();
+  return {userData: doc.data(), uid};
+}
+
+export async function toggleUserAtEvent(eventID, newArr, list) {
+
+  try {
+
+    const db = firestore;
+    const eventRef = db.collection('events').doc(eventID)
+
+    const res = await eventRef.update({
+      [list]: newArr
+    })
+  } catch (err) {
+    Alert.alert("Error adding user to list", err.message)
+  }
+}
 
