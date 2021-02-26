@@ -24,7 +24,7 @@ export default class EventPage extends Component {
             <SafeAreaView>
             <Text style={styles.eventName}>{name}</Text>
             <Text>{"\n"}</Text>
-            <Button style={styles.button} title="i'm attending" />
+            <Button style={styles.button} title="i'm attending"/>
             <Text>{"\n"}</Text>
             <Button style={styles.button} title="i'm looking for a buddy" />
             <Text>{venue}, {postCode}</Text>

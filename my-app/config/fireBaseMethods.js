@@ -59,3 +59,5 @@ export async function getEventBuddySeekers(eventID) {
     Alert.alert("There is something wrong!", err.message)
   }
 }
+
+
