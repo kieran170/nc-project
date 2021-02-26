@@ -19,7 +19,7 @@ export default function App(props) {
     setMessages([
         {
           _id: 1,
-          text: 'Please dont exchange numbers or meet in private with someone you dont know well',
+          text: 'Please do not exchange numbers or meet in private with someone you do not know well - Be safe always',
           
           user: {
             _id: 2,
