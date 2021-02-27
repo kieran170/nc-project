@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
+import { Image, SafeAreaView, Text, StyleSheet, Button, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { getEventUsers, getUserInfo, toggleUserAtEvent, eventDocExists, createUserArrays } from '../my-app/config/fireBaseMethods';
 import { FlatList } from 'react-native-gesture-handler';
@@ -49,7 +49,7 @@ export default class EventPage extends Component {
                             console.log(err) // !! BETTER ERROR HANDLING NEEDED HERE !! //
                         })
                 } else {
-                    // sets up the attendees and buddySeekers arrays in the DB
+                    // sets up the attendees and buddySeekers as empty arrays in the DB
                     createUserArrays(id)
                 }
             })
@@ -96,9 +96,14 @@ export default class EventPage extends Component {
 
         const { name, date, time, venue, postCode, image, location, id, genre, subGenre } = this.props.route.params;
         const { attendees, buddySeekers } = this.state;
+        const currentUid = this.props.app.currentUser.uid;
 
         const listItem = ({item}) => (
-           <Text>{item.userData.firstName}</Text>
+
+            <View>
+                <Text>{item.userData.firstName} {item.userData.lastName}</Text>
+                {item.uid !== currentUid ? <Button title="chat" /> : null}
+            </View>
         )
 
         return (
@@ -123,16 +128,16 @@ export default class EventPage extends Component {
             </MapView>
 
             <Text style={{fontWeight: "bold"}}>Looking for a buddy: </Text>
-            {buddySeekers.length ?
+            {/* {buddySeekers.length ? */}
             <FlatList styles={{flex: 1}} data={this.state.buddySeekers} renderItem={listItem} keyExtractor={item=> item.uid}/>
-            : null
-            }
+            {/* : null
+            } */}
             <Text></Text>
             <Text style={{fontWeight: "bold"}}>Attending this gig: </Text>
-            {attendees.length ? 
+            {/* {attendees.length ?  */}
             <FlatList styles={{flex: 1}} data={this.state.attendees} renderItem={listItem} keyExtractor={item=> item.uid}/>
-            : null
-            }
+            {/* : null
+            } */}
             </SafeAreaView>
         )
     }
