@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { getEventUsers, getUserInfo, toggleUserAtEvent } from '../my-app/config/fireBaseMethods';
+import { getEventUsers, getUserInfo, toggleUserAtEvent, eventDocExists } from '../my-app/config/fireBaseMethods';
 import { FlatList } from 'react-native-gesture-handler';
 
 export default class EventPage extends Component {
@@ -25,13 +25,13 @@ export default class EventPage extends Component {
             })
             .then((users) => {
 
-                const buddySeekers = users.splice(-users[1])
-                const attendees = users.splice(-users[0])
+                const buddySeekers = users[1] === 0 ? [] : users.splice(-users[1])
+                const attendees = users[0] === 0 ? [] : users.splice(-users[0])
 
                 this.setState({buddySeekers, attendees})
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err) // better error handling here???
             })
     }
 
@@ -65,13 +65,14 @@ export default class EventPage extends Component {
 
     render() {
 
-        const {name, date, time, venue, postCode, image, location, id, genre, subGenre} = this.props.route.params;
-
-       // console.log(this.state) // remove this when done!!!
+        const { name, date, time, venue, postCode, image, location, id, genre, subGenre } = this.props.route.params;
+        const { attendees, buddySeekers } = this.state;
 
         const listItem = ({item}) => (
-            <Text>{item.userData.firstName}</Text>
+           <Text>{item.userData.firstName}</Text>
         )
+
+        // Promise.resolve(eventDocExists('test-event')).then((exists) => console.log(exists))
 
         return (
             <SafeAreaView>
@@ -91,14 +92,20 @@ export default class EventPage extends Component {
                 longitudeDelta: 0.005,
                 latitudeDelta: 0.005}}
             >
-                <Marker image={require('../my-app/assets/small-guitar-icon.png')} key={id} coordinate={{latitude: +location.latitude, longitude: +location.longitude}}/>
+            <Marker image={require('../my-app/assets/small-guitar-icon.png')} key={id} coordinate={{latitude: +location.latitude, longitude: +location.longitude}}/>
             </MapView>
 
             <Text style={{fontWeight: "bold"}}>Looking for a buddy: </Text>
+            {buddySeekers.length ?
             <FlatList styles={{flex: 1}} data={this.state.buddySeekers} renderItem={listItem} keyExtractor={item=> item.uid}/>
+            : null
+            }
             <Text></Text>
             <Text style={{fontWeight: "bold"}}>Attending this gig: </Text>
+            {attendees.length ? 
             <FlatList styles={{flex: 1}} data={this.state.attendees} renderItem={listItem} keyExtractor={item=> item.uid}/>
+            : null
+            }
             </SafeAreaView>
         )
     }

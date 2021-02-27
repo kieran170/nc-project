@@ -61,6 +61,9 @@ export async function getEventUsers(eventID) {
 }
 
 export async function getUserInfo(uid) {
+
+  console.log('getting user info...')
+
   let doc = await firebaseApp
       .firestore()
       .collection("users")
@@ -70,6 +73,8 @@ export async function getUserInfo(uid) {
 }
 
 export async function toggleUserAtEvent(eventID, newArr, list) {
+
+  console.log('toggling user...')
 
   try {
 
@@ -84,3 +89,13 @@ export async function toggleUserAtEvent(eventID, newArr, list) {
   }
 }
 
+export async function eventDocExists(eventID) {
+
+  console.log('checking event doc exists...')
+
+  const db = firestore;
+  const eventRef = db.collection('events').doc(eventID)
+  const doc = await eventRef.get();
+
+  return doc.exists
+}
