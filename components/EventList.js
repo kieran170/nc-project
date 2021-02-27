@@ -41,13 +41,16 @@ export default class EventList extends Component {
   componentDidMount() {
     api.getEvents().then((events) => {
       if (events.length) {
+
+        const noPrime = events.filter((event) => !event.name.includes('Prime View'));
+
         const newRegion = {
-          longitude: +events[0].location.longitude,
-          latitude: +events[0].location.latitude,
+          longitude: +noPrime[0].location.longitude,
+          latitude: +noPrime[0].location.latitude,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         };
-        this.setState({ events, newRegion });
+        this.setState({ events: noPrime, newRegion });
       } else {
         this.setState({ errMsg: events.errMsg });
       }
@@ -55,8 +58,8 @@ export default class EventList extends Component {
   }
 
   render() {
+    
     const { events, defaultRegion, newRegion, errMsg, userInput } = this.state;
-    //console.log(this.props.app)
 
     return (
       <SafeAreaView style={styles.page}>
@@ -83,6 +86,8 @@ export default class EventList extends Component {
           {events.map((event) => {
             return (
               <Marker
+                title={event.name}
+                description={`${event.date}`}
                 image={require("../my-app/assets/small-guitar-icon.png")}
                 key={event.id}
                 coordinate={{
@@ -105,10 +110,10 @@ export default class EventList extends Component {
                   <Text>
                     <Text style={styles.eventName}>{event.name}</Text> {"\n"}
                     <Text style={styles.eventDate}>
-                      Date: {event.date} {event.time}
+                    Date: {event.date} {event.time}
                     </Text>{" "}
                     {"\n"}
-                    Venue: {event.venue} {"\n"}Post Code: {event.postCode}
+                    Venue: {event.venue}
                   </Text>
                   <Button
                     title="more info"

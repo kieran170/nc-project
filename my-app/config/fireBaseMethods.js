@@ -39,7 +39,7 @@ export async function loggingOut() {
   try {
     await auth.signOut();
   } catch (err) {
-    Alert.alert("There is something wrong!", err.message);
+    Alert.alert("Problem logging out", err.message);
   }
 }
 
@@ -64,12 +64,19 @@ export async function getUserInfo(uid) {
 
   console.log('getting user info...')
 
-  let doc = await firebaseApp
-      .firestore()
-      .collection("users")
-      .doc(uid)
-      .get();
-  return {userData: doc.data(), uid};
+  try {
+
+    const doc = await firebaseApp
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get();
+
+    return {userData: doc.data(), uid};
+
+  } catch (err) {
+    Alert.alert("Problem getting user info", err.message)
+  }
 }
 
 export async function toggleUserAtEvent(eventID, newArr, list) {
