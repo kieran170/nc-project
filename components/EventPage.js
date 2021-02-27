@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { getEventUsers, getUserInfo, toggleUserAtEvent, eventDocExists } from '../my-app/config/fireBaseMethods';
+import { getEventUsers, getUserInfo, toggleUserAtEvent, eventDocExists, createUserArrays } from '../my-app/config/fireBaseMethods';
 import { FlatList } from 'react-native-gesture-handler';
 
 export default class EventPage extends Component {
@@ -13,37 +13,51 @@ export default class EventPage extends Component {
 
     componentDidMount() {
 
-        getEventUsers('test-event')
-            .then((data) => {
+        const { id } = this.props.route.params;
 
-                // gets a promise of full user info for the users in each array
-                const buddySeekers = data.buddySeekers.map((uid) => getUserInfo(uid));
-                const attendees = data.attendees.map((uid) => getUserInfo(uid));
-
-                // lengths needed as we can't be sure how many of each there are
-                const buddyLength = buddySeekers.length;
-                const attendeesLength = attendees.length;
-                
-                // returns lengths and resolved promises with user info
-                return Promise.all([attendeesLength, buddyLength, ...attendees, ...buddySeekers])
-            })
-            .then((users) => {
-
-                // if the length is zero set to empty array
-                // if not use the length to get the right users into the right array
-                // buddySeekers first as they are at the end of the users array
-
-                const buddySeekers = users[1] === 0 ? [] : users.splice(-users[1])
-                const attendees = users[0] === 0 ? [] : users.splice(-users[0])
-
-                this.setState({buddySeekers, attendees})
-            })
-            .catch((err) => {
-                console.log(err) // !! BETTER ERROR HANDLING NEEDED HERE !! //
+        // checks if the event is already in the db - if not there is no need to get the data as the arrays can stay empty
+        Promise.resolve(eventDocExists(id))
+            .then((exists) => {
+                if (exists) {
+                    
+                    getEventUsers(id)
+                        .then((data) => {
+            
+                            // gets a promise of full user info for the users in each array
+                            const buddySeekers = data.buddySeekers.map((uid) => getUserInfo(uid));
+                            const attendees = data.attendees.map((uid) => getUserInfo(uid));
+            
+                            // lengths needed as we can't be sure how many of each there are
+                            const buddyLength = buddySeekers.length;
+                            const attendeesLength = attendees.length;
+                            
+                            // returns lengths and resolved promises with user info
+                            return Promise.all([attendeesLength, buddyLength, ...attendees, ...buddySeekers])
+                        })
+                        .then((users) => {
+            
+                            // if the length is zero set to empty array
+                            // if not use the length to get the right users into the right array
+                            // buddySeekers first as they are at the end of the users array
+            
+                            const buddySeekers = users[1] === 0 ? [] : users.splice(-users[1])
+                            const attendees = users[0] === 0 ? [] : users.splice(-users[0])
+            
+                            this.setState({buddySeekers, attendees})
+                        })
+                        .catch((err) => {
+                            console.log(err) // !! BETTER ERROR HANDLING NEEDED HERE !! //
+                        })
+                } else {
+                    // sets up the attendees and buddySeekers arrays in the DB
+                    createUserArrays(id)
+                }
             })
     }
 
     handlePress = (event) => {
+
+        const { id } = this.props.route.params;
         const currentUid = this.props.app.currentUser.uid;
 
         // boolean - true only if user clicks buddy button and they are already in the buddySeekers array
@@ -65,7 +79,7 @@ export default class EventPage extends Component {
             const removedUser = this.state[event].filter((user) => user.uid !== currentUid)
             this.setState({ [event]: removedUser }, () => {
                 // use this updated list to update the correct event doc & list in the db
-                toggleUserAtEvent('test-event', uidReducer(this.state[event]), event)
+                toggleUserAtEvent(id, uidReducer(this.state[event]), event)
             })
         } else {
             this.setState((currentState) => {
@@ -73,7 +87,7 @@ export default class EventPage extends Component {
                 return { [event]: [...currentState[event], this.props.app.currentUser] }
             }, () => {
                 // adds user to the right event doc & list in the db
-                toggleUserAtEvent('test-event', uidReducer(this.state[event]), event)
+                toggleUserAtEvent(id, uidReducer(this.state[event]), event)
             })
         }
     }
@@ -86,8 +100,6 @@ export default class EventPage extends Component {
         const listItem = ({item}) => (
            <Text>{item.userData.firstName}</Text>
         )
-
-        // Promise.resolve(eventDocExists('test-event')).then((exists) => console.log(exists))
 
         return (
             <SafeAreaView>

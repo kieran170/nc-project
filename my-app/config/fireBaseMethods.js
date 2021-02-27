@@ -81,8 +81,10 @@ export async function toggleUserAtEvent(eventID, newArr, list) {
     const db = firestore;
     const eventRef = db.collection('events').doc(eventID)
 
-    const res = await eventRef.update({
+    const res = await eventRef.set({
       [list]: newArr
+    }, {
+      merge: true
     })
   } catch (err) {
     Alert.alert("Error adding user to list", err.message)
@@ -98,4 +100,23 @@ export async function eventDocExists(eventID) {
   const doc = await eventRef.get();
 
   return doc.exists
+}
+
+export async function createUserArrays(eventID) {
+
+  console.log('setting up event arrays...')
+
+  try {
+
+    const db = firestore;
+    const eventRef = db.collection('events').doc(eventID)
+    
+    const res = await eventRef.set({
+      attendees: [],
+      buddySeekers: []
+    })
+
+  } catch (err) {
+    Alert.alert("Error creating user arrays in db", err.message)
+  }
 }
