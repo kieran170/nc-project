@@ -15,15 +15,23 @@ export default class EventPage extends Component {
 
         getEventUsers('test-event')
             .then((data) => {
+
+                // gets a promise of full user info for the users in each array
                 const buddySeekers = data.buddySeekers.map((uid) => getUserInfo(uid));
                 const attendees = data.attendees.map((uid) => getUserInfo(uid));
 
+                // lengths needed as we can't be sure how many of each there are
                 const buddyLength = buddySeekers.length;
                 const attendeesLength = attendees.length;
                 
+                // returns lengths and resolved promises with user info
                 return Promise.all([attendeesLength, buddyLength, ...attendees, ...buddySeekers])
             })
             .then((users) => {
+
+                // if the length is zero set to empty array
+                // if not use the length to get the right users into the right array
+                // buddySeekers first as they are at the end of the users array
 
                 const buddySeekers = users[1] === 0 ? [] : users.splice(-users[1])
                 const attendees = users[0] === 0 ? [] : users.splice(-users[0])
@@ -31,17 +39,20 @@ export default class EventPage extends Component {
                 this.setState({buddySeekers, attendees})
             })
             .catch((err) => {
-                console.log(err) // better error handling here???
+                console.log(err) // !! BETTER ERROR HANDLING NEEDED HERE !! //
             })
     }
 
     handlePress = (event) => {
         const currentUid = this.props.app.currentUser.uid;
 
+        // boolean - true only if user clicks buddy button and they are already in the buddySeekers array
         const isLookingForBuddy = event === 'buddySeekers' && this.state.buddySeekers.findIndex((buddySeeker) => buddySeeker.uid === currentUid) > -1;
 
+        // boolean - true only if user clicks attending button and they are already in attendees array
         const isAttending = event === 'attendees' && this.state.attendees.findIndex((attendee) => attendee.uid === currentUid) > -1;
 
+        // to reduce the full user info back down to just the uid
         const uidReducer = (users) => {
             return users.reduce((acc, cur) => {
                 acc.push(cur.uid)
@@ -50,14 +61,18 @@ export default class EventPage extends Component {
         }
 
         if (isLookingForBuddy || isAttending) {
+            // optimistically re-render the list by filtering out the user and setting state
             const removedUser = this.state[event].filter((user) => user.uid !== currentUid)
             this.setState({ [event]: removedUser }, () => {
+                // use this updated list to update the correct event doc & list in the db
                 toggleUserAtEvent('test-event', uidReducer(this.state[event]), event)
             })
         } else {
             this.setState((currentState) => {
+                // optimistically adds the user on to the appropriate list
                 return { [event]: [...currentState[event], this.props.app.currentUser] }
             }, () => {
+                // adds user to the right event doc & list in the db
                 toggleUserAtEvent('test-event', uidReducer(this.state[event]), event)
             })
         }
