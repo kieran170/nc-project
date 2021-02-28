@@ -10,8 +10,11 @@ import {
   TextInput,
   Button,
   Platform,
+  Alert,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 export default class EventList extends Component {
 
@@ -36,9 +39,11 @@ export default class EventList extends Component {
     newRegion: {},
     errMsg: "",
     userInput: "",
+    userLocation: {}
   };
 
   componentDidMount() {
+
     api.getEvents().then((events) => {
       if (events.length) {
 
@@ -59,10 +64,16 @@ export default class EventList extends Component {
 
   render() {
     
-    const { events, defaultRegion, newRegion, errMsg, userInput } = this.state;
+    const { events, defaultRegion, newRegion, errMsg, userInput, userLocation } = this.state;
+
+    console.log(JSON.stringify(userLocation));
 
     return (
       <SafeAreaView style={styles.page}>
+        <Button 
+          title="Events Near Me"
+          onPress={this.handleLocationSearch}
+        />
         <TextInput
           style={styles.textInput}
           value={userInput}
@@ -70,7 +81,7 @@ export default class EventList extends Component {
         />
         <Button
           style={styles.button}
-          title="search"
+          title="Manual Search"
           onPress={this.handleSearch}
         />
         <Button
@@ -83,6 +94,15 @@ export default class EventList extends Component {
           style={styles.map}
           region={newRegion.latitude ? newRegion : defaultRegion}
         >
+          {userLocation.latitude ? 
+            <Marker
+            title="Your location"
+            key="user"
+            coordinate={userLocation}
+            image={require("../my-app/assets/user-loc-pin.png")}
+            />
+            : null
+          }
           {events.map((event) => {
             return (
               <Marker
@@ -133,6 +153,30 @@ export default class EventList extends Component {
     );
   }
 
+  handleLocationSearch = () => {
+    this.getUserLocation().then(() => {
+
+      const { latitude, longitude } = this.state.userLocation;
+
+      api.getEventsNearUser(latitude, longitude).then((events) => {
+        if (events.length) {
+
+          const filteredEvents = this.filterEvents(events)
+
+          const newRegion = {
+            longitude: +filteredEvents[0].location.longitude,
+            latitude: +filteredEvents[0].location.latitude,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1
+          };
+          this.setState({events: filteredEvents, newRegion})
+        } else {
+          this.setState({ errMsg: events.errMsg})
+        }
+      })
+    })
+  }
+
   handleSearch = () => {
     const { userInput } = this.state;
 
@@ -162,6 +206,32 @@ export default class EventList extends Component {
     const filteredEvents = noHotels.filter((event) => !event.name.includes('Premium'));
 
     return filteredEvents
+  }
+
+  getUserLocation = async () => {
+
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  
+      if (status !== 'granted') {
+        Alert.alert('You must grant permission to use this feature')
+      } else {
+        const location = await Location.getCurrentPositionAsync();
+    
+        this.setState({ userLocation: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude
+        } })
+      }
+
+    } catch (err) {
+      const status = Location.getProviderStatusAsync();
+      if (!status.locationServicesEnabled) {
+        Alert.alert('Please enable location services to use this feature')
+      } else {
+        Alert.alert('Problem getting location', err.message)
+      }
+    }
   }
 }
 
