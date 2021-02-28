@@ -42,15 +42,15 @@ export default class EventList extends Component {
     api.getEvents().then((events) => {
       if (events.length) {
 
-        const noPrime = events.filter((event) => !event.name.includes('Prime View'));
+        const filteredEvents = this.filterEvents(events)
 
         const newRegion = {
-          longitude: +noPrime[0].location.longitude,
-          latitude: +noPrime[0].location.latitude,
+          longitude: +filteredEvents[0].location.longitude,
+          latitude: +filteredEvents[0].location.latitude,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         };
-        this.setState({ events: noPrime, newRegion });
+        this.setState({ events: filteredEvents, newRegion });
       } else {
         this.setState({ errMsg: events.errMsg });
       }
@@ -94,6 +94,9 @@ export default class EventList extends Component {
                   latitude: +event.location.latitude,
                   longitude: +event.location.longitude,
                 }}
+                onCalloutPress={() => {
+                  this.props.navigation.navigate("EventPage", event)
+                }}
               />
             );
           })}
@@ -135,18 +138,31 @@ export default class EventList extends Component {
 
     api.getEvents(userInput).then((events) => {
       if (events.length) {
+
+        const filteredEvents = this.filterEvents(events)
+
         const newRegion = {
-          longitude: +events[0].location.longitude,
-          latitude: +events[0].location.latitude,
+          longitude: +filteredEvents[0].location.longitude,
+          latitude: +filteredEvents[0].location.latitude,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         };
-        this.setState({ events, newRegion, userInput: "" });
+        this.setState({ events: filteredEvents, newRegion, userInput: "" });
       } else {
         this.setState({ errMsg: events.errMsg, userInput: "" });
       }
     });
   };
+
+  filterEvents = (events) => {
+    const noPrime = events.filter((event) => !event.name.includes('Prime'))
+    const noVip = noPrime.filter((event) => !event.name.includes('VIP'));
+    const extraNoVip = noVip.filter((event) => !event.name.includes('Vip'));
+    const noHotels = extraNoVip.filter((event) => !event.name.includes('Hotel'));
+    const filteredEvents = noHotels.filter((event) => !event.name.includes('Premium'));
+
+    return filteredEvents
+  }
 }
 
 const styles = StyleSheet.create({
