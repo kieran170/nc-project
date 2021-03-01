@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, SafeAreaView, Text, StyleSheet, Button, View } from 'react-native';
+import { Image, SafeAreaView, Text, StyleSheet, Button, View, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { getEventUsers, getUserInfo, toggleUserAtEvent, eventDocExists, createUserArrays } from '../my-app/config/fireBaseMethods';
 import { FlatList } from 'react-native-gesture-handler';
@@ -46,7 +46,7 @@ export default class EventPage extends Component {
                             this.setState({buddySeekers, attendees})
                         })
                         .catch((err) => {
-                            console.log(err) // !! BETTER ERROR HANDLING NEEDED HERE !! //
+                            Alert.alert('Problem fetching data', err.message)
                         })
                 } else {
                     // sets up the attendees and buddySeekers as empty arrays in the DB

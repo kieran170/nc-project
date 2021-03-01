@@ -37,15 +37,15 @@ export default class App extends Component {
       <NavigationContainer>
         <Stack.Navigator>
 
-          <Stack.Screen name={"Home"}>
+          <Stack.Screen name={"Home"} >
             {props => <SignInUp {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
           </Stack.Screen>
 
-          <Stack.Screen name={"EventList"}>
+          <Stack.Screen name={"Events"}>
             {props => <EventList {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
           </Stack.Screen>
 
-          <Stack.Screen name={"EventPage"}>
+          <Stack.Screen name={"Event Details"} options={({ route }) => ({ title: route.params.name })}>
             {props => <EventPage {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
           </Stack.Screen>
 

@@ -111,19 +111,14 @@ export const getEvents = (city = 'manchester', size = 20) => {
     } 
     )
    .catch((err) => {
-        console.log(err)
         return {errMsg: 'Problem connecting, please check your internet connection'}
    })
 }
 
 export const getEventsNearUser = (lat, long, radius = 10, size = 20) => {
 
-    console.log(`/events.json?classificationName=music&latlong=${lat},${long}&radius=${radius}&size=${size}${apiKey}`)
-
     return request.get(`/events.json?classificationName=music&latlong=${lat},${long}&radius=${radius}&size=${size}&${apiKey}`)
     .then(({data}) => {
-
-       // console.log(data)
 
         if (data.hasOwnProperty('_embedded')) {
             const events = data._embedded.events;
@@ -135,7 +130,6 @@ export const getEventsNearUser = (lat, long, radius = 10, size = 20) => {
         }
     })
     .catch((err) => {
-        console.log(err)
         return {errMsg: 'Problem connecting, please check your internet connection'}
     })
 }

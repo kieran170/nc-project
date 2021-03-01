@@ -66,8 +66,6 @@ export default class EventList extends Component {
     
     const { events, defaultRegion, newRegion, errMsg, userInput, userLocation } = this.state;
 
-    console.log(JSON.stringify(userLocation));
-
     return (
       <SafeAreaView style={styles.page}>
         <Button 
@@ -115,7 +113,7 @@ export default class EventList extends Component {
                   longitude: +event.location.longitude,
                 }}
                 onCalloutPress={() => {
-                  this.props.navigation.navigate("EventPage", event)
+                  this.props.navigation.navigate("Event Details", event)
                 }}
               />
             );
@@ -141,7 +139,7 @@ export default class EventList extends Component {
                   <Button
                     title="more info"
                     onPress={() =>
-                      this.props.navigation.navigate("EventPage", event)
+                      this.props.navigation.navigate("Event Details", event)
                     }
                   />
                 </View>
