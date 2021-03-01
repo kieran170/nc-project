@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Alert, Button } from "react-native";
 import { auth, firestore } from "../my-app/config/firbase";
-import { loggingOut } from "../my-app/config/fireBaseMethods";
 import ChatRoom from "../components/ChatRoom";
 
 export default function ContactList(props) {    

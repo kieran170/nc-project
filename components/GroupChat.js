@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
-import * as firebase from "firebase";
-import { auth, firestore } from "../my-app/config/firbase";
 import { GiftedChat } from "react-native-gifted-chat";
 
 //maybe pass this down props later to take user to right chat room.
 export default function App(props) {
   const chatsRef = props.route.params.chatsRef;
-  console.log(chatsRef);
 
   const [user, setUser] = useState(props.route.params.user);
   const [messages, setMessages] = useState([]);

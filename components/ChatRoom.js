@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
-import * as firebase from "firebase";
 import { auth, firestore } from "../my-app/config/firbase";
-import { GiftedChat } from "react-native-gifted-chat";
-import { GroupChat } from "../components/GroupChat";
+
 
 export default function ChatRoom(props) {
   const { navigation } = props;
