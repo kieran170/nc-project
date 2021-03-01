@@ -31,7 +31,7 @@ export default function App({ navigation, login }) {
         Alert.alert("There is something wrong!", err.message);
       }
       if (!err) {
-        login()
+        login();
         setEmail("");
         setPassword("");
         navigation.navigate("Events");

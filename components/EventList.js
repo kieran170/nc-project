@@ -13,11 +13,10 @@ import {
   Alert,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 
 export default class EventList extends Component {
-
   // need to return to this and adjust the default map values so it looks good on both platforms!!!
 
   state = {
@@ -39,15 +38,13 @@ export default class EventList extends Component {
     newRegion: {},
     errMsg: "",
     userInput: "",
-    userLocation: {}
+    userLocation: {},
   };
 
   componentDidMount() {
-
     api.getEvents().then((events) => {
       if (events.length) {
-
-        const filteredEvents = this.filterEvents(events)
+        const filteredEvents = this.filterEvents(events);
 
         const newRegion = {
           longitude: +filteredEvents[0].location.longitude,
@@ -63,15 +60,18 @@ export default class EventList extends Component {
   }
 
   render() {
-    
-    const { events, defaultRegion, newRegion, errMsg, userInput, userLocation } = this.state;
+    const {
+      events,
+      defaultRegion,
+      newRegion,
+      errMsg,
+      userInput,
+      userLocation,
+    } = this.state;
 
     return (
       <SafeAreaView style={styles.page}>
-        <Button 
-          title="Events Near Me"
-          onPress={this.handleLocationSearch}
-        />
+        <Button title="Events Near Me" onPress={this.handleLocationSearch} />
         <TextInput
           style={styles.textInput}
           value={userInput}
@@ -92,15 +92,14 @@ export default class EventList extends Component {
           style={styles.map}
           region={newRegion.latitude ? newRegion : defaultRegion}
         >
-          {userLocation.latitude ? 
+          {userLocation.latitude ? (
             <Marker
-            title="Your location"
-            key="user"
-            coordinate={userLocation}
-            image={require("../my-app/assets/user-loc-pin.png")}
+              title="Your location"
+              key="user"
+              coordinate={userLocation}
+              image={require("../my-app/assets/user-loc-pin.png")}
             />
-            : null
-          }
+          ) : null}
           {events.map((event) => {
             return (
               <Marker
@@ -113,7 +112,11 @@ export default class EventList extends Component {
                   longitude: +event.location.longitude,
                 }}
                 onCalloutPress={() => {
-                  this.props.navigation.navigate("Event Details", event)
+                  this.props.navigation.navigate(
+                    "Event Details",
+                    event,
+                    this.props.navigation.navigate
+                  );
                 }}
               />
             );
@@ -131,7 +134,7 @@ export default class EventList extends Component {
                   <Text>
                     <Text style={styles.eventName}>{event.name}</Text> {"\n"}
                     <Text style={styles.eventDate}>
-                    Date: {event.date} {event.time}
+                      Date: {event.date} {event.time}
                     </Text>{" "}
                     {"\n"}
                     Venue: {event.venue}
@@ -153,35 +156,32 @@ export default class EventList extends Component {
 
   handleLocationSearch = () => {
     this.getUserLocation().then(() => {
-
       const { latitude, longitude } = this.state.userLocation;
 
       api.getEventsNearUser(latitude, longitude).then((events) => {
         if (events.length) {
-
-          const filteredEvents = this.filterEvents(events)
+          const filteredEvents = this.filterEvents(events);
 
           const newRegion = {
             longitude: +filteredEvents[0].location.longitude,
             latitude: +filteredEvents[0].location.latitude,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1
+            longitudeDelta: 0.1,
           };
-          this.setState({events: filteredEvents, newRegion})
+          this.setState({ events: filteredEvents, newRegion });
         } else {
-          this.setState({ errMsg: events.errMsg})
+          this.setState({ errMsg: events.errMsg });
         }
-      })
-    })
-  }
+      });
+    });
+  };
 
   handleSearch = () => {
     const { userInput } = this.state;
 
     api.getEvents(userInput).then((events) => {
       if (events.length) {
-
-        const filteredEvents = this.filterEvents(events)
+        const filteredEvents = this.filterEvents(events);
 
         const newRegion = {
           longitude: +filteredEvents[0].location.longitude,
@@ -197,40 +197,44 @@ export default class EventList extends Component {
   };
 
   filterEvents = (events) => {
-    const noPrime = events.filter((event) => !event.name.includes('Prime'))
-    const noVip = noPrime.filter((event) => !event.name.includes('VIP'));
-    const extraNoVip = noVip.filter((event) => !event.name.includes('Vip'));
-    const noHotels = extraNoVip.filter((event) => !event.name.includes('Hotel'));
-    const filteredEvents = noHotels.filter((event) => !event.name.includes('Premium'));
+    const noPrime = events.filter((event) => !event.name.includes("Prime"));
+    const noVip = noPrime.filter((event) => !event.name.includes("VIP"));
+    const extraNoVip = noVip.filter((event) => !event.name.includes("Vip"));
+    const noHotels = extraNoVip.filter(
+      (event) => !event.name.includes("Hotel")
+    );
+    const filteredEvents = noHotels.filter(
+      (event) => !event.name.includes("Premium")
+    );
 
-    return filteredEvents
-  }
+    return filteredEvents;
+  };
 
   getUserLocation = async () => {
-
     try {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
-  
-      if (status !== 'granted') {
-        Alert.alert('You must grant permission to use this feature')
+
+      if (status !== "granted") {
+        Alert.alert("You must grant permission to use this feature");
       } else {
         const location = await Location.getCurrentPositionAsync();
-    
-        this.setState({ userLocation: {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude
-        } })
-      }
 
+        this.setState({
+          userLocation: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          },
+        });
+      }
     } catch (err) {
       const status = Location.getProviderStatusAsync();
       if (!status.locationServicesEnabled) {
-        Alert.alert('Please enable location services to use this feature')
+        Alert.alert("Please enable location services to use this feature");
       } else {
-        Alert.alert('Problem getting location', err.message)
+        Alert.alert("Problem getting location", err.message);
       }
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({

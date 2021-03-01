@@ -13,46 +13,73 @@ import "firebase/auth";
 const Stack = createStackNavigator();
 
 export default class App extends Component {
-
   state = {
     isLoggedIn: false,
-    currentUser: {}
-  }
+    currentUser: {},
+  };
 
   handleLogIn = () => {
-
     const uid = firebase.auth().currentUser.uid;
     Promise.resolve(getUserInfo(uid)).then((userInfo) => {
-      this.setState({isLoggedIn: true, currentUser: {uid, ...userInfo}})
-    })
-  }
+      this.setState({ isLoggedIn: true, currentUser: { uid, ...userInfo } });
+    });
+  };
 
   handleLogOut = () => {
     loggingOut();
-    this.setState({isLoggedIn: false, user: ''})
-  }
+    this.setState({ isLoggedIn: false, user: "" });
+  };
 
   render() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-
-          <Stack.Screen name={"Home"} >
-            {props => <SignInUp {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
+          <Stack.Screen name={"Home"}>
+            {(props) => (
+              <SignInUp
+                {...props}
+                app={this.state}
+                login={this.handleLogIn}
+                logout={this.handleLogOut}
+              />
+            )}
           </Stack.Screen>
 
           <Stack.Screen name={"Events"}>
-            {props => <EventList {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
+            {(props) => (
+              <EventList
+                {...props}
+                app={this.state}
+                login={this.handleLogIn}
+                logout={this.handleLogOut}
+              />
+            )}
           </Stack.Screen>
 
-          <Stack.Screen name={"Event Details"} options={({ route }) => ({ title: route.params.name })}>
-            {props => <EventPage {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
+          <Stack.Screen
+            name={"Event Details"}
+            options={({ route }) => ({ title: route.params.name })}
+          >
+            {(props) => (
+              <EventPage
+                {...props}
+                app={this.state}
+                login={this.handleLogIn}
+                logout={this.handleLogOut}
+              />
+            )}
           </Stack.Screen>
 
           <Stack.Screen name={"Profile"}>
-            {props => <Profile {...props} app={this.state} login={this.handleLogIn} logout={this.handleLogOut}/>}
+            {(props) => (
+              <Profile
+                {...props}
+                app={this.state}
+                login={this.handleLogIn}
+                logout={this.handleLogOut}
+              />
+            )}
           </Stack.Screen>
-
         </Stack.Navigator>
       </NavigationContainer>
     );
