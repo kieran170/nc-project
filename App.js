@@ -38,25 +38,32 @@ export default class App extends Component {
           headerRight: () => (<>
 
           <Button
-            onPress={() => alert('This is a button!')}
-            title="Info"
+            title="Chat"
             padding= "20"
+            color="black"
           />
           <Text>{"\t"}</Text>
           
           <Button style={{paddingLeft: 20}}
-            onPress={() => alert('This is a button!')}
-            title="Info"
+            title="My Profile"
             color="black"
           />
+          <Text>{"\t"}</Text>
+          
+          <Button style={{paddingLeft: 20}}
+            title="Log Out"
+            color="black"
+            //onPress={}
+          />
+          <Text>{"\t"}</Text>
           </>
           ),
-          headerRightContainerStyle: {flexDirection: "row"}
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 10}
         }}>
 
-          <Stack.Screen name={"Home"} options={{headerShown: false}}>
+          <Stack.Screen name={"Events"}>
             {(props) => (
-              <SignInUp
+              <EventList
                 {...props}
                 app={this.state}
                 login={this.handleLogIn}
@@ -65,9 +72,9 @@ export default class App extends Component {
             )}
           </Stack.Screen>
 
-          <Stack.Screen name={"Events"}>
+          <Stack.Screen name={"Home"} options={{headerShown: false}}>
             {(props) => (
-              <EventList
+              <SignInUp
                 {...props}
                 app={this.state}
                 login={this.handleLogIn}
