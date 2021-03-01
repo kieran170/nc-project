@@ -104,6 +104,7 @@ export default class EventPage extends Component {
                 <Text>{item.userData.firstName} {item.userData.lastName}</Text>
                 {item.uid !== currentUid ? <Button title="chat" /> : null}
             </View>
+            //Chatroom button to add here + method to cycle through users to pass down proper props.
         )
 
         return (

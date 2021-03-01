@@ -8,12 +8,15 @@ export async function registration(firstName, familyName, email, password) {
   try {
     await auth.createUserWithEmailAndPassword(email, password);
     const currentUser = auth.currentUser;
+    const currentUserUID = auth.currentUser.uid;
 
     const db = firestore;
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
       lastName: familyName,
       firstName: firstName,
+      chatrooms: [currentUserUID],
+      contacts: []
     });
     Alert.alert("Sign Up Successful");
   } catch (err) {

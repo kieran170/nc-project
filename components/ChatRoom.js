@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
-import { auth, firestore } from "../my-app/config/firbase";
+import { auth, firestore } from "../my-app/config/firebase";
 
 
 export default function ChatRoom(props) {
@@ -44,7 +44,7 @@ export default function ChatRoom(props) {
     if (Room === "room not found") {
       //add two users ids together  and save it as room-name ;
       //push the room-name at the array of the both users;
-      //
+    
       const newRoom = currentUser._id + secondUser._id;
       async function updateUsers(chatRoomsCurrentUser, secondUser) {
         const updatedChatRoomsCurrentUser = chatRoomsCurrentUser;
