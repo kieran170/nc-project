@@ -17,7 +17,7 @@ import {
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
 import { FlatList } from "react-native-gesture-handler";
-import ChatRoom from "./ChatRoom.js"
+import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
   state = {
@@ -144,7 +144,17 @@ export default class EventPage extends Component {
         <Text onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName}
         </Text>
-        {item.uid !== currentUid ? <ChatRoom secondUser={item.userData} currentUser={{ firstName : this.props.app.currentUser.firstName, _id : this.props.app.currentUser.uid}}  navigation={navigation}/> : null}
+        {item.uid !== currentUid ? (
+          <ChatRoom
+            secondUser={item.userData}
+            navigation={navigation}
+            currentUser={{
+              firstName: this.props.app.currentUser.userData.firstName,
+              avatar: this.props.app.currentUser.userData.userAvatar,
+              _id: currentUid,
+            }}
+          />
+        ) : null}
       </View>
     );
     return (

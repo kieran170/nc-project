@@ -2,13 +2,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
 import { auth, firestore } from "../my-app/config/firebase";
 
-
 export default function ChatRoom(props) {
   const { navigation } = props;
   const { currentUser } = props;
   let { secondUser } = props;
   const firstName = currentUser.firstName;
   const _id = currentUser._id;
+
   const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
   const [Room, setRoom] = useState("room not found");
 
@@ -45,7 +45,7 @@ export default function ChatRoom(props) {
     if (Room === "room not found") {
       //add two users ids together  and save it as room-name ;
       //push the room-name at the array of the both users;
-    
+
       const newRoom = currentUser._id + secondUser._id;
       async function updateUsers(chatRoomsCurrentUser, secondUser) {
         const updatedChatRoomsCurrentUser = chatRoomsCurrentUser;
@@ -82,10 +82,9 @@ export default function ChatRoom(props) {
       });
     }
   };
-
   return (
     <>
-    <Button onPress={() => {handlePress}} title="Message me!"></Button>
+      <Button onPress={handlePress} title="Message me!"></Button>
     </>
-  )
+  );
 }
