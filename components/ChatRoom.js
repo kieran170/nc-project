@@ -60,8 +60,6 @@ export default function ChatRoom(props) {
         updatedChatRoomsCurrentUser.push(newRoom);
         updatedChatRoomsSecondUser.push(newRoom);
 
-        console.log(currentUser._id, secondUserUid, Room, "here are the ids");
-
         const currentUserRef = firestore
           .collection("users")
           .doc(currentUser._id);
