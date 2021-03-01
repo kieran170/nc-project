@@ -8,8 +8,21 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+/my-app/config/firbase.js
+/components/NewPage.js
+
 
 yarn.lock
 
 # macOS
 .DS_Store
+
+.package-lock.json
+/my-app/config/firbase.js
+/components/NewPage.j
+
+
+
+
+
+
