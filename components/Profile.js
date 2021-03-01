@@ -21,6 +21,7 @@ export default function App(props) {
   const [lastName, setLastName] = useState("");
 
   const userUid = firebase.auth().currentUser.uid;
+  const readOnlyProfile = props.route.params;
   const user = { userAvatar: avatar, userBio: bio };
 
   const handlePress = () => {
@@ -30,7 +31,7 @@ export default function App(props) {
   };
 
   const handleLogOut = () => {
-    props.logout()
+    props.logout();
     const res = firestore.collection("users").doc(userUid).update(user);
     navigation.navigate("Home");
   };
@@ -46,32 +47,34 @@ export default function App(props) {
   };
 
   useEffect(() => {
-    async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(userUid)
-        .get();
+    if (!readOnlyProfile) {
+      async function getUserInfo() {
+        let doc = await firebase
+          .firestore()
+          .collection("users")
+          .doc(userUid)
+          .get();
 
-      if (!doc.exists) {
-        Alert.alert("No user data found!");
-      } else {
-        let dataObj = doc.data();
-        setFirstName(dataObj.firstName);
-        setLastName(dataObj.lastName);
+        if (!doc.exists) {
+          Alert.alert("No user data found!");
+        } else {
+          let dataObj = doc.data();
+          setFirstName(dataObj.firstName);
+          setLastName(dataObj.lastName);
 
-        if (dataObj.userAvatar && dataObj.userBio !== undefined) {
-          setAvatar(dataObj.userAvatar);
-          onChangeText(dataObj.userBio);
-          setHaveBio(true);
-          setAddBio(false);
+          if (dataObj.userAvatar && dataObj.userBio !== undefined) {
+            setAvatar(dataObj.userAvatar);
+            onChangeText(dataObj.userBio);
+            setHaveBio(true);
+            setAddBio(false);
+          }
         }
       }
+      getUserInfo();
     }
-    getUserInfo();
   }, []);
 
-  return (
+  return !readOnlyProfile ? (
     <ScrollView style={styles.container}>
       <View
         style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
@@ -172,6 +175,65 @@ export default function App(props) {
         {"\n"}
         {"\n"}
       </Text>
+    </ScrollView>
+  ) : (
+    <ScrollView style={styles.container}>
+      <View
+        style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
+      >
+        <TouchableHighlight
+          onPress={() => {
+            const res = firestore.collection("users").doc(userUid).update(user);
+          }}
+          style={styles.chatButton}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Chats</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttonLogoutContainer}
+          onPress={handleLogOut}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+      {readOnlyProfile.userData.userAvatar ? (
+        <Image
+          style={styles.avatar}
+          source={{
+            height: 180,
+            width: 180,
+            uri: readOnlyProfile.userData.userAvatar,
+          }}
+        />
+      ) : (
+        <Image
+          style={styles.avatar}
+          source={{
+            height: 180,
+            width: 180,
+            uri: avatar,
+          }}
+        />
+      )}
+      <Text style={styles.name}>
+        {readOnlyProfile.userData.firstName} {readOnlyProfile.userData.lastName}
+        {"\n"}
+      </Text>
+      <View style={styles.aboutMeContainer}>
+        <Text style={styles.aboutMeTitle}>About Me {"\n"}</Text>
+        {readOnlyProfile.userData.userBio ? (
+          <Text style={styles.aboutMe}>{readOnlyProfile.userData.userBio}</Text>
+        ) : (
+          <Text style={styles.aboutMeTitle}>User doesn't have a bio yet</Text>
+        )}
+      </View>
+      <View>
+        <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+      </View>
     </ScrollView>
   );
 }
