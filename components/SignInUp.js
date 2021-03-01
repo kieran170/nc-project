@@ -1,10 +1,26 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import { registration, signIn } from "../my-app/config/fireBaseMethods";
 
 //set matching password - maybe some verification steps?
 export default function App({ navigation }) {
+=======
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Alert,
+  Image,
+} from "react-native";
+import { registration, signIn } from "../my-app/config/fireBaseMethods";
+
+//set matching password - maybe some verification steps?
+export default function App({ navigation, login }) {
+>>>>>>> 2a19f1d9ade670fe1f0818c02a383c8b3e8711b0
   const [firstName, setFirstName] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,9 +39,16 @@ export default function App({ navigation }) {
         Alert.alert("There is something wrong!", err.message);
       }
       if (!err) {
+<<<<<<< HEAD
         setEmail("");
         setPassword("");
         navigation.navigate("NewPage");
+=======
+        login()
+        setEmail("");
+        setPassword("");
+        navigation.navigate("Events");
+>>>>>>> 2a19f1d9ade670fe1f0818c02a383c8b3e8711b0
       }
     });
   };
@@ -65,7 +88,14 @@ export default function App({ navigation }) {
 
   return signUp ? (
     <View style={styles.container}>
+<<<<<<< HEAD
       <Text>Gig Buddy</Text>
+=======
+      <Image
+        style={styles.image}
+        source={require("../my-app/assets/logo-first-draft.png")}
+      />
+>>>>>>> 2a19f1d9ade670fe1f0818c02a383c8b3e8711b0
       <TextInput
         placeholder="First Name"
         value={firstName}
@@ -107,7 +137,14 @@ export default function App({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
+<<<<<<< HEAD
       <Text>Gig Buddy</Text>
+=======
+      <Image
+        style={styles.image}
+        source={require("../my-app/assets/logo-first-draft.png")}
+      />
+>>>>>>> 2a19f1d9ade670fe1f0818c02a383c8b3e8711b0
       <TextInput
         placeholder="E-mail"
         value={email}
@@ -147,4 +184,14 @@ const styles = StyleSheet.create({
     width: 100,
     marginBottom: 10,
   },
+<<<<<<< HEAD
+=======
+  image: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    height: 180,
+    width: 360,
+  },
+>>>>>>> 2a19f1d9ade670fe1f0818c02a383c8b3e8711b0
 });
