@@ -19,8 +19,7 @@ yarn.lock
 
 .package-lock.json
 /my-app/config/firbase.js
-/components/NewPage.j
-
+/components/NewPageIgnored.js
 
 
 
