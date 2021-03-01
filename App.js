@@ -38,12 +38,13 @@ export default class App extends Component {
           headerRight: () => (<>
 
           <Button
-              onPress={() => alert('This is a button!')}
-              title="Info"
-              padding= "20"
-/><Text>{"\t"}</Text>
+            onPress={() => alert('This is a button!')}
+            title="Info"
+            padding= "20"
+          />
+          <Text>{"\t"}</Text>
           
-            <Button style={{paddingLeft: 20}}
+          <Button style={{paddingLeft: 20}}
             onPress={() => alert('This is a button!')}
             title="Info"
             color="black"
