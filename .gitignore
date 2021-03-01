@@ -9,11 +9,19 @@ npm-debug.*
 *.orig.*
 web-build/
 /my-app/config/firbase.js
+/components/NewPage.js
+
+
 # macOS
 .DS_Store
 
 .package-lock.json
 /my-app/config/firbase.js
+/components/NewPage.js
+
+
+
+
 
 
 
