@@ -9,6 +9,7 @@ import Profile from "./components/Profile";
 import { loggingOut, getUserInfo } from "./my-app/config/fireBaseMethods";
 import * as firebase from "firebase";
 import "firebase/auth";
+import GroupChat from "./components/GroupChat";
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,7 @@ export default class App extends Component {
               />
             )}
           </Stack.Screen>
+          <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );

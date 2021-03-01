@@ -139,14 +139,14 @@ export default class EventPage extends Component {
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
 
-    const listItem = ({ item }) => (
+    const ListItem = ({ item }) => (
       <View>
         <Text onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName}
         </Text>
         {item.uid !== currentUid ? (
           <ChatRoom
-            secondUserId={item}
+            secondUserObject={item}
             secondUser={item.userData}
             navigation={navigation}
             currentUser={{
@@ -206,7 +206,7 @@ export default class EventPage extends Component {
         <FlatList
           styles={{ flex: 1 }}
           data={this.state.buddySeekers}
-          renderItem={listItem}
+          renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
         {/* : null
@@ -217,7 +217,7 @@ export default class EventPage extends Component {
         <FlatList
           styles={{ flex: 1 }}
           data={this.state.attendees}
-          renderItem={listItem}
+          renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
         {/* : null
