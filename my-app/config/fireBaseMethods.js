@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { firebaseApp, auth, firestore } from "./firbase";
+import { firebaseApp, auth, firestore } from "./firebase";
 
 export async function registration(firstName, familyName, email, password) {
 
@@ -39,11 +39,11 @@ export async function loggingOut() {
   try {
     await auth.signOut();
   } catch (err) {
-    Alert.alert("There is something wrong!", err.message);
+    Alert.alert("Problem logging out", err.message);
   }
 }
 
-export async function getEventBuddySeekers(eventID) {
+export async function getEventUsers(eventID) {
 
   console.log('getting buddy seekers...')
 
@@ -57,5 +57,73 @@ export async function getEventBuddySeekers(eventID) {
 
   } catch (err) {
     Alert.alert("There is something wrong!", err.message)
+  }
+}
+
+export async function getUserInfo(uid) {
+
+  console.log('getting user info...')
+
+  try {
+
+    const doc = await firebaseApp
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get();
+
+    return {userData: doc.data(), uid};
+
+  } catch (err) {
+    Alert.alert("Problem getting user info", err.message)
+  }
+}
+
+export async function toggleUserAtEvent(eventID, newArr, list) {
+
+  console.log('toggling user...')
+
+  try {
+
+    const db = firestore;
+    const eventRef = db.collection('events').doc(eventID)
+
+    const res = await eventRef.set({
+      [list]: newArr
+    }, {
+      merge: true
+    })
+  } catch (err) {
+    Alert.alert("Error adding user to list", err.message)
+  }
+}
+
+export async function eventDocExists(eventID) {
+
+  console.log('checking event doc exists...')
+
+  const db = firestore;
+  const eventRef = db.collection('events').doc(eventID)
+  const doc = await eventRef.get();
+
+  return doc.exists
+}
+
+export async function createUserArrays(eventID) {
+
+  console.log('setting up event arrays...')
+
+  try {
+
+    const db = firestore;
+    const eventRef = db.collection('events').doc(eventID)
+    
+    const res = await eventRef.set({
+      attendees: [],
+      buddySeekers: []
+    })
+
+  } catch (err) {
+    Alert.alert("Error creating user arrays in db", err.message)
   }
 }

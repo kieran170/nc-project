@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import DialogInput from "react-native-dialog-input";
-import { firestore } from "../my-app/config/firbase";
+import { firestore } from "../my-app/config/firebase";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";

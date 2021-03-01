@@ -34,7 +34,7 @@ export default function App({ navigation, login }) {
         login()
         setEmail("");
         setPassword("");
-        navigation.navigate("EventList");
+        navigation.navigate("Events");
       }
     });
   };
