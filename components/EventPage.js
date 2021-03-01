@@ -17,6 +17,7 @@ import {
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
 import { FlatList } from "react-native-gesture-handler";
+import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
   state = {
@@ -119,49 +120,6 @@ export default class EventPage extends Component {
         }
       );
     }
-<<<<<<< HEAD
-
-    render() {
-
-        const { name, date, time, venue, postCode, image, location, id, genre, subGenre } = this.props.route.params;
-        const { attendees, buddySeekers } = this.state;
-        const currentUid = this.props.app.currentUser.uid;
-
-        const listItem = ({item}) => (
-
-            <View>
-                <Text>{item.userData.firstName} {item.userData.lastName}</Text>
-                {item.uid !== currentUid ? <Button title="chat" /> : null}
-            </View>
-            //Chatroom button to add here + method to cycle through users to pass down proper props.
-        )
-
-        return (
-            <SafeAreaView>
-            <Text style={styles.eventName}>{name}</Text>
-            <Text>{"\n"}</Text>
-            <Button style={styles.button} title="i'm attending" onPress={() => this.handlePress('attendees')}/>
-            <Button style={styles.button} title="i'm looking for a buddy" onPress={() => this.handlePress('buddySeekers')}/>
-            <Text>{venue}, {postCode}</Text>
-            <Text>{date}, {time}</Text>
-            <Text>Genre: {genre} / {subGenre}</Text>
-            <Image style={styles.image} source={{uri: image}}/>
-            <MapView
-            style={styles.map}
-            region={{
-                longitude: +location.longitude,
-                latitude: +location.latitude,
-                longitudeDelta: 0.005,
-                latitudeDelta: 0.005}}
-            >
-            <Marker image={require('../my-app/assets/small-guitar-icon.png')} key={id} coordinate={{latitude: +location.latitude, longitude: +location.longitude}}/>
-            </MapView>
-
-            <Text style={{fontWeight: "bold"}}>Looking for a buddy: </Text>
-            {/* {buddySeekers.length ? */}
-            <FlatList styles={{flex: 1}} data={this.state.buddySeekers} renderItem={listItem} keyExtractor={item=> item.uid}/>
-            {/* : null
-=======
   };
 
   render() {
@@ -181,12 +139,23 @@ export default class EventPage extends Component {
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
 
-    const listItem = ({ item }) => (
+    const ListItem = ({ item }) => (
       <View>
         <Text onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName}
         </Text>
-        {item.uid !== currentUid ? <Button title="chat" /> : null}
+        {item.uid !== currentUid ? (
+          <ChatRoom
+            secondUserObject={item}
+            secondUser={item.userData}
+            navigation={navigation}
+            currentUser={{
+              firstName: this.props.app.currentUser.userData.firstName,
+              avatar: this.props.app.currentUser.userData.userAvatar,
+              _id: currentUid,
+            }}
+          />
+        ) : null}
       </View>
     );
     return (
@@ -237,11 +206,10 @@ export default class EventPage extends Component {
         <FlatList
           styles={{ flex: 1 }}
           data={this.state.buddySeekers}
-          renderItem={listItem}
+          renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
         {/* : null
->>>>>>> 11e941b1b7a6331e28e375dea9fae99d48f9a6da
             } */}
         <Text></Text>
         <Text style={{ fontWeight: "bold" }}>Attending this gig: </Text>
@@ -249,7 +217,7 @@ export default class EventPage extends Component {
         <FlatList
           styles={{ flex: 1 }}
           data={this.state.attendees}
-          renderItem={listItem}
+          renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
         {/* : null
