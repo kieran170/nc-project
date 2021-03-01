@@ -37,6 +37,7 @@ export default function ChatRoom(props) {
     }
     return;
   };
+
   matchUsersRooms(chatRoomsCurrentUser, secondUser);
 
   const handlePress = () => {
@@ -82,5 +83,9 @@ export default function ChatRoom(props) {
     }
   };
 
-  return <Button onPress={handlePress} title="Start a chat"></Button>;
+  return (
+    <>
+    <Button onPress={() => {handlePress}} title="Message me!"></Button>
+    </>
+  )
 }

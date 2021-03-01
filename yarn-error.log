@@ -1,5 +1,5 @@
 Arguments: 
-  /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/node /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/yarn add expo-permission
+  /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/node /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/yarn start --tunnel
 
 PATH: 
   /home/clairecastanet/.nvm/versions/node/v15.2.0/bin:/home/clairecastanet/.vscode-server/bin/622cb03f7e070a9670c94bae1a45d78d7181fbd4/bin:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program
@@ -14,17 +14,12 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-permission: Not found
-      at Request.params.callback [as _callback] (/home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:66988:18)
-      at Request.self.callback (/home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:140662:22)
-      at Request.emit (node:events:329:20)
-      at Request.<anonymous> (/home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:141634:10)
-      at Request.emit (node:events:329:20)
-      at IncomingMessage.<anonymous> (/home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:141556:12)
-      at Object.onceWrapper (node:events:435:28)
-      at IncomingMessage.emit (node:events:341:22)
-      at endReadableNT (node:internal/streams/readable:1294:12)
-      at processTicksAndRejections (node:internal/process/task_queues:80:21)
+  SyntaxError: /home/clairecastanet/project-phase-proper/project-repo/nc-project/package.json: Unexpected token < in JSON at position 622
+      at JSON.parse (<anonymous>)
+      at /home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /home/clairecastanet/.nvm/versions/node/v15.2.0/lib/node_modules/yarn/lib/cli.js:321:13
 
 npm manifest: 
   {
@@ -44,20 +39,34 @@ npm manifest:
       "cmd": "^0.1.0",
       "expo": "~40.0.0",
       "expo-location": "^11.0.0",
-      "expo-permissions": "~10.0.0",
-      "expo-status-bar": "~1.0.3",
+      "expo-permissions": "^11.0.0",
+      "expo-status-bar": "^1.0.3",
       "firebase": "^8.2.9",
       "react": "16.13.1",
       "react-dom": "16.13.1",
+  <<<<<<< HEAD
       "react-native": "^0.63.4",
       "react-native-dialog-input": "^1.0.8",
       "react-native-gesture-handler": "^1.10.3",
       "react-native-maps": "^0.27.1",
-      "react-native-reanimated": "~1.13.0",
+      "react-native-reanimated": "^1.13.2",
       "react-native-safe-area-context": "^3.1.9",
       "react-native-screens": "~2.15.2",
       "react-native-web": "^0.15.0",
       "react-navigation-stack": "react-navigation/stack"
+  =======
+      "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+      "react-native-gesture-handler": "~1.8.0",
+      "react-native-gifted-chat": "^0.16.3",
+      "react-native-dialog-input": "^1.0.8",
+      "react-native-maps": "0.27.1",
+      "react-native-reanimated": "~1.13.0",
+      "react-native-safe-area-context": "3.1.9",
+      "react-native-screens": "~2.15.2",
+      "react-native-web": "^0.15.0",
+      "react-navigation": "^4.4.4",
+      "expo-permissions": "~10.0.0"
+  >>>>>>> 11e941b1b7a6331e28e375dea9fae99d48f9a6da
     },
     "devDependencies": {
       "@babel/core": "~7.9.0",
@@ -3664,6 +3673,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-10.0.0.tgz#2923411649434f2f079343b163b13c5c9eee8b2d"
     integrity sha512-QLEb0iaBv4/blLxxfKRj2/HPisY+1t+g6MgegqZ1j1U/0qih4dvzUQrxie9ZOZyQB9gnXFCRnZv3QzHEb52dcA==
   
+  expo-permissions@^11.0.0:
+    version "11.0.0"
+    resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-11.0.0.tgz#10889073121fea42bbfc35f09a35fa17a316b233"
+    integrity sha512-5+sFdU1HS/4aK9O7AsoLSNjG4f0UzlA3/nBHOPnWxxY2HRFnQp764tSsfSJRnGhM89Qxort6n2RzOusMoNP5ig==
+  
   expo-permissions@~10.0.0:
     version "10.0.0"
     resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-10.0.0.tgz#5b31c54d561d00c7e46cd02321bc3704c51c584b"
@@ -3682,7 +3696,7 @@ Lockfile:
       "@expo/websql" "^1.0.1"
       lodash "^4.17.15"
   
-  expo-status-bar@~1.0.3:
+  expo-status-bar@^1.0.3:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.0.3.tgz#62b4d6145680abd43ba6ecfa465f835e88bf6263"
     integrity sha512-/Orgla1nkIrfswNHbuAOTbPVq0g3+GrhoQVk7MRafY2dwrFLgXhaPExS+eN2hpmzqPv2LG5cqAZDCQUAjmZYBQ==
@@ -6278,7 +6292,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
     integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
   
-  react-native-reanimated@~1.13.0:
+  react-native-reanimated@^1.13.2:
     version "1.13.2"
     resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.2.tgz#1ae5457b24b4913d173a5a064bb28eae7783d293"
     integrity sha512-O+WhgxSjOIzcVdAAvx+h2DY331Ek1knKlaq+jsNLpC1fhRy9XTdOObovgob/aF2ve9uJfPEawCx8381g/tUJZQ==
@@ -6573,12 +6587,12 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
     integrity sha1-Cx4Rr4vESDbwSmQH6S2kJGe3lEQ=
   
-  safe-buffer@5.1.2, safe-buffer@>=5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+  safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
     version "5.1.2"
     resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
     integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
   
-  safe-buffer@^5.0.1:
+  safe-buffer@>=5.1.0, safe-buffer@^5.0.1:
     version "5.2.1"
     resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
     integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
