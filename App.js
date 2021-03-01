@@ -27,13 +27,15 @@ export default class App extends Component {
 
   handleLogOut = () => {
     loggingOut();
+
     this.setState({ isLoggedIn: false, user: "" });
   };
 
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator screenOptions={
+        ({navigation})=>({
           headerTitle: ()=><Text>Logo</Text>,
           headerRight: () => (<>
 
@@ -47,23 +49,27 @@ export default class App extends Component {
           <Button style={{paddingLeft: 20}}
             title="My Profile"
             color="black"
+            onPress={() => {
+             navigation.navigate("Profile");
+            }}
           />
           <Text>{"\t"}</Text>
           
-          <Button style={{paddingLeft: 20}}
+          <Button 
             title="Log Out"
             color="black"
-            //onPress={}
+            onPress={()=>{ 
+              navigation.navigate("Home"),
+            this.handleLogOut()}}
           />
           <Text>{"\t"}</Text>
           </>
           ),
           headerRightContainerStyle: {flexDirection: "row", marginBottom: 10}
-        }}>
-
-          <Stack.Screen name={"Events"}>
+        })}>
+ <Stack.Screen name={"Home"} options={{headerShown: false}}>
             {(props) => (
-              <EventList
+              <SignInUp
                 {...props}
                 app={this.state}
                 login={this.handleLogIn}
@@ -71,10 +77,9 @@ export default class App extends Component {
               />
             )}
           </Stack.Screen>
-
-          <Stack.Screen name={"Home"} options={{headerShown: false}}>
+          <Stack.Screen name={"Events"}>
             {(props) => (
-              <SignInUp
+              <EventList
                 {...props}
                 app={this.state}
                 login={this.handleLogIn}
