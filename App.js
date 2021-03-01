@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
@@ -33,8 +33,27 @@ export default class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name={"Home"}>
+        <Stack.Navigator screenOptions={{
+          headerTitle: ()=><Text>Logo</Text>,
+          headerRight: () => (<>
+
+          <Button
+              onPress={() => alert('This is a button!')}
+              title="Info"
+              padding= "20"
+/><Text>{"\t"}</Text>
+          
+            <Button style={{paddingLeft: 20}}
+            onPress={() => alert('This is a button!')}
+            title="Info"
+            color="black"
+          />
+          </>
+          ),
+          headerRightContainerStyle: {flexDirection: "row"}
+        }}>
+
+          <Stack.Screen name={"Home"} options={{headerShown: false}}>
             {(props) => (
               <SignInUp
                 {...props}
