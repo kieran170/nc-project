@@ -7,10 +7,14 @@ import {
   TextInput,
   Button,
   Alert,
-  Image
+  Image,
+  Platform,
+  Dimensions,
+  SafeAreaView
 } from "react-native";
 import { registration, signIn } from "../my-app/config/fireBaseMethods";
 import * as colours from "../my-app/config/colours";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 //set matching password - maybe some verification steps?
 export default function App({ navigation, login }) {
@@ -74,12 +78,17 @@ export default function App({ navigation, login }) {
   };
 
   return signUp ? (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+
+      <View style={styles.topSection}>
       <Image
         style={styles.image}
         source={require("../my-app/assets/title-gig-buddy-guitar.png")}
       />
       <Text style={styles.subTitle}>Connecting fans of live music!</Text>
+      </View>
+
+      <View style={styles.inputSection}>
       <TextInput
         placeholder="E-mail"
         placeholderTextColor="#fff"
@@ -101,19 +110,33 @@ export default function App({ navigation, login }) {
         secureTextEntry={true}
       />
 
-      <Button title="Sign-In" onPress={handlePressSignIn} color='#ff2400'/>
-      <Text>{"\n"}{"\n"}</Text>
-      <Text>Don't have an account yet? <Text onPress={handleClick} style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign Up Here!</Text></Text>
+      <TouchableHighlight onPress={handlePressSignIn}>
+        <View style={styles.signButton}>
+          <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Sign In</Text>
+        </View>
+      </TouchableHighlight>
+ 
+      <Text style={styles.swapText}>Don't have an account yet? <Text onPress={handleClick} style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign Up Here!</Text></Text>
+      </View>
+      
+      <View style={styles.bottomSection}>
       <Image style={styles.bottomImage} source={require("../my-app/assets/landing-page-bottom.png")} />
+      </View>
+
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   ) : (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+
+      <View style={styles.topSection}>
       <Image
         style={styles.image}
         source={require("../my-app/assets/title-gig-buddy-guitar.png")}
       />
       <Text style={styles.subTitle}>Connecting fans of live music!</Text>
+      </View>
+
+      <View style={styles.inputSection}>
       <TextInput
         placeholder="First Name"
         placeholderTextColor="#fff"
@@ -154,12 +177,23 @@ export default function App({ navigation, login }) {
         style={styles.inputbox}
         secureTextEntry={true}
       />
-      <Button title="Sign-Up" onPress={handlePressSignUp} color='#ff2400' />
-      <Text>{"\n"}</Text>
-      <Text onPress={handleClick}>Already have an account? <Text style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign In Here!</Text></Text>
+
+      <TouchableHighlight onPress={handlePressSignUp}>
+        <View style={styles.signButton}>
+        <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Sign Up</Text>
+        </View>
+      </TouchableHighlight>
+
+      <Text style={styles.swapText} onPress={handleClick}>Already have an account? <Text style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign In Here!</Text></Text>
+
+      </View>
+
+      <View style={styles.bottomSection}>
       <Image style={styles.bottomImage} source={require("../my-app/assets/landing-page-bottom.png")} />
+      </View>
+
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -170,41 +204,73 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     margin: 0,
-    padding: 0
+    padding: 0,
+    height: Dimensions.get('window').height
   },
   subTitle: {
     color: '#FF2400',
-    position: 'absolute',
-    top: 210,
-    left: 90,
-    fontSize: 16,
-    fontFamily: "notoserif", // alternate for iOS ?? 
+    fontSize: 20,
+    fontFamily: Platform.OS === "android" ? "notoserif" : "Times New Roman", // alternate for iOS ?? 
     fontStyle: "italic",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    alignSelf: 'center'
   },
   inputbox: {
+    alignSelf: 'center',
     borderWidth: 2,
     width: 180,
+    height: 35,
     marginBottom: 10,
     textAlign: "center",
     borderColor: '#991400',
     borderRadius: 10,
     backgroundColor: '#FF2400',
-    color: '#fff'
+    color: '#fff',
   },
   image: {
-    position: "absolute",
-    top: 40,
-    left: -10,
     height: 175,
-    width: 400,
+    width: '105%',
+    alignSelf: 'center'
   },
   bottomImage: {
-    position: "absolute",
-    top: 400,
-    left: 50,
+    alignSelf: 'flex-end',
     height: 350,
     width: 300,
     zIndex: -1,
+  },
+  topSection: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 40,
+    paddingRight: 10,
+    width: Dimensions.get('window').width - 10
+  },
+  inputSection: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 80
+  },
+  bottomSection: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingBottom: 120
+  },
+  signButton: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    width: 150,
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+  },
+  swapText: {
+    fontSize: 18,
+    paddingTop: 20,
+    paddingBottom: 10
   }
 });

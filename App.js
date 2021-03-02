@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import { StyleSheet, Text, View, Button, Image, Dimensions } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
@@ -52,34 +52,31 @@ export default class App extends Component {
             </TouchableOpacity>,
           headerTitleAlign: 'center',
           headerRight: () => (
-          <>
-          <Button
-            title="Messages"
-            color="#FF2400"
-            onPress={() => navigation.navigate("ContactList")}
-          />
-          <Text>{"\t"}</Text>
+          <View style={styles.headerButtons}>
+          <TouchableOpacity onPress={() => navigation.navigate("ContactList")}>
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Messages</Text>
+            </View>
+          </TouchableOpacity>
           
-          <Button
-            title="Profile"
-            color="#FF2400"
-            onPress={() => {
-             navigation.navigate("Profile");
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Profile</Text>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => { 
+            navigation.navigate("Home")
+            this.handleLogOut()
             }}
-          />
-          <Text>{"\t"}</Text>
-          
-          <Button 
-            title="Log Out"
-            color="#FF2400"
-            onPress={()=>{ 
-              navigation.navigate("Home"),
-            this.handleLogOut()}}
-          />
-          <Text>{"\t"}</Text>
-          </>
+          >
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Log Out</Text>
+            </View>
+          </TouchableOpacity> 
+          </View>
           ),
-          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15},
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15, justifyContent: 'space-evenly'},
           headerMode: 'screen'
         })}>
 
@@ -95,8 +92,13 @@ export default class App extends Component {
             )}
           </Stack.Screen>
 
-          {/* Disables back button on events screen to prevent user accidentally logging out */}
-          <Stack.Screen name={"Events"} options={{headerLeft: null}}>
+          {/* Disables back button onPress on events screen to prevent user accidentally logging out */}
+          <Stack.Screen name={"Events"} options={
+            {headerLeft: () => 
+            <TouchableOpacity>
+            <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
+            </TouchableOpacity>,}}
+            >
             {(props) => (
               <EventList
                 {...props}
@@ -149,7 +151,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
     backButton: {
       paddingBottom: 10,
-      paddingLeft: 35
+      paddingLeft: 5
     },
     backImage: {
       height: 60,
@@ -162,5 +164,18 @@ const styles = StyleSheet.create({
     },
     logoOpacity: {
       paddingBottom: 110
+    },
+    headerButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      width: Dimensions.get('window').width - 55
+    },
+    navButton: {
+      backgroundColor: 'red',
+      padding: 5,
+      borderRadius: 10,
+      borderColor: '#991400',
+      borderWidth: 1,
+      width: 100
     }
 })

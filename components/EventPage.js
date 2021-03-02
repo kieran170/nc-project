@@ -143,7 +143,6 @@ export default class EventPage extends Component {
 
       
       <View>
-      {console.log(item)}
         <Text onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName}
         </Text>
@@ -185,13 +184,13 @@ export default class EventPage extends Component {
         <View style={styles.touchableArea}>
           <TouchableHighlight onPress={() => this.handlePress("buddySeekers")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center'}}>Looking For A Buddy</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Looking For A Buddy</Text>
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={() => this.handlePress("attendees")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center'}}>I'm Attending</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>I'm Attending</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontWeight: "bold",
-    fontSize: 26,
+    fontSize: 28,
     alignSelf: 'center'
   },
   eventPage: {
@@ -275,7 +274,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   detailsSection: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 18
   },
   buddyButtons: {
     backgroundColor: 'red',

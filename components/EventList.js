@@ -29,8 +29,8 @@ export default class EventList extends Component {
         ? {
             latitude: 0,
             longitude: 0,
-            latitudeDelta: 250,
-            longitudeDelta: 250,
+            latitudeDelta: -50,
+            longitudeDelta: -50,
           }
         : {
             latitude: 0,
