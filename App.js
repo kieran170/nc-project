@@ -37,19 +37,20 @@ export default class App extends Component {
     return (
       <NavigationContainer>
 
+      {/* <Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} /> */}
+
       {/* Default header on all screens unless overwritten lower down*/}
         <Stack.Navigator screenOptions={
         ({navigation})=>({
           headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 1},
-          headerLeft: () => <View style={styles.headerLeft}>
-            <TouchableOpacity onPress={() => navigation.goBack()} >
-            <Image style={styles.backButton} source={require('./my-app/assets/back-button.png')} />
-            </TouchableOpacity>
-            <Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} />
-          </View>,
+          headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} >
+            <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
+            </TouchableOpacity>,
           headerTitle: '',
-          headerRight: () => (<>
-
+          headerTitleAlign: 'center',
+          headerRight: () => (
+          <>
           <Button
             title="Messages"
             color="#FF2400"
@@ -91,7 +92,7 @@ export default class App extends Component {
           </Stack.Screen>
 
           {/* Disables back button on events screen to prevent user accidentally logging out */}
-          <Stack.Screen name={"Events"} /*options={{headerLeft: null}}*/>
+          <Stack.Screen name={"Events"} options={{headerLeft: null}}>
             {(props) => (
               <EventList
                 {...props}
@@ -136,21 +137,12 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    position: 'absolute',
-    top: -45,
-    left: -15,
-    height: 80,
-    width: 100
-  },
-  backButton: {
-    position: 'absolute',
-    top: -35,
-    left: 75,
-    height: 60,
-    width: 80
-  },
-  headerLeft: {
-    marginLeft: 20
-  }
+    backButton: {
+      zIndex: 510,
+    },
+    backImage: {
+      height: 60,
+      width: 60,
+      paddingBottom: 5
+    }
 })
