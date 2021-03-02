@@ -84,7 +84,7 @@ export default class EventList extends Component {
         <TextInput
           style={styles.textInput}
           value={radius}
-          placeholder='Search Radius (m)'
+          placeholder='Search Radius (miles)'
           onChangeText={(text) => this.setState({ radius: text })}
         />
 

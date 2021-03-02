@@ -33,6 +33,7 @@ export default class App extends Component {
   };
 
   render() {
+
     return (
       <NavigationContainer>
 
@@ -50,7 +51,7 @@ export default class App extends Component {
           headerRight: () => (<>
 
           <Button
-            title="Chat"
+            title="Messages"
             color="#FF2400"
           />
           <Text>{"\t"}</Text>
