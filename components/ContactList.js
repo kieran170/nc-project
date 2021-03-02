@@ -7,7 +7,8 @@ export default function ContactList(props) {
   //we only get the uid from props
   const uid = props.user.uid;
 
-  //we are setting contacts in state to the contacts in the current user object, + the current user itself
+  //sets contacts in state to the contacts in the current user object
+  //sets currentUser is state to the freshest data possible to make sure we display the updated contact list
   useEffect(() => {
     async function getUserData() {
       const doc = await firestore.collection("users").doc(uid).get();
@@ -18,11 +19,12 @@ export default function ContactList(props) {
     getUserData();
   }, []);
 
+  //array of user's contacts + currentUser object.
   const [userContacts, setContacts] = useState([]);
   const [currentUser, SetCurrentUser] = useState({});
   const { navigation } = props;
 
-  //Here we create a list of contacts with a message me button to access chat.
+  //Creates a list of contacts with a message me button to access/create chatroom
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
@@ -51,6 +53,7 @@ export default function ContactList(props) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   avatar: {
     width: 50,
