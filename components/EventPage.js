@@ -138,7 +138,6 @@ export default class EventPage extends Component {
     const { attendees, buddySeekers } = this.state;
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
-
     const ListItem = ({ item }) => (
       <View>
         <Text onPress={() => navigation.navigate("Profile", item)}>
@@ -153,6 +152,7 @@ export default class EventPage extends Component {
               firstName: this.props.app.currentUser.userData.firstName,
               avatar: this.props.app.currentUser.userData.userAvatar,
               _id: currentUid,
+              contacts: this.props.app.currentUser.userData.contacts,
             }}
           />
         ) : null}
