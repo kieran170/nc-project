@@ -23,6 +23,7 @@ export default function ChatRoom(props) {
     _id: secondUserUid,
     firstName: secondUser.firstName,
   });
+  const [chatroomsSecondUser,setChatroomsSecondUser]=useState([])
 
   useEffect(() => {
     async function getUserData() {
@@ -31,14 +32,19 @@ export default function ChatRoom(props) {
       let dataObj = doc.data();
       setChatroomsCurrentUser(dataObj.chatrooms);
     }
+    async function getSecondUserData() {
+      let doc = await firestore.collection("users").doc(secondUserUid).get();
+      let dataObj = doc.data();
+      setChatroomsSecondUser(dataObj.chatrooms)
+    }
     getUserData();
   }, []);
 
-  const matchUsersRooms = (chatRoomsCurrentUser, secondUser) => {
+  const matchUsersRooms = (chatRoomsCurrentUser, chatroomsSecondUser) => {
     for (let i = 0; i < chatRoomsCurrentUser.length; i++) {
       if (Room === "room not found" && chatRoomsCurrentUser.length) {
-        for (let j = 0; j < secondUser.chatrooms.length; j++) {
-          if (chatRoomsCurrentUser[i] === secondUser.chatrooms[j]) {
+        for (let j = 0; j < chatroomsSecondUser.length; j++) {
+          if (chatRoomsCurrentUser[i] === chatroomsSecondUser[j]) {
             const room = chatRoomsCurrentUser[i];
             setRoom(room);
           }
@@ -68,7 +74,7 @@ export default function ChatRoom(props) {
         secondUserContacts
       ) {
         const updatedChatRoomsCurrentUser = [...chatRoomsCurrentUser];
-        const updatedChatRoomsSecondUser = [...secondUser.chatrooms];
+        const updatedChatRoomsSecondUser = [...chatroomsSecondUser];
         const updatedUserContacts = [...currentUserContacts];
         const updatedSecondUserContacts = [...secondUserContacts];
 
