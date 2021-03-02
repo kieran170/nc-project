@@ -35,6 +35,7 @@ export default class App extends Component {
     return (
       <NavigationContainer>
 
+      {/* Default header on all screens unless overwritten lower down*/}
         <Stack.Navigator screenOptions={
         ({navigation})=>({
           headerTitle: ()=><Text>Logo</Text>,
@@ -69,6 +70,7 @@ export default class App extends Component {
           headerRightContainerStyle: {flexDirection: "row", marginBottom: 10}
         })}>
 
+          {/* No header on home screen*/}
           <Stack.Screen name={"Home"} options={{headerShown: false}}>
             {(props) => (
               <SignInUp
@@ -123,12 +125,3 @@ export default class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

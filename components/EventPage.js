@@ -192,7 +192,7 @@ export default class EventPage extends Component {
           }}
         >
           <Marker
-            image={require("../my-app/assets/small-guitar-icon.png")}
+            image={require("../my-app/assets/mini-stratocaster.png")}
             key={id}
             coordinate={{
               latitude: +location.latitude,

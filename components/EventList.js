@@ -99,7 +99,7 @@ export default class EventList extends Component {
               <Marker
                 title={event.name}
                 description={`${event.date}`}
-                image={require("../my-app/assets/small-guitar-icon.png")}
+                image={require("../my-app/assets/mini-stratocaster.png")}
                 key={event.id}
                 coordinate={{
                   latitude: +event.location.latitude,
