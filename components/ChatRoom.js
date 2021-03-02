@@ -62,8 +62,6 @@ export default function ChatRoom(props) {
     return;
   };
 
-  console.log(Room);
-
   matchUsersRooms(chatRoomsCurrentUser, chatroomsSecondUser);
 
   const handlePress = () => {
