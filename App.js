@@ -47,7 +47,10 @@ export default class App extends Component {
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} >
             <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
             </TouchableOpacity>,
-          headerTitle: '',
+          headerTitle: () => 
+            <TouchableOpacity onPress={() => navigation.navigate("Events")} style={styles.logoOpacity}>
+              <Image style={styles.miniLogo} source={require('./my-app/assets/mini-logo.png')}/>
+            </TouchableOpacity>,
           headerTitleAlign: 'center',
           headerRight: () => (
           <>
@@ -76,7 +79,8 @@ export default class App extends Component {
           <Text>{"\t"}</Text>
           </>
           ),
-          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15}
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15},
+          headerMode: 'screen'
         })}>
 
           {/* No header on home screen*/}
@@ -138,11 +142,19 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     backButton: {
-      zIndex: 510,
+      paddingBottom: 10,
+      paddingLeft: 35
     },
     backImage: {
       height: 60,
-      width: 60,
-      paddingBottom: 5
+      width: 60
+    },
+    miniLogo: {
+      height: 70,
+      width: 70,
+      resizeMode: 'contain'
+    },
+    logoOpacity: {
+      paddingBottom: 110
     }
 })
