@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
-import { auth, firestore } from "../my-app/config/firebase";
+import { Button } from "react-native";
+import { firestore } from "../my-app/config/firebase";
 
 export default function ChatRoom(props) {
   const { navigation } = props;
@@ -45,7 +45,8 @@ export default function ChatRoom(props) {
     getSecondUserData();
   }, []);
 
-  //match rooms and users
+   //Function matching the shared chatroom between the two users if it exists. 
+  //If so, it updates the Room key in state - if not, it remains "room not found"
   const matchUsersRooms = (chatRoomsCurrentUser, chatroomsSecondUser) => {
     for (let i = 0; i < chatRoomsCurrentUser.length; i++) {
       if (Room === "room not found" && chatRoomsCurrentUser.length) {
@@ -64,14 +65,19 @@ export default function ChatRoom(props) {
 
   matchUsersRooms(chatRoomsCurrentUser, chatroomsSecondUser);
 
+  //handles event when button "message me!" is pressed. 
+  //Conditional logic: 
+  //either there is a shared room, and it takes the user to that room
+  //or there is no room and it creates it then navigates there.
   const handlePress = () => {
+        //sets the reference inside of the firestore database
     const chatsRef = firestore.collection("chats");
-    if (Room === "room not found") {
-      //add two users ids together  and save it as room-name ;
-      //push the room-name at the array of the both users;
 
+    if (Room === "room not found") { 
+      //add two users ids together  and save it as room-name ;
       const newRoom = _id + secondUserUid;
 
+      //updates the users chatrooms array with a new chatroom, and their contact list with a new contact.
       async function updateUsers(
         chatRoomsCurrentUser,
         secondUserUid,
@@ -79,14 +85,16 @@ export default function ChatRoom(props) {
         secondUserContacts,
         chatroomsSecondUser
       ) {
+        //copying existing chatrooms and contacts
         const updatedChatRoomsCurrentUser = [...chatRoomsCurrentUser];
         const updatedChatRoomsSecondUser = [...chatroomsSecondUser];
         const updatedUserContacts = [...currentUserContacts];
         const updatedSecondUserContacts = [...secondUserContacts];
 
+         //pushing the newRoom inside of those arrays
         updatedChatRoomsCurrentUser.push(newRoom);
         updatedChatRoomsSecondUser.push(newRoom);
-
+        //pushing the new contact inside of those arrays
         updatedUserContacts.push(secondUserObj);
         updatedSecondUserContacts.push(currentUserObj);
 
@@ -108,7 +116,8 @@ export default function ChatRoom(props) {
         secondUserContacts,
         chatroomsSecondUser
       );
-
+      
+      //creating and navigating to the appropriate room 
       chatsRef.doc(newRoom).set({});
       const chatsRefPassed = firestore.collection("chats").doc(newRoom);
       navigation.navigate("GroupChat", {
@@ -116,6 +125,7 @@ export default function ChatRoom(props) {
         chatsRef: chatsRefPassed,
       });
     } else {
+      //navigating to the appropriate room.
       chatsRef.doc(Room).set({});
       const chatsRefPassed = firestore.collection("chats").doc(Room);
       navigation.navigate("GroupChat", {
