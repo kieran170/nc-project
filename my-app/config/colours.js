@@ -1,6 +1,6 @@
 export default {
-    primary: '#fff',
-    secondary: '#fff',
+    primaryRed: '#ff2400',
+    secondaryBlue: '#33e4ff',
     tertiary: '#fff',
     textColour: '#fff',
     backgroundColour: '#fff'

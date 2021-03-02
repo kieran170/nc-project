@@ -82,12 +82,6 @@ export default class EventList extends Component {
           title="Manual Search"
           onPress={this.handleSearch}
         />
-        <Button
-          title="My Profile"
-          onPress={() => {
-            this.props.navigation.navigate("Profile");
-          }}
-        />
         <MapView
           style={styles.map}
           region={newRegion.latitude ? newRegion : defaultRegion}

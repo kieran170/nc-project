@@ -1,5 +1,5 @@
 Arguments: 
-  /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/node /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/yarn start
+  /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/node /home/clairecastanet/.nvm/versions/node/v15.2.0/bin/yarn start --tunnel
 
 PATH: 
   /home/clairecastanet/.nvm/versions/node/v15.2.0/bin:/home/clairecastanet/.vscode-server/bin/622cb03f7e070a9670c94bae1a45d78d7181fbd4/bin:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/home/clairecastanet/Library/Android/sdk/platform-tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program

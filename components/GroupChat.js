@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 
 //maybe pass this down props later to take user to right chat room.
-export default function App(props) {
+export default function GroupChat(props) {
   const chatsRef = props.route.params.chatsRef;
 
   const [user, setUser] = useState(props.route.params.user);

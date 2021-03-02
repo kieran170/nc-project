@@ -2,16 +2,17 @@ import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
 import { auth, firestore } from "../my-app/config/firebase";
 
-
 export default function ChatRoom(props) {
   const { navigation } = props;
   const { currentUser } = props;
   let { secondUser } = props;
   const firstName = currentUser.firstName;
   const _id = currentUser._id;
+  const { secondUserObject } = props;
+  const secondUserUid = secondUserObject.uid;
+
   const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
   const [Room, setRoom] = useState("room not found");
-
   useEffect(() => {
     async function getUserData() {
       let doc = await firestore.collection("users").doc(currentUser._id).get();
@@ -37,18 +38,24 @@ export default function ChatRoom(props) {
     }
     return;
   };
-  matchUsersRooms(chatRoomsCurrentUser, secondUser);
+
+  matchUsersRooms(chatRoomsCurrentUser, secondUser, secondUserUid);
 
   const handlePress = () => {
     const chatsRef = firestore.collection("chats");
     if (Room === "room not found") {
       //add two users ids together  and save it as room-name ;
       //push the room-name at the array of the both users;
-    
-      const newRoom = currentUser._id + secondUser._id;
-      async function updateUsers(chatRoomsCurrentUser, secondUser) {
-        const updatedChatRoomsCurrentUser = chatRoomsCurrentUser;
-        const updatedChatRoomsSecondUser = secondUser.chatrooms;
+
+      const newRoom = currentUser._id + secondUserUid;
+
+      async function updateUsers(
+        chatRoomsCurrentUser,
+        secondUser,
+        secondUserUid
+      ) {
+        const updatedChatRoomsCurrentUser = [...chatRoomsCurrentUser];
+        const updatedChatRoomsSecondUser = [...secondUser.chatrooms];
 
         updatedChatRoomsCurrentUser.push(newRoom);
         updatedChatRoomsSecondUser.push(newRoom);
@@ -59,12 +66,12 @@ export default function ChatRoom(props) {
         const res1 = await currentUserRef.update({
           chatrooms: updatedChatRoomsCurrentUser,
         });
-        const secondUserRef = firestore.collection("users").doc(secondUser._id);
+        const secondUserRef = firestore.collection("users").doc(secondUserUid);
         const res2 = await secondUserRef.update({
           chatrooms: updatedChatRoomsSecondUser,
         });
       }
-      updateUsers(chatRoomsCurrentUser, secondUser);
+      updateUsers(chatRoomsCurrentUser, secondUser, secondUserUid);
 
       chatsRef.doc(newRoom).set({});
       const chatsRefPassed = firestore.collection("chats").doc(newRoom);
@@ -81,6 +88,9 @@ export default function ChatRoom(props) {
       });
     }
   };
-
-  return <Button onPress={handlePress} title="Start a chat"></Button>;
+  return (
+    <>
+      <Button onPress={handlePress} title="Message me!"></Button>
+    </>
+  );
 }
