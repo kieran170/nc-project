@@ -141,7 +141,10 @@ export default class EventPage extends Component {
     const currentUid = this.props.app.currentUser.uid;
 
     const ListItem = ({ item }) => (
+
+      
       <View>
+      {console.log(item)}
         <Text onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName}
         </Text>
