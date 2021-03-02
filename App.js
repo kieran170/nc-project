@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Image } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
@@ -38,19 +38,19 @@ export default class App extends Component {
       {/* Default header on all screens unless overwritten lower down*/}
         <Stack.Navigator screenOptions={
         ({navigation})=>({
-          headerTitle: ()=><Text>Logo</Text>,
+          headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 1},
+          headerTitle: ()=><Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} />,
           headerRight: () => (<>
 
           <Button
             title="Chat"
-            padding= "20"
-            color="black"
+            color="#FF2400"
           />
           <Text>{"\t"}</Text>
           
-          <Button style={{paddingLeft: 20}}
-            title="My Profile"
-            color="black"
+          <Button
+            title="Profile"
+            color="#FF2400"
             onPress={() => {
              navigation.navigate("Profile");
             }}
@@ -59,7 +59,7 @@ export default class App extends Component {
           
           <Button 
             title="Log Out"
-            color="black"
+            color="#FF2400"
             onPress={()=>{ 
               navigation.navigate("Home"),
             this.handleLogOut()}}
@@ -67,7 +67,7 @@ export default class App extends Component {
           <Text>{"\t"}</Text>
           </>
           ),
-          headerRightContainerStyle: {flexDirection: "row", marginBottom: 10}
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15}
         })}>
 
           {/* No header on home screen*/}
@@ -82,7 +82,8 @@ export default class App extends Component {
             )}
           </Stack.Screen>
 
-          <Stack.Screen name={"Events"}>
+          {/* Disables back button on events screen to prevent user accidentally logging out */}
+          <Stack.Screen name={"Events"} options={{headerLeft: null}}>
             {(props) => (
               <EventList
                 {...props}
@@ -125,3 +126,13 @@ export default class App extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  logo: {
+    position: 'absolute',
+    top: -48,
+    left: 0,
+    height: 80,
+    width: 100
+  }
+})

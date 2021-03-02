@@ -15,6 +15,8 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import * as colours from "../my-app/config/colours";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 export default class EventList extends Component {
   // need to return to this and adjust the default map values so it looks good on both platforms!!!
@@ -39,6 +41,7 @@ export default class EventList extends Component {
     errMsg: "",
     userInput: "",
     userLocation: {},
+    radius: ""
   };
 
   componentDidMount() {
@@ -67,21 +70,47 @@ export default class EventList extends Component {
       errMsg,
       userInput,
       userLocation,
+      radius
     } = this.state;
 
     return (
       <SafeAreaView style={styles.page}>
-        <Button title="Events Near Me" onPress={this.handleLocationSearch} />
+
+        <View style={styles.search}>
+
+        <View style={styles.inputArea}>
+
+        <TextInput
+          style={styles.textInput}
+          value={radius}
+          placeholder='search radius (m)'
+          onChangeText={(text) => this.setState({ radius: text })}
+        />
+
         <TextInput
           style={styles.textInput}
           value={userInput}
+          placeholder='city'
           onChangeText={(text) => this.setState({ userInput: text })}
         />
-        <Button
-          style={styles.button}
-          title="Manual Search"
-          onPress={this.handleSearch}
-        />
+        </View>
+
+        <View style={styles.touchableArea}>
+        <TouchableHighlight onPress={this.handleLocationSearch}>
+          <View style={styles.nearMe}>
+            <Text style={{color: '#fff', textAlign: 'center'}}>Events Near Me</Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress={this.handleSearch}>
+          <View style={styles.nearMe}>
+            <Text style={{color: '#fff', textAlign: 'center'}}>Manual Search</Text>
+          </View>
+        </TouchableHighlight>
+        </View>
+
+        </View>
+
         <MapView
           style={styles.map}
           region={newRegion.latitude ? newRegion : defaultRegion}
@@ -162,9 +191,9 @@ export default class EventList extends Component {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           };
-          this.setState({ events: filteredEvents, newRegion });
+          this.setState({ events: filteredEvents, newRegion, radius: ''});
         } else {
-          this.setState({ errMsg: events.errMsg });
+          this.setState({ errMsg: events.errMsg, radius: ''});
         }
       });
     });
@@ -235,24 +264,11 @@ const styles = StyleSheet.create({
   page: {
     width: "100%",
     height: "100%",
-  },
-  header: {
-    flex: 0.2,
-    backgroundColor: "pink",
-    paddingBottom: 20,
-  },
-  textInput: {
-    flex: 0.1,
-    height: 1,
-    width: "75%",
-  },
-  button: {
-    flex: 0.1,
+    backgroundColor: '#33e4ff',
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "pink",
+    paddingTop: StatusBar.currentHeight
   },
   map: {
     flex: 1,
@@ -269,4 +285,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
+  search: {
+    flexDirection: 'column',
+    padding: 5,
+    margin: 5,
+    justifyContent: 'space-evenly'
+  },
+  nearMe: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
+  },
+  textInput: {
+    backgroundColor: '#b3f5ff',
+    width: 150,
+    textAlign: 'center',
+    borderRadius: 10
+  },
+  touchableArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  inputArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingBottom: 4
+  }
 });
