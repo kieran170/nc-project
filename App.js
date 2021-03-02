@@ -24,7 +24,8 @@ export default class App extends Component {
     const uid = firebase.auth().currentUser.uid;
     Promise.resolve(getUserInfo(uid)).then((userInfo) => {
       this.setState({ isLoggedIn: true, currentUser: { uid, ...userInfo } });
-    });
+    })
+  
   };
 
   handleLogOut = () => {
@@ -125,7 +126,7 @@ export default class App extends Component {
 
           <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
           <Stack.Screen name={"ContactList"}>
-            {(props) => <ContactList user={this.state.currentUser} />}
+            {(props) => <ContactList  {...props} user={this.state.currentUser} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
