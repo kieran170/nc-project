@@ -16,14 +16,14 @@ export default function ChatRoom(props) {
   const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
   const [Room, setRoom] = useState("room not found");
   const [currentUserObj, setCurrentUserObj] = useState({
-    _id: _id,
+    uid: _id,
     firstName: currentUser.firstName,
   });
   const [secondUserObj, setSecondUserObj] = useState({
-    _id: secondUserUid,
+    uid: secondUserUid,
     firstName: secondUser.firstName,
   });
-  const [chatroomsSecondUser,setChatroomsSecondUser]=useState([])
+  const [chatroomsSecondUser, setChatroomsSecondUser] = useState([]);
 
   useEffect(() => {
     async function getUserData() {
@@ -35,9 +35,10 @@ export default function ChatRoom(props) {
     async function getSecondUserData() {
       let doc = await firestore.collection("users").doc(secondUserUid).get();
       let dataObj = doc.data();
-      setChatroomsSecondUser(dataObj.chatrooms)
+      setChatroomsSecondUser(dataObj.chatrooms);
     }
     getUserData();
+    getSecondUserData();
   }, []);
 
   const matchUsersRooms = (chatRoomsCurrentUser, chatroomsSecondUser) => {
