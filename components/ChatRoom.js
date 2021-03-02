@@ -5,33 +5,39 @@ import { auth, firestore } from "../my-app/config/firebase";
 export default function ChatRoom(props) {
   const { navigation } = props;
   const { currentUser } = props;
-  let { secondUser } = props;
   const firstName = currentUser.firstName;
   const _id = currentUser._id;
   const { secondUserObject } = props;
   const secondUserUid = secondUserObject.uid;
   const currentUserContacts = currentUser.contacts;
   const secondUserContacts = secondUser.contacts;
+  console.log(secondUserObject)
 
+  //chatrooms of the connected user and of the second User
   const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
+  const [chatroomsSecondUser, setChatroomsSecondUser] = useState([]);
+  //Room in common or not of the two users
   const [Room, setRoom] = useState("room not found");
+  //Objects to add in contacts arrays
   const [currentUserObj, setCurrentUserObj] = useState({
     uid: _id,
     firstName: currentUser.firstName,
   });
   const [secondUserObj, setSecondUserObj] = useState({
     uid: secondUserUid,
-    firstName: secondUser.firstName,
+    firstName: secondUserObject.firstName,
   });
-  const [chatroomsSecondUser, setChatroomsSecondUser] = useState([]);
+  
 
   useEffect(() => {
+    //we get all the chatrooms of the connected user
     async function getUserData() {
       let doc = await firestore.collection("users").doc(currentUser._id).get();
 
       let dataObj = doc.data();
       setChatroomsCurrentUser(dataObj.chatrooms);
     }
+    //we get all the chatrooms of the second user
     async function getSecondUserData() {
       let doc = await firestore.collection("users").doc(secondUserUid).get();
       let dataObj = doc.data();
@@ -41,6 +47,7 @@ export default function ChatRoom(props) {
     getSecondUserData();
   }, []);
 
+  //match rooms and users
   const matchUsersRooms = (chatRoomsCurrentUser, chatroomsSecondUser) => {
     for (let i = 0; i < chatRoomsCurrentUser.length; i++) {
       if (Room === "room not found" && chatRoomsCurrentUser.length) {
@@ -57,7 +64,9 @@ export default function ChatRoom(props) {
     return;
   };
 
-  matchUsersRooms(chatRoomsCurrentUser, secondUser, secondUserUid);
+  console.log(Room)
+
+  matchUsersRooms(chatRoomsCurrentUser, chatroomsSecondUser);
 
   const handlePress = () => {
     const chatsRef = firestore.collection("chats");
@@ -69,7 +78,6 @@ export default function ChatRoom(props) {
 
       async function updateUsers(
         chatRoomsCurrentUser,
-        secondUser,
         secondUserUid,
         currentUserContacts,
         secondUserContacts
@@ -98,7 +106,6 @@ export default function ChatRoom(props) {
       }
       updateUsers(
         chatRoomsCurrentUser,
-        secondUser,
         secondUserUid,
         currentUserContacts,
         secondUserContacts

@@ -4,7 +4,10 @@ import { auth, firestore } from "../my-app/config/firebase";
 import ChatRoom from "../components/ChatRoom";
 
 export default function ContactList(props) {
+  //we only get the uid from props
   const uid = props.user.uid;
+
+  //we are setting contacts in state to the contacts in the current user object, + the current user itself
   useEffect(() => {
     async function getUserData() {
       const doc = await firestore.collection("users").doc(uid).get();
@@ -15,12 +18,11 @@ export default function ContactList(props) {
     getUserData();
   }, []);
 
-  //list of contacts
-  //we have the current user in props - we need to get the data for the contact user passed down
   const [userContacts, setContacts] = useState([]);
   const [currentUser, SetCurrentUser] = useState({});
   const { navigation } = props;
 
+  //Here we create a list of contacts with a message me button to access chat.
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
@@ -31,7 +33,6 @@ export default function ContactList(props) {
             _id: uid,
             contacts: userContacts,
           }}
-          secondUser={{ _id: item.uid, firstName: item.firstName }}
           secondUserObject={item}
           navigation={navigation}
         />
