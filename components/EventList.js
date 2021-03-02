@@ -293,7 +293,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 5,
     margin: 5,
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    marginLeft: 15,
+    marginRight: 15
   },
   nearMe: {
     backgroundColor: 'red',

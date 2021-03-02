@@ -7,6 +7,7 @@ import {
   Button,
   View,
   Alert,
+  Dimensions
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import {
@@ -16,7 +17,7 @@ import {
   eventDocExists,
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableHighlight } from "react-native-gesture-handler";
 import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
@@ -159,28 +160,36 @@ export default class EventPage extends Component {
       </View>
     );
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.eventPage}>
+
         <Text style={styles.eventName}>{name}</Text>
-        <Text>{"\n"}</Text>
-        <Button
-          style={styles.button}
-          title="i'm attending"
-          onPress={() => this.handlePress("attendees")}
-        />
-        <Button
-          style={styles.button}
-          title="i'm looking for a buddy"
-          onPress={() => this.handlePress("buddySeekers")}
-        />
-        <Text>
-          {venue}, {postCode}
+
+        <View style={styles.detailsView}>
+        <Text style={styles.detailsSection}>
+         <Text style={styles.eventDetails}>Venue: </Text> {venue}, {postCode}
         </Text>
-        <Text>
-          {date}, {time}
+        <Text style={styles.detailsSection}>
+          <Text style={styles.eventDetails}>Date & Time: </Text>{date}, {time}
         </Text>
-        <Text>
-          Genre: {genre} / {subGenre}
+        <Text style={styles.detailsSection}> 
+          <Text style={styles.eventDetails}>Genre: </Text>{genre} / {subGenre}
         </Text>
+        </View>
+
+        <View style={styles.touchableArea}>
+          <TouchableHighlight onPress={() => this.handlePress("buddySeekers")}>
+            <View style={styles.buddyButtons}>
+              <Text style={{color: 'white', textAlign: 'center'}}>Looking For A Buddy</Text>
+            </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight onPress={() => this.handlePress("attendees")}>
+            <View style={styles.buddyButtons}>
+              <Text style={{color: 'white', textAlign: 'center'}}>I'm Attending</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
         <Image style={styles.image} source={{ uri: image }} />
         <MapView
           style={styles.map}
@@ -201,27 +210,36 @@ export default class EventPage extends Component {
           />
         </MapView>
 
-        <Text style={{ fontWeight: "bold" }}>Looking for a buddy: </Text>
-        {/* {buddySeekers.length ? */}
+        <View style={styles.lists}>
+
+        <View style={styles.listTitles}>
+        <Text style={{ fontWeight: "bold", marginRight: 30 }}>Looking for a buddy: </Text>
+        <Text style={{ fontWeight: "bold", marginLeft: 30 }}>Attending this gig: </Text>
+        </View>
+
+        <View style={styles.listItems}>
+
+        <View style={styles.buddyList}>
         <FlatList
           styles={{ flex: 1 }}
-          data={this.state.buddySeekers}
+          data={buddySeekers}
           renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
-        {/* : null
-            } */}
-        <Text></Text>
-        <Text style={{ fontWeight: "bold" }}>Attending this gig: </Text>
-        {/* {attendees.length ?  */}
+        </View>
+        
+        <View style={styles.attendeeList}>
         <FlatList
           styles={{ flex: 1 }}
-          data={this.state.attendees}
+          data={attendees}
           renderItem={ListItem}
           keyExtractor={(item) => item.uid}
         />
-        {/* : null
-            } */}
+        </View>
+
+        </View>
+        </View>
+
       </SafeAreaView>
     );
   }
@@ -229,8 +247,10 @@ export default class EventPage extends Component {
 
 const styles = StyleSheet.create({
   image: {
-    width: 160,
-    height: 90,
+    width: 224,
+    height: 126,
+    alignSelf: 'center',
+    marginBottom: 10
   },
   map: {
     width: "100%",
@@ -238,9 +258,55 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 26,
+    alignSelf: 'center'
   },
-  button: {
-    flex: 0.1,
+  eventPage: {
+    backgroundColor: "#33e4ff",
+    minHeight: Dimensions.get('window').height
   },
+  eventDetails: {
+    fontWeight: 'bold',
+  },
+  detailsSection: {
+    textAlign: 'center'
+  },
+  buddyButtons: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
+  },
+  touchableArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingBottom: 10,
+    paddingTop: 10
+  },
+  lists: {
+    paddingTop: 10,
+    borderTopWidth: 0.5,
+    borderColor: 'grey',
+    alignItems: 'center'
+  },
+  listTitles: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  listItems: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  buddyList: {
+    position: 'absolute',
+    bottom: -20,
+    left: -140
+  },
+  attendeeList: {
+    position: 'absolute',
+    bottom: -20,
+    left: 50
+  }
 });

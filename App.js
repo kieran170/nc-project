@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
@@ -10,6 +10,7 @@ import { loggingOut, getUserInfo } from "./my-app/config/fireBaseMethods";
 import * as firebase from "firebase";
 import "firebase/auth";
 import GroupChat from "./components/GroupChat";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,13 @@ export default class App extends Component {
         <Stack.Navigator screenOptions={
         ({navigation})=>({
           headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 1},
-          headerTitle: ()=><Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} />,
+          headerLeft: () => <View style={styles.headerLeft}>
+            <TouchableOpacity onPress={() => navigation.goBack()} >
+            <Image style={styles.backButton} source={require('./my-app/assets/back-button.png')} />
+            </TouchableOpacity>
+            <Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} />
+          </View>,
+          headerTitle: '',
           headerRight: () => (<>
 
           <Button
@@ -83,7 +90,7 @@ export default class App extends Component {
           </Stack.Screen>
 
           {/* Disables back button on events screen to prevent user accidentally logging out */}
-          <Stack.Screen name={"Events"} options={{headerLeft: null}}>
+          <Stack.Screen name={"Events"} /*options={{headerLeft: null}}*/>
             {(props) => (
               <EventList
                 {...props}
@@ -130,9 +137,19 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   logo: {
     position: 'absolute',
-    top: -48,
-    left: 0,
+    top: -45,
+    left: -15,
     height: 80,
     width: 100
+  },
+  backButton: {
+    position: 'absolute',
+    top: -35,
+    left: 75,
+    height: 60,
+    width: 80
+  },
+  headerLeft: {
+    marginLeft: 20
   }
 })
