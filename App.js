@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
@@ -56,6 +56,7 @@ export default class App extends Component {
           <Button
             title="Messages"
             color="#FF2400"
+            onPress={() => navigation.navigate("ContactList")}
           />
           <Text>{"\t"}</Text>
           
@@ -132,11 +133,13 @@ export default class App extends Component {
           </Stack.Screen>
 
           <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
+
           <Stack.Screen name={"ContactList"}>
             {(props) => (
               <ContactList {...props} user={this.state.currentUser} />
             )}
           </Stack.Screen>
+          
         </Stack.Navigator>
       </NavigationContainer>
     );
