@@ -145,8 +145,11 @@ export default class EventPage extends Component {
         </Text>
         {item.uid !== currentUid ? (
           <ChatRoom
-            secondUserObject={{uid: item.uid, firstName : item.userData.firstName}}
-            // {uid,  userData : {}}
+            secondUserObject={{
+              uid: item.uid,
+              firstName: item.userData.firstName,
+              contacts: item.userData.contacts,
+            }}
             navigation={navigation}
             currentUser={{
               firstName: this.props.app.currentUser.userData.firstName,

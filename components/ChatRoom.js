@@ -10,8 +10,7 @@ export default function ChatRoom(props) {
   const { secondUserObject } = props;
   const secondUserUid = secondUserObject.uid;
   const currentUserContacts = currentUser.contacts;
-  const secondUserContacts = secondUser.contacts;
-  console.log(secondUserObject)
+  const secondUserContacts = secondUserObject.contacts;
 
   //chatrooms of the connected user and of the second User
   const [chatRoomsCurrentUser, setChatroomsCurrentUser] = useState([]);
@@ -27,7 +26,6 @@ export default function ChatRoom(props) {
     uid: secondUserUid,
     firstName: secondUserObject.firstName,
   });
-  
 
   useEffect(() => {
     //we get all the chatrooms of the connected user
@@ -64,7 +62,7 @@ export default function ChatRoom(props) {
     return;
   };
 
-  console.log(Room)
+  console.log(Room);
 
   matchUsersRooms(chatRoomsCurrentUser, chatroomsSecondUser);
 
@@ -80,7 +78,8 @@ export default function ChatRoom(props) {
         chatRoomsCurrentUser,
         secondUserUid,
         currentUserContacts,
-        secondUserContacts
+        secondUserContacts,
+        chatroomsSecondUser
       ) {
         const updatedChatRoomsCurrentUser = [...chatRoomsCurrentUser];
         const updatedChatRoomsSecondUser = [...chatroomsSecondUser];
@@ -108,7 +107,8 @@ export default function ChatRoom(props) {
         chatRoomsCurrentUser,
         secondUserUid,
         currentUserContacts,
-        secondUserContacts
+        secondUserContacts,
+        chatroomsSecondUser
       );
 
       chatsRef.doc(newRoom).set({});
