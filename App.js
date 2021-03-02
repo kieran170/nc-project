@@ -10,6 +10,7 @@ import { loggingOut, getUserInfo } from "./my-app/config/fireBaseMethods";
 import * as firebase from "firebase";
 import "firebase/auth";
 import GroupChat from "./components/GroupChat";
+import ContactList from "./components/ContactList";
 
 const Stack = createStackNavigator();
 
@@ -34,42 +35,48 @@ export default class App extends Component {
   render() {
     return (
       <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={({ navigation }) => ({
+            headerTitle: () => <Text>Logo</Text>,
+            headerRight: () => (
+              <>
+                <Button
+                  title="Chat"
+                  padding="20"
+                  color="black"
+                  onPress={() => {
+                    navigation.navigate("ContactList");
+                  }}
+                />
+                <Text>{"\t"}</Text>
 
-        <Stack.Navigator screenOptions={
-        ({navigation})=>({
-          headerTitle: ()=><Text>Logo</Text>,
-          headerRight: () => (<>
+                <Button
+                  style={{ paddingLeft: 20 }}
+                  title="My Profile"
+                  color="black"
+                  onPress={() => {
+                    navigation.navigate("Profile");
+                  }}
+                />
+                <Text>{"\t"}</Text>
 
-          <Button
-            title="Chat"
-            padding= "20"
-            color="black"
-          />
-          <Text>{"\t"}</Text>
-          
-          <Button style={{paddingLeft: 20}}
-            title="My Profile"
-            color="black"
-            onPress={() => {
-             navigation.navigate("Profile");
-            }}
-          />
-          <Text>{"\t"}</Text>
-          
-          <Button 
-            title="Log Out"
-            color="black"
-            onPress={()=>{ 
-              navigation.navigate("Home"),
-            this.handleLogOut()}}
-          />
-          <Text>{"\t"}</Text>
-          </>
-          ),
-          headerRightContainerStyle: {flexDirection: "row", marginBottom: 10}
-        })}>
-
-          <Stack.Screen name={"Home"} options={{headerShown: false}}>
+                <Button
+                  title="Log Out"
+                  color="black"
+                  onPress={() => {
+                    navigation.navigate("Home"), this.handleLogOut();
+                  }}
+                />
+                <Text>{"\t"}</Text>
+              </>
+            ),
+            headerRightContainerStyle: {
+              flexDirection: "row",
+              marginBottom: 10,
+            },
+          })}
+        >
+          <Stack.Screen name={"Home"} options={{ headerShown: false }}>
             {(props) => (
               <SignInUp
                 {...props}
@@ -117,7 +124,11 @@ export default class App extends Component {
           </Stack.Screen>
 
           <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
-
+          <Stack.Screen name={"ContactList"}>
+            {(props) => (
+              <ContactList {...props} user={this.state.currentUser} />
+            )}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );
