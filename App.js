@@ -11,6 +11,7 @@ import * as firebase from "firebase";
 import "firebase/auth";
 import GroupChat from "./components/GroupChat";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import ContactList from "./components/ContactList";
 
 const Stack = createStackNavigator();
 
@@ -36,8 +37,6 @@ export default class App extends Component {
 
     return (
       <NavigationContainer>
-
-      {/* <Image style={styles.logo} source={require('./my-app/assets/mini-logo.png')} /> */}
 
       {/* Default header on all screens unless overwritten lower down*/}
         <Stack.Navigator screenOptions={
@@ -133,7 +132,11 @@ export default class App extends Component {
           </Stack.Screen>
 
           <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
-
+          <Stack.Screen name={"ContactList"}>
+            {(props) => (
+              <ContactList {...props} user={this.state.currentUser} />
+            )}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );

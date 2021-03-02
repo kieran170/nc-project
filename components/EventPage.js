@@ -139,7 +139,6 @@ export default class EventPage extends Component {
     const { attendees, buddySeekers } = this.state;
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
-
     const ListItem = ({ item }) => (
 
       
@@ -150,13 +149,17 @@ export default class EventPage extends Component {
         </Text>
         {item.uid !== currentUid ? (
           <ChatRoom
-            secondUserObject={item}
-            secondUser={item.userData}
+            secondUserObject={{
+              uid: item.uid,
+              firstName: item.userData.firstName,
+              contacts: item.userData.contacts,
+            }}
             navigation={navigation}
             currentUser={{
               firstName: this.props.app.currentUser.userData.firstName,
               avatar: this.props.app.currentUser.userData.userAvatar,
               _id: currentUid,
+              contacts: this.props.app.currentUser.userData.contacts,
             }}
           />
         ) : null}

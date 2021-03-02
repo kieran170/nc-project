@@ -1,15 +1,20 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, StyleSheet, Alert, Button, TextInput } from "react-native";
+import { StyleSheet } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
+//GiftedChat is a separate package we have used, which can be found here: https://github.com/FaridSafi/react-native-gifted-chat
 
-//maybe pass this down props later to take user to right chat room.
+
 export default function GroupChat(props) {
+  //We get the reference of the chat where to send messages to from props passed down from the ChatRoom component.
   const chatsRef = props.route.params.chatsRef;
 
+  //We set the user using the Gifted Messages syntax: {_id, avatar, name}
+  //We hold all of the messages in the conversation in state as well as in firestore
   const [user, setUser] = useState(props.route.params.user);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    //the first set message is the safety message
     setMessages([
       {
         _id: 1,
@@ -24,6 +29,8 @@ export default function GroupChat(props) {
         },
       },
     ]);
+
+    //The function handles the real time exchange of messages, using the onSnapshot method to do so
     const unsubscribe = chatsRef
       .collection("messages-collection")
       .onSnapshot((querySnapshot) => {
@@ -42,6 +49,7 @@ export default function GroupChat(props) {
     return () => unsubscribe();
   }, []);
 
+  //Updates the state and adds the messages to the previous messages
   const appendMessages = useCallback(
     (messages) => {
       setMessages((previousMessages) =>
@@ -51,6 +59,7 @@ export default function GroupChat(props) {
     [messages]
   );
 
+  //updates the firestore database with the new messages written using the .add() method to update the collection
   async function handleSend(messages) {
     const writes = messages.map((m) =>
       chatsRef.collection("messages-collection").add(m)
@@ -58,6 +67,7 @@ export default function GroupChat(props) {
     await Promise.all(writes);
   }
 
+  //renders the chat with Gifted Chat
   return <GiftedChat messages={messages} user={user} onSend={handleSend} />;
 }
 
