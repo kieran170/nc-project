@@ -18,12 +18,10 @@ export default function ChatRoom(props) {
   const [currentUserObj, setCurrentUserObj] = useState({
     _id: _id,
     firstName: currentUser.firstName,
-    avatar: currentUser.avatar,
   });
   const [secondUserObj, setSecondUserObj] = useState({
     _id: secondUserUid,
     firstName: secondUser.firstName,
-    avatar: secondUser.avatar,
   });
 
   useEffect(() => {
@@ -80,17 +78,15 @@ export default function ChatRoom(props) {
         updatedUserContacts.push(secondUserObj);
         updatedSecondUserContacts.push(currentUserObj);
 
-        console.log(updatedUserContacts, updatedSecondUserContacts);
-
         const currentUserRef = firestore.collection("users").doc(_id);
         const res1 = await currentUserRef.update({
           chatrooms: updatedChatRoomsCurrentUser,
-          contacts: ["hello"],
+          contacts: updatedUserContacts,
         });
         const secondUserRef = firestore.collection("users").doc(secondUserUid);
         const res2 = await secondUserRef.update({
           chatrooms: updatedChatRoomsSecondUser,
-          contacts: ["hello"],
+          contacts: updatedSecondUserContacts,
         });
       }
       updateUsers(
@@ -100,32 +96,6 @@ export default function ChatRoom(props) {
         currentUserContacts,
         secondUserContacts
       );
-
-      // async function updateContacts(_id, secondUserUid) {
-      //   const currentUserRef = firestore.collection("users").doc(_id);
-      //   const doc = await currentUserRef.get();
-      //   const latestVersionUserData = doc.data();
-      //   setCurrentUserContacts(latestVersionUserData.contacts);
-
-      //   const secondUserRef = firestore.collection("users").doc(secondUserUid);
-      //   const secondDoc = await secondUserRef.get();
-      //   const latestVersionSecondUserData = secondDoc.data();
-      //   setSecondUserContacts(latestVersionSecondUserData.contacts);
-
-      //   const updatedUserContacts = [...currentUserContacts];
-      //   const updatedSecondUserContacts = [...secondUserContacts];
-
-      //   updatedUserContacts.push(latestVersionSecondUserData);
-      //   updatedSecondUserContacts.push(latestVersionUserData);
-
-      //   const res1 = await currentUserRef.update({
-      //     contacts: updatedUserContacts,
-      //   });
-      //   const res2 = await secondUserRef.update({
-      //     contacts: updatedSecondUserContacts,
-      //   });
-      // }
-      // updateContacts(_id, secondUserUid);
 
       chatsRef.doc(newRoom).set({});
       const chatsRefPassed = firestore.collection("chats").doc(newRoom);
