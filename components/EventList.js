@@ -11,6 +11,7 @@ import {
   Button,
   Platform,
   Alert,
+  Image
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -83,14 +84,14 @@ export default class EventList extends Component {
         <TextInput
           style={styles.textInput}
           value={radius}
-          placeholder='search radius (m)'
+          placeholder='Search Radius (m)'
           onChangeText={(text) => this.setState({ radius: text })}
         />
 
         <TextInput
           style={styles.textInput}
           value={userInput}
-          placeholder='city'
+          placeholder='City'
           onChangeText={(text) => this.setState({ userInput: text })}
         />
         </View>
@@ -145,6 +146,9 @@ export default class EventList extends Component {
             );
           })}
         </MapView>
+        <View style={{justifyContent: 'center', flex: 0.3, borderColor: 'grey', borderBottomWidth: 1, borderTopWidth: 1}}>
+            <Image source={require('../my-app/assets/events-title.png')} style={styles.eventTitle} />
+        </View>
         <ScrollView style={styles.container}>
           {errMsg ? (
             <View style={styles.eventText}>
@@ -154,20 +158,23 @@ export default class EventList extends Component {
             events.map((event) => {
               return (
                 <View key={event.id} style={styles.eventText}>
-                  <Text>
+                  <Text style={{textAlign: 'center'}}>
                     <Text style={styles.eventName}>{event.name}</Text> {"\n"}
                     <Text style={styles.eventDate}>
-                      Date: {event.date} {event.time}
+                    <>
+                    <Text style={{fontWeight: 'bold'}}>Date: </Text>{event.date} {"\t"} <Text style={{fontWeight: 'bold'}}>Start Time: </Text>{event.time}
+                    </>
                     </Text>{" "}
                     {"\n"}
-                    Venue: {event.venue}
+                    <Text style={{fontWeight: 'bold'}}>Venue: </Text>{event.venue}
                   </Text>
-                  <Button
-                    title="more info"
-                    onPress={() =>
-                      this.props.navigation.navigate("Event Details", event)
-                    }
-                  />
+
+                  <TouchableHighlight onPress={() => this.props.navigation.navigate("Event Details", event)}>
+                    <View style={styles.findBuddy}>
+                      <Text style={{color: 'white', textAlign: 'center'}}>Find A Gig Buddy!</Text>
+                    </View>
+                  </TouchableHighlight>
+
                 </View>
               );
             })
@@ -268,16 +275,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
+    zIndex: 0
   },
   map: {
     flex: 1,
   },
   eventText: {
     marginBottom: 25,
-    borderColor: "red",
-    borderStyle: "solid",
-    borderWidth: 1,
     flex: 1,
     width: "100%",
   },
@@ -307,11 +311,30 @@ const styles = StyleSheet.create({
   },
   touchableArea: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
   },
   inputArea: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     paddingBottom: 4
+  },
+  eventTitle: {
+    position: 'absolute',
+    top: -15,
+    left: 115,
+    height: 100,
+    width: 150,
+    resizeMode: 'contain',
+    zIndex: 500
+  },
+  findBuddy: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
+    height: 30,
+    alignSelf: 'center'
   }
 });
