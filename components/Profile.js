@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TextInput, Image, Button } from "react-native";
-import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import DialogInput from "react-native-dialog-input";
 import { firestore } from "../my-app/config/firebase";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
-import { withOrientation } from "react-navigation";
 
 export default function App(props) {
   const { navigation, app } = props;
@@ -22,7 +21,15 @@ export default function App(props) {
   const [lastName, setLastName] = useState("");
 
   const userUid = firebase.auth().currentUser.uid;
-  const readOnlyProfile = props.route.params; // fix issue here
+
+  let readOnlyProfile;
+
+  if (app.currentUser.uid === props.route.params.uid) {
+    readOnlyProfile = false;
+  } else {
+    readOnlyProfile = props.route.params
+  }
+ 
   const user = { userAvatar: avatar, userBio: bio };
 
   const handlePress = () => {
@@ -52,61 +59,71 @@ export default function App(props) {
   };
 
   useEffect(() => {
-    if (!readOnlyProfile) {
-      async function getUserInfo() {
-        let doc = await firebase
-          .firestore()
-          .collection("users")
-          .doc(userUid)
-          .get();
 
-        if (!doc.exists) {
-          Alert.alert("No user data found!");
-        } else {
-          let dataObj = doc.data();
-          setFirstName(dataObj.firstName);
-          setLastName(dataObj.lastName);
+    console.log(app.currentUser)
 
-          if (dataObj.userAvatar && dataObj.userBio !== undefined) {
-            setAvatar(dataObj.userAvatar);
-            onChangeText(dataObj.userBio);
-            setHaveBio(true);
-            setAddBio(false);
-          }
+    async function getUserInfo() {
+      let doc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(userUid)
+        .get();
+
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
+      } else {
+        let dataObj = doc.data();
+        setFirstName(dataObj.firstName);
+        setLastName(dataObj.lastName);
+
+        if (dataObj.userAvatar && dataObj.userBio !== undefined) {
+          setAvatar(dataObj.userAvatar);
+          onChangeText(dataObj.userBio);
+          setHaveBio(true);
+          setAddBio(false);
         }
       }
+    }
+
+    if (!readOnlyProfile) {
       getUserInfo();
+    } else {
+      setAvatar(app.currentUser.userData.userAvatar)
+      onChangeText(app.currentUser.userData.userBio)
+      setHaveBio(true)
+      setAddBio(false)
     }
   }, []);
 
   return !readOnlyProfile ? (
     <View style={styles.container}>
 
+      <View style={{alignItems: 'center'}} >
       <Image
         style={styles.avatar}
         source={{ height: 180, width: 180, uri: avatar }}
       />
       <TouchableHighlight
-        onPress={handleImageChange}
-        style={styles.buttonImageContainer}
+        onPress={handleImageChange}  
       >
         <View style={styles.button}>
           <Text  style={styles.buttonText}>Change Image</Text>
         </View>
       </TouchableHighlight>
+
       {imageChange === true && (
         <TouchableHighlight
           onPress={handleImageConfirm}
-          style={styles.buttonImageContainer}
         >
           <View style={styles.button}>
             <Text style={styles.ImageButtonText}>Confirm Image</Text>
           </View>
         </TouchableHighlight>
       )}
+      </View>
+        
       <Text style={styles.name}>
         {firstName} {lastName}
-        {"\n"}
       </Text>
       {addBio && (
         <>
@@ -132,7 +149,7 @@ export default function App(props) {
       {haveBio && (
         <>
           <View style={styles.aboutMeContainer}>
-            <Text style={styles.aboutMeTitle}>About Me {"\n"}</Text>
+            <Text style={styles.aboutMeTitle}>About Me</Text>
             <Text style={styles.aboutMe}>{bio}</Text>
           </View>
           <TouchableHighlight onPress={handleEdit}  style={styles.buttonBioContainer}>
@@ -142,7 +159,7 @@ export default function App(props) {
 
           </TouchableHighlight>
           <View>
-            <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+            <Text style={styles.previousGigTitle}>Previous Gigs</Text>
             <Text style={styles.gigTitles}>Miley Cyrus</Text>
             <Text style={styles.textGigs}>
               May 28th 2019 Leeds Direct Arena{"\n"}
@@ -204,15 +221,15 @@ export default function App(props) {
         {"\n"}
       </Text>
       <View style={styles.aboutMeContainer}>
-        <Text style={styles.aboutMeTitle}>About Me {"\n"}</Text>
+        <Text style={styles.aboutMeTitle}>About Me</Text>
         {readOnlyProfile.userData.userBio ? (
           <Text style={styles.aboutMe}>{readOnlyProfile.userData.userBio}</Text>
         ) : (
-          <Text style={styles.aboutMeTitle}>User doesn't have a bio yet</Text>
+          <Text style={styles.noBio}>{readOnlyProfile.userData.firstName} has not written a bio yet</Text>
         )}
       </View>
       <View>
-        <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+        <Text style={styles.previousGigTitle}>Previous Gigs</Text>
         <Text style={styles.gigTitles}>Miley Cyrus</Text>
         <Text style={styles.textGigs}>
           May 28th 2019 Leeds Direct Arena{"\n"}
@@ -234,18 +251,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 50,
+    paddingTop: 10,
     backgroundColor: "#33e4ff",
-    alignItems: "center"
-  },
-  title: {
-    fontSize: 30,
-    textAlign: "center",
-    marginBottom: 20,
+    alignItems: "center",
+    flexDirection: 'column'
   },
   avatar: {
     borderRadius: 100,
     marginLeft: 5,
+    marginBottom: 10
   },
   inputbox: {
     borderWidth: 1,
@@ -263,7 +277,8 @@ const styles = StyleSheet.create({
   aboutMeContainer: {
     marginLeft: 5,
     marginRight: 5,
-    width: "60%",
+    width: "75%",
+    alignSelf: 'center',
   },
   button: {
     backgroundColor: 'red',
@@ -276,12 +291,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16
   },
-  buttonLogoutContainer: {
-    marginLeft: 140,
-  },
   buttonImageContainer: {
     marginTop: 5,
     marginLeft: 30,
+    alignSelf: 'center'
   },
   buttonBioContainer: {
     marginTop: 10,
@@ -291,23 +304,24 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
     fontSize: 35,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginBottom: 10
   },
   aboutMeTitle: {
-    fontSize: 24,
-    fontWeight: "bold"
-  },
-  buttonChatContainer: {
-    width: 100,
+    fontSize: 20,
+    fontWeight: "bold",
+    alignSelf: 'center'
   },
   ImageButtonText: {
     fontSize: 15,
     textAlign: "center",
   },
   previousGigTitle: {
-    marginTop: 20,
+    marginTop: 40,
     fontSize: 25,
     marginLeft: 5,
+    marginBottom: 10,
+    fontWeight: 'bold'
   },
   textGigs: {
     marginLeft: 5,
@@ -317,10 +331,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
   },
-  chatButton: {
-    marginLeft: 5,
-  },
   aboutMe:{
-    fontSize: 18
+    fontSize: 17,
+    textAlign: 'center'
+  },
+  noBio: {
+    fontStyle: 'italic',
+    alignSelf: 'center',
+    fontSize: 17
   }
 });
