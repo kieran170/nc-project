@@ -29,8 +29,8 @@ export default class EventList extends Component {
         ? {
             latitude: 0,
             longitude: 0,
-            latitudeDelta: -50,
-            longitudeDelta: -50,
+            latitudeDelta: 250,
+            longitudeDelta: 250,
           }
         : {
             latitude: 0,
@@ -53,8 +53,8 @@ export default class EventList extends Component {
         const newRegion = {
           longitude: +filteredEvents[0].location.longitude,
           latitude: +filteredEvents[0].location.latitude,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
         };
         this.setState({ events: filteredEvents, newRegion });
       } else {
@@ -85,6 +85,7 @@ export default class EventList extends Component {
           style={styles.textInput}
           value={radius}
           placeholder='Search Radius (miles)'
+          placeholderTextColor='black'
           onChangeText={(text) => this.setState({ radius: text })}
         />
 
@@ -92,6 +93,7 @@ export default class EventList extends Component {
           style={styles.textInput}
           value={userInput}
           placeholder='City'
+          placeholderTextColor='black'
           onChangeText={(text) => this.setState({ userInput: text })}
         />
         </View>
@@ -99,13 +101,13 @@ export default class EventList extends Component {
         <View style={styles.touchableArea}>
         <TouchableHighlight onPress={this.handleLocationSearch}>
           <View style={styles.nearMe}>
-            <Text style={{color: '#fff', textAlign: 'center'}}>Events Near Me</Text>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Events Near Me</Text>
           </View>
         </TouchableHighlight>
 
         <TouchableHighlight onPress={this.handleSearch}>
           <View style={styles.nearMe}>
-            <Text style={{color: '#fff', textAlign: 'center'}}>Manual Search</Text>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Manual Search</Text>
           </View>
         </TouchableHighlight>
         </View>
@@ -158,20 +160,16 @@ export default class EventList extends Component {
             events.map((event) => {
               return (
                 <View key={event.id} style={styles.eventText}>
-                  <Text style={{textAlign: 'center'}}>
+                  <Text style={{textAlign: 'center', fontSize: 16}}>
                     <Text style={styles.eventName}>{event.name}</Text> {"\n"}
-                    <Text style={styles.eventDate}>
-                    <>
                     <Text style={{fontWeight: 'bold'}}>Date: </Text>{event.date} {"\t"} <Text style={{fontWeight: 'bold'}}>Start Time: </Text>{event.time}
-                    </>
-                    </Text>{" "}
                     {"\n"}
                     <Text style={{fontWeight: 'bold'}}>Venue: </Text>{event.venue}
                   </Text>
 
                   <TouchableHighlight onPress={() => this.props.navigation.navigate("Event Details", event)}>
                     <View style={styles.findBuddy}>
-                      <Text style={{color: 'white', textAlign: 'center'}}>Find A Gig Buddy!</Text>
+                      <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Find A Gig Buddy!</Text>
                     </View>
                   </TouchableHighlight>
 
@@ -287,7 +285,7 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 25,
   },
   search: {
     flexDirection: 'column',
@@ -336,7 +334,7 @@ const styles = StyleSheet.create({
     borderColor: '#991400',
     borderWidth: 1,
     width: 150,
-    height: 30,
+    height: 35,
     alignSelf: 'center'
   }
 });

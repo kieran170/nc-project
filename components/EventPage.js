@@ -7,7 +7,9 @@ import {
   Button,
   View,
   Alert,
-  Dimensions
+  Dimensions,
+  PlatformColor,
+  Platform
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import {
@@ -17,13 +19,14 @@ import {
   eventDocExists,
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
-import { FlatList, TouchableHighlight } from "react-native-gesture-handler";
+import { FlatList, ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
   state = {
     buddySeekers: [],
     attendees: [],
+    mapShown: false
   };
 
   componentDidMount() {
@@ -123,6 +126,12 @@ export default class EventPage extends Component {
     }
   };
 
+  handleMap = () => {
+    this.setState((currentState) => {
+      return {mapShown: !currentState.mapShown}
+    })
+  }
+
   render() {
     const {
       name,
@@ -136,15 +145,14 @@ export default class EventPage extends Component {
       genre,
       subGenre,
     } = this.props.route.params;
-    const { attendees, buddySeekers } = this.state;
+    const { attendees, buddySeekers, mapShown } = this.state;
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
-    const ListItem = ({ item }) => (
 
-      
-      <View>
-        <Text onPress={() => navigation.navigate("Profile", item)}>
-          {item.userData.firstName} {item.userData.lastName}
+    const ListItem = ({ item }) => (
+      <View style={{flexDirection: 'row', paddingBottom: 10, alignItems: 'center', width: 120, justifyContent: 'space-between'}}>
+        <Text style={{marginRight: 10, fontWeight: 'bold', fontSize: 16}} onPress={() => navigation.navigate("Profile", item)}>
+          {item.userData.firstName} {item.userData.lastName.slice(0, 1)}
         </Text>
         {item.uid !== currentUid ? (
           <ChatRoom
@@ -166,7 +174,7 @@ export default class EventPage extends Component {
     );
     return (
       <SafeAreaView style={styles.eventPage}>
-
+        <View style={{flex: 1}}>
         <Text style={styles.eventName}>{name}</Text>
 
         <View style={styles.detailsView}>
@@ -184,19 +192,28 @@ export default class EventPage extends Component {
         <View style={styles.touchableArea}>
           <TouchableHighlight onPress={() => this.handlePress("buddySeekers")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Looking For A Buddy</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Looking For Buddy</Text>
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={() => this.handlePress("attendees")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>I'm Attending</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>I'm Attending</Text>
             </View>
           </TouchableHighlight>
         </View>
-
         <Image style={styles.image} source={{ uri: image }} />
-        <MapView
+
+        <TouchableHighlight onPress={this.handleMap} style={{alignSelf: 'center', paddingBottom: 5}}>
+          <View style={styles.mapButton}>
+            <Text style={{fontWeight: 'bold', color: 'white', textAlign: 'center', fontSize: 17}}>Toggle Map View</Text>
+          </View>
+        </TouchableHighlight>
+
+</View>
+        {mapShown ? 
+        
+          <MapView
           style={styles.map}
           region={{
             longitude: +location.longitude,
@@ -204,7 +221,7 @@ export default class EventPage extends Component {
             longitudeDelta: 0.005,
             latitudeDelta: 0.005,
           }}
-        >
+          >
           <Marker
             image={require("../my-app/assets/mini-stratocaster.png")}
             key={id}
@@ -213,37 +230,41 @@ export default class EventPage extends Component {
               longitude: +location.longitude,
             }}
           />
-        </MapView>
+          </MapView>
 
-        <View style={styles.lists}>
+          :
 
-        <View style={styles.listTitles}>
-        <Text style={{ fontWeight: "bold", marginRight: 30 }}>Looking for a buddy: </Text>
-        <Text style={{ fontWeight: "bold", marginLeft: 30 }}>Attending this gig: </Text>
-        </View>
+          <View style={styles.lists}>
 
-        <View style={styles.listItems}>
+          <View style={styles.listTitles}>
+          <Text style={{ fontWeight: "bold", marginRight: 15, fontSize: 18, textDecorationLine: 'underline' }}>Looking for a buddy: </Text>
+          <Text style={{ fontWeight: "bold", marginLeft: 15, fontSize: 18, textDecorationLine: 'underline'  }}>Attending this gig: </Text>
+          </View>
 
-        <View style={styles.buddyList}>
-        <FlatList
-          styles={{ flex: 1 }}
-          data={buddySeekers}
-          renderItem={ListItem}
-          keyExtractor={(item) => item.uid}
-        />
-        </View>
+          <View style={styles.listItems}>
+
+          <View style={styles.buddyList}>
+          <FlatList
+            styles={{ flex: 1 }}
+            data={buddySeekers}
+            renderItem={ListItem}
+            keyExtractor={(item) => item.uid}
+          />
+          </View>
+
+          <View style={styles.attendeeList}>
+          <FlatList
+            styles={{ flex: 1}}
+            data={attendees}
+            renderItem={ListItem}
+            keyExtractor={(item) => item.uid}
+          />
+          </View>
+
+          </View>
+          </View>
         
-        <View style={styles.attendeeList}>
-        <FlatList
-          styles={{ flex: 1 }}
-          data={attendees}
-          renderItem={ListItem}
-          keyExtractor={(item) => item.uid}
-        />
-        </View>
-
-        </View>
-        </View>
+        }
 
       </SafeAreaView>
     );
@@ -258,8 +279,10 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   map: {
+    flex: 1,
     width: "100%",
     height: 200,
+    marginBottom: 20
   },
   eventName: {
     fontWeight: "bold",
@@ -268,7 +291,8 @@ const styles = StyleSheet.create({
   },
   eventPage: {
     backgroundColor: "#33e4ff",
-    minHeight: Dimensions.get('window').height
+    minHeight: Dimensions.get('window').height,
+    flex: 1
   },
   eventDetails: {
     fontWeight: 'bold',
@@ -292,27 +316,34 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   lists: {
+    flex: 1,
     paddingTop: 10,
     borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: 'grey',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   listTitles: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingBottom: 5
   },
   listItems: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   buddyList: {
-    position: 'absolute',
-    bottom: -20,
-    left: -140
+    marginRight: 40
   },
   attendeeList: {
-    position: 'absolute',
-    bottom: -20,
-    left: 50
+    marginLeft: 30
+  },
+  mapButton: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
   }
 });
