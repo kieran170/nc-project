@@ -6,6 +6,7 @@ import { firestore } from "../my-app/config/firebase";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
+import { withOrientation } from "react-navigation";
 
 export default function App(props) {
   const { navigation } = props;
@@ -28,6 +29,10 @@ export default function App(props) {
     setAddBio(false);
     setHaveBio(true);
     const res = firestore.collection("users").doc(userUid).update(user);
+  };
+  const handleEdit = () => {
+    setAddBio(true);
+    setHaveBio(false);
   };
 
   const handleLogOut = () => {
@@ -75,7 +80,7 @@ export default function App(props) {
   }, []);
 
   return !readOnlyProfile ? (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       
       <Image
         style={styles.avatar}
@@ -86,7 +91,7 @@ export default function App(props) {
         style={styles.buttonImageContainer}
       >
         <View style={styles.button}>
-          <Text style={styles.ImageButtonText}>Change Image</Text>
+          <Text  style={styles.buttonText}>Change Image</Text>
         </View>
       </TouchableHighlight>
       {imageChange === true && (
@@ -105,7 +110,6 @@ export default function App(props) {
       </Text>
       {addBio && (
         <>
-          <Text style={styles.bioTitle}>Add A Bio</Text>
           <TextInput
             style={styles.inputbox}
             multiline
@@ -119,7 +123,7 @@ export default function App(props) {
               style={styles.buttonBioContainer}
             >
               <View style={styles.button}>
-                <Text style={styles.buttonText}>Add Bio</Text>
+                <Text style={styles.buttonText}>Submit Bio</Text>
               </View>
             </TouchableHighlight>
           )}
@@ -131,9 +135,16 @@ export default function App(props) {
             <Text style={styles.aboutMeTitle}>About Me {"\n"}</Text>
             <Text style={styles.aboutMe}>{bio}</Text>
           </View>
+          <TouchableHighlight onPress={handleEdit}  style={styles.buttonBioContainer}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Edit Bio</Text>
+            </View>
+
+          </TouchableHighlight>
           <View>
             <Text style={styles.previousGigTitle}>Previous Gigs</Text>
           </View>
+          
         </>
       )}
       <DialogInput
@@ -154,9 +165,9 @@ export default function App(props) {
         {"\n"}
         {"\n"}
       </Text>
-    </ScrollView>
+    </View>
   ) : (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View
         style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
       >
@@ -213,7 +224,7 @@ export default function App(props) {
       <View>
         <Text style={styles.previousGigTitle}>Previous Gigs</Text>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -222,6 +233,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 50,
+    backgroundColor: "#33e4ff",
+    alignItems: "center"
   },
   title: {
     fontSize: 30,
@@ -234,10 +247,11 @@ const styles = StyleSheet.create({
   },
   inputbox: {
     borderWidth: 1,
-    width: "50%",
-    height: 200,
+    width: "70%",
+    height: 100,
     marginLeft: 5,
     paddingLeft: 5,
+    backgroundColor: "white",
   },
   bioTitle: {
     marginTop: 10,
@@ -250,14 +264,15 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   button: {
-    borderWidth: 1,
-    width: 130,
-    alignItems: "center",
+    backgroundColor: 'red',
+    padding: 5,
     borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
   },
   buttonText: {
-    fontSize: 20,
-    textAlign: "center",
+    color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16
   },
   buttonLogoutContainer: {
     marginLeft: 140,
@@ -274,9 +289,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
     fontSize: 35,
+    fontWeight: "bold"
   },
   aboutMeTitle: {
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: "bold"
   },
   buttonChatContainer: {
     width: 100,
@@ -293,4 +310,7 @@ const styles = StyleSheet.create({
   chatButton: {
     marginLeft: 5,
   },
+  aboutMe:{
+    fontSize: 18
+  }
 });
