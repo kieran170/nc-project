@@ -29,6 +29,7 @@ export default function ChatRoom(props) {
   //avatar url held in state to pass down as props
   const [avatar, setAvatar] = useState("");
 
+
   useEffect(() => {
     //we get all the chatrooms of the connected user
     async function getUserData() {
@@ -43,7 +44,6 @@ export default function ChatRoom(props) {
       let doc = await firestore.collection("users").doc(secondUserUid).get();
       let dataObj = doc.data();
       setChatroomsSecondUser(dataObj.chatrooms);
-      setAvatar(dataObj.userAvatar);
     }
     getUserData();
     getSecondUserData();
