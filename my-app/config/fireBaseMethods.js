@@ -16,7 +16,8 @@ export async function registration(firstName, familyName, email, password) {
       lastName: familyName,
       firstName: firstName,
       chatrooms: [currentUserUID],
-      contacts: []
+      contacts: [],
+      avatar: "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
     });
     Alert.alert("Sign Up Successful");
   } catch (err) {
