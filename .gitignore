@@ -10,7 +10,7 @@ npm-debug.*
 web-build/
 package-lock.json
 package-lock.json~6718d3b56e330ccac274b924b32c040f4844147e
-/my-app/config/firbase.js
+/my-app/config/firebase.js
 
 # macOS
 .DS_Store
