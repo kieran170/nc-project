@@ -28,10 +28,8 @@ export default function ContactList(props) {
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
-        <Text style={{fontWeight: "bold",fontSize: 32}}>{item.firstName}</Text>       
-
+        <Text style={{fontWeight: "bold",fontSize: 32}}>{item.firstName}</Text>      
         <Image style={styles.avatar} source={{uri:item.userAvatar}} />
-        <Text>{item.firstName}</Text>
         <ChatRoom style={styles.addUser}
          sizeChange={true}
          currentUser={{
