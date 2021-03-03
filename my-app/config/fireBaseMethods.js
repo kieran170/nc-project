@@ -14,10 +14,11 @@ export async function registration(firstName, familyName, email, password) {
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
       lastName: familyName,
+      
       firstName: firstName,
       chatrooms: [currentUserUID],
       contacts: [],
-      avatar: "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
+      userAvatar: "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
     });
     Alert.alert("Sign Up Successful");
   } catch (err) {

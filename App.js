@@ -124,7 +124,7 @@ export default class App extends Component {
           </Stack.Screen>
 
           <Stack.Screen name={"Profile"}>
-            {(props) => (
+            {(props) => (  
               <Profile
                 {...props}
                 app={this.state}

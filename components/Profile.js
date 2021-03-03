@@ -10,7 +10,7 @@ import "firebase/firestore";
 export default function App(props) {
   const { navigation } = props;
   const [avatar, setAvatar] = useState(
-    "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+    "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
   );
   const [addBio, setAddBio] = useState(true);
   const [bio, onChangeText] = useState("");
