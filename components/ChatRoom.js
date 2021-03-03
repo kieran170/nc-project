@@ -6,6 +6,7 @@ import { firestore } from "../my-app/config/firebase";
 export default function ChatRoom(props) {
   const { navigation } = props;
   const { currentUser } = props;
+  const {sizeChange} = props;
   const firstName = currentUser.firstName;
   const _id = currentUser._id;
   const { secondUserObject } = props;
@@ -138,8 +139,8 @@ export default function ChatRoom(props) {
 
   return (
       <TouchableHighlight onPress={handlePress}>
-        <View style={styles.chatButton}>
-          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>Chat</Text>
+        <View style={sizeChange ? styles.bigButton :styles.chatButton}>
+          <Text style={sizeChange ? styles.bigText :styles.text}>Chat</Text>
         </View>
       </TouchableHighlight>
   );
@@ -152,5 +153,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#991400',
     borderWidth: 1,
+  },
+  bigButton:{
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+  
+  },
+  text:{
+    fontWeight: 'bold', color: 'white', fontSize: 14
+  },
+  bigText:{
+    fontWeight: 'bold', color: 'white', fontSize: 25, paddingLeft: 10,paddingRight: 10,
   }
 })

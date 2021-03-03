@@ -174,7 +174,7 @@ export default class EventPage extends Component {
     );
     return (
       <SafeAreaView style={styles.eventPage}>
-
+        <View style={{flex: 1}}>
         <Text style={styles.eventName}>{name}</Text>
 
         <View style={styles.detailsView}>
@@ -210,7 +210,7 @@ export default class EventPage extends Component {
           </View>
         </TouchableHighlight>
 
-
+</View>
         {mapShown ? 
         
           <MapView
@@ -279,6 +279,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   map: {
+    flex: 1,
     width: "100%",
     height: 200,
     marginBottom: 20
@@ -315,6 +316,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   lists: {
+    flex: 1,
     paddingTop: 10,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
