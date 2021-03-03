@@ -76,7 +76,6 @@ export default function App(props) {
 
   return !readOnlyProfile ? (
     <ScrollView style={styles.container}>
-      
       <Image
         style={styles.avatar}
         source={{ height: 180, width: 180, uri: avatar }}
@@ -132,7 +131,19 @@ export default function App(props) {
             <Text style={styles.aboutMe}>{bio}</Text>
           </View>
           <View>
-            <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+            <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+            <Text style={styles.gigTitles}>Miley Cyrus</Text>
+            <Text style={styles.textGigs}>
+              May 28th 2019 Leeds Direct Arena{"\n"}
+            </Text>
+            <Text style={styles.gigTitles}>Slipknot</Text>
+            <Text style={styles.textGigs}>
+              March 1st 2019 Leeds Direct Arena{"\n"}
+            </Text>
+            <Text style={styles.gigTitles}>Beatles HoloGram Tour</Text>
+            <Text style={styles.textGigs}>
+              December 15th 2017 Las Vegas MGM hotel
+            </Text>
           </View>
         </>
       )}
@@ -211,7 +222,19 @@ export default function App(props) {
         )}
       </View>
       <View>
-        <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+        <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+        <Text style={styles.gigTitles}>Miley Cyrus</Text>
+        <Text style={styles.textGigs}>
+          May 28th 2019 Leeds Direct Arena{"\n"}
+        </Text>
+        <Text style={styles.gigTitles}>Slipknot</Text>
+        <Text style={styles.textGigs}>
+          March 1st 2019 Leeds Direct Arena{"\n"}
+        </Text>
+        <Text style={styles.gigTitles}>Beatles HoloGram Tour</Text>
+        <Text style={styles.textGigs}>
+          December 15th 2017 Las Vegas MGM hotel
+        </Text>
       </View>
     </ScrollView>
   );
@@ -276,7 +299,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
   },
   aboutMeTitle: {
-    fontSize: 20,
+    fontSize: 25,
   },
   buttonChatContainer: {
     width: 100,
@@ -287,8 +310,16 @@ const styles = StyleSheet.create({
   },
   previousGigTitle: {
     marginTop: 20,
-    fontSize: 20,
+    fontSize: 25,
     marginLeft: 5,
+  },
+  textGigs: {
+    marginLeft: 5,
+  },
+  gigTitles: {
+    marginLeft: 5,
+    fontWeight: "bold",
+    fontSize: 17,
   },
   chatButton: {
     marginLeft: 5,
