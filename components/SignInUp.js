@@ -64,7 +64,7 @@ export default function App({ navigation, login }) {
           setFamilyName("");
           setEmail("");
           setPassword("");
-          setSignUp(false);
+          setSignUp(true);
         }
         if (err) {
           Alert.alert("There is something wrong!!!!", err.message);

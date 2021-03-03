@@ -7,7 +7,9 @@ import {
   Button,
   View,
   Alert,
-  Dimensions
+  Dimensions,
+  PlatformColor,
+  Platform
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import {
@@ -17,7 +19,7 @@ import {
   eventDocExists,
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
-import { FlatList, TouchableHighlight } from "react-native-gesture-handler";
+import { FlatList, ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
@@ -139,12 +141,11 @@ export default class EventPage extends Component {
     const { attendees, buddySeekers } = this.state;
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
-    const ListItem = ({ item }) => (
 
-      
-      <View>
-        <Text onPress={() => navigation.navigate("Profile", item)}>
-          {item.userData.firstName} {item.userData.lastName}
+    const ListItem = ({ item }) => (
+      <View style={{flexDirection: 'row', paddingBottom: 10, alignItems: 'center', width: 120, justifyContent: 'space-between'}}>
+        <Text style={{marginRight: 10, fontWeight: 'bold', fontSize: 16}} onPress={() => navigation.navigate("Profile", item)}>
+          {item.userData.firstName} {item.userData.lastName.slice(0, 1)}
         </Text>
         {item.uid !== currentUid ? (
           <ChatRoom
@@ -184,13 +185,13 @@ export default class EventPage extends Component {
         <View style={styles.touchableArea}>
           <TouchableHighlight onPress={() => this.handlePress("buddySeekers")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Looking For A Buddy</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Looking For Buddy</Text>
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={() => this.handlePress("attendees")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>I'm Attending</Text>
+              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>I'm Attending</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -218,8 +219,8 @@ export default class EventPage extends Component {
         <View style={styles.lists}>
 
         <View style={styles.listTitles}>
-        <Text style={{ fontWeight: "bold", marginRight: 30 }}>Looking for a buddy: </Text>
-        <Text style={{ fontWeight: "bold", marginLeft: 30 }}>Attending this gig: </Text>
+        <Text style={{ fontWeight: "bold", marginRight: 15, fontSize: 18, textDecorationLine: 'underline' }}>Looking for a buddy: </Text>
+        <Text style={{ fontWeight: "bold", marginLeft: 15, fontSize: 18, textDecorationLine: 'underline'  }}>Attending this gig: </Text>
         </View>
 
         <View style={styles.listItems}>
@@ -235,7 +236,7 @@ export default class EventPage extends Component {
         
         <View style={styles.attendeeList}>
         <FlatList
-          styles={{ flex: 1 }}
+          styles={{ flex: 1}}
           data={attendees}
           renderItem={ListItem}
           keyExtractor={(item) => item.uid}
@@ -295,24 +296,21 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderTopWidth: 0.5,
     borderColor: 'grey',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   listTitles: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingBottom: 5
   },
   listItems: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   buddyList: {
-    position: 'absolute',
-    bottom: -20,
-    left: -140
+    marginRight: 40
   },
   attendeeList: {
-    position: 'absolute',
-    bottom: -20,
-    left: 50
+    marginLeft: 30
   }
 });

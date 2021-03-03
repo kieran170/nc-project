@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Button } from "react-native";
+import { Button, View, Text, StyleSheet } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import { firestore } from "../my-app/config/firebase";
 
 export default function ChatRoom(props) {
@@ -134,9 +135,22 @@ export default function ChatRoom(props) {
       });
     }
   };
+
   return (
-    <>
-      <Button onPress={handlePress} title="Message me!"></Button>
-    </>
+      <TouchableHighlight onPress={handlePress}>
+        <View style={styles.chatButton}>
+          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>Chat</Text>
+        </View>
+      </TouchableHighlight>
   );
 }
+
+const styles = StyleSheet.create({
+  chatButton: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+  }
+})
