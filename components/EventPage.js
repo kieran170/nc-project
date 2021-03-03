@@ -26,6 +26,7 @@ export default class EventPage extends Component {
   state = {
     buddySeekers: [],
     attendees: [],
+    mapShown: false
   };
 
   componentDidMount() {
@@ -125,6 +126,12 @@ export default class EventPage extends Component {
     }
   };
 
+  handleMap = () => {
+    this.setState((currentState) => {
+      return {mapShown: !currentState.mapShown}
+    })
+  }
+
   render() {
     const {
       name,
@@ -138,7 +145,7 @@ export default class EventPage extends Component {
       genre,
       subGenre,
     } = this.props.route.params;
-    const { attendees, buddySeekers } = this.state;
+    const { attendees, buddySeekers, mapShown } = this.state;
     const { navigation } = this.props;
     const currentUid = this.props.app.currentUser.uid;
 
@@ -195,9 +202,18 @@ export default class EventPage extends Component {
             </View>
           </TouchableHighlight>
         </View>
-
         <Image style={styles.image} source={{ uri: image }} />
-        <MapView
+
+        <TouchableHighlight onPress={this.handleMap} style={{alignSelf: 'center', paddingBottom: 5}}>
+          <View style={styles.mapButton}>
+            <Text style={{fontWeight: 'bold', color: 'white', textAlign: 'center', fontSize: 17}}>Toggle Map View</Text>
+          </View>
+        </TouchableHighlight>
+
+
+        {mapShown ? 
+        
+          <MapView
           style={styles.map}
           region={{
             longitude: +location.longitude,
@@ -205,7 +221,7 @@ export default class EventPage extends Component {
             longitudeDelta: 0.005,
             latitudeDelta: 0.005,
           }}
-        >
+          >
           <Marker
             image={require("../my-app/assets/mini-stratocaster.png")}
             key={id}
@@ -214,37 +230,41 @@ export default class EventPage extends Component {
               longitude: +location.longitude,
             }}
           />
-        </MapView>
+          </MapView>
 
-        <View style={styles.lists}>
+          :
 
-        <View style={styles.listTitles}>
-        <Text style={{ fontWeight: "bold", marginRight: 15, fontSize: 18, textDecorationLine: 'underline' }}>Looking for a buddy: </Text>
-        <Text style={{ fontWeight: "bold", marginLeft: 15, fontSize: 18, textDecorationLine: 'underline'  }}>Attending this gig: </Text>
-        </View>
+          <View style={styles.lists}>
 
-        <View style={styles.listItems}>
+          <View style={styles.listTitles}>
+          <Text style={{ fontWeight: "bold", marginRight: 15, fontSize: 18, textDecorationLine: 'underline' }}>Looking for a buddy: </Text>
+          <Text style={{ fontWeight: "bold", marginLeft: 15, fontSize: 18, textDecorationLine: 'underline'  }}>Attending this gig: </Text>
+          </View>
 
-        <View style={styles.buddyList}>
-        <FlatList
-          styles={{ flex: 1 }}
-          data={buddySeekers}
-          renderItem={ListItem}
-          keyExtractor={(item) => item.uid}
-        />
-        </View>
+          <View style={styles.listItems}>
+
+          <View style={styles.buddyList}>
+          <FlatList
+            styles={{ flex: 1 }}
+            data={buddySeekers}
+            renderItem={ListItem}
+            keyExtractor={(item) => item.uid}
+          />
+          </View>
+
+          <View style={styles.attendeeList}>
+          <FlatList
+            styles={{ flex: 1}}
+            data={attendees}
+            renderItem={ListItem}
+            keyExtractor={(item) => item.uid}
+          />
+          </View>
+
+          </View>
+          </View>
         
-        <View style={styles.attendeeList}>
-        <FlatList
-          styles={{ flex: 1}}
-          data={attendees}
-          renderItem={ListItem}
-          keyExtractor={(item) => item.uid}
-        />
-        </View>
-
-        </View>
-        </View>
+        }
 
       </SafeAreaView>
     );
@@ -261,6 +281,7 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: 200,
+    marginBottom: 20
   },
   eventName: {
     fontWeight: "bold",
@@ -269,7 +290,8 @@ const styles = StyleSheet.create({
   },
   eventPage: {
     backgroundColor: "#33e4ff",
-    minHeight: Dimensions.get('window').height
+    minHeight: Dimensions.get('window').height,
+    flex: 1
   },
   eventDetails: {
     fontWeight: 'bold',
@@ -295,6 +317,7 @@ const styles = StyleSheet.create({
   lists: {
     paddingTop: 10,
     borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: 'grey',
     alignItems: 'center',
   },
@@ -312,5 +335,13 @@ const styles = StyleSheet.create({
   },
   attendeeList: {
     marginLeft: 30
+  },
+  mapButton: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
   }
 });
