@@ -9,7 +9,7 @@ import "firebase/firestore";
 import { withOrientation } from "react-navigation";
 
 export default function App(props) {
-  const { navigation } = props;
+  const { navigation, app } = props;
   const [avatar, setAvatar] = useState(
     "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
   );
@@ -22,7 +22,7 @@ export default function App(props) {
   const [lastName, setLastName] = useState("");
 
   const userUid = firebase.auth().currentUser.uid;
-  const readOnlyProfile = props.route.params;
+  const readOnlyProfile = props.route.params; // fix issue here
   const user = { userAvatar: avatar, userBio: bio };
 
   const handlePress = () => {

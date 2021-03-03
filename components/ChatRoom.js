@@ -108,7 +108,6 @@ export default function ChatRoom(props) {
         //pushing the new contact inside of those arrays
         updatedUserContacts.push(secondUserObj);
         updatedSecondUserContacts.push(currentUserObj);
-        console.log(updatedUserContacts)
 
         const currentUserRef = firestore.collection("users").doc(_id);
         const res1 = await currentUserRef.update({

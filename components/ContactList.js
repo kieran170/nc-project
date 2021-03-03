@@ -43,7 +43,6 @@ export default function ContactList(props) {
       </View>
     );
   };
-  console.log(userContacts)
 
   return (
     <View style={{flex: 1, backgroundColor:"#33e4ff"}}>
