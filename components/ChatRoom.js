@@ -21,14 +21,15 @@ export default function ChatRoom(props) {
   const [currentUserObj, setCurrentUserObj] = useState({
     uid: _id,
     firstName: currentUser.firstName,
+    userAvatar: ""
   });
   const [secondUserObj, setSecondUserObj] = useState({
     uid: secondUserUid,
     firstName: secondUserObject.firstName,
+    userAvatar: ""
   });
   //avatar url held in state to pass down as props
   const [avatar, setAvatar] = useState("");
-
 
   useEffect(() => {
     //we get all the chatrooms of the connected user
@@ -38,18 +39,20 @@ export default function ChatRoom(props) {
       let dataObj = doc.data();
       setChatroomsCurrentUser(dataObj.chatrooms);
       setAvatar(dataObj.userAvatar);
+      setCurrentUserObj({uid: _id,
+        firstName: currentUser.firstName, userAvatar : dataObj.userAvatar});
     }
     //we get all the chatrooms of the second user
     async function getSecondUserData() {
       let doc = await firestore.collection("users").doc(secondUserUid).get();
       let dataObj = doc.data();
       setChatroomsSecondUser(dataObj.chatrooms);
+      setSecondUserObj({uid: secondUserUid,
+        firstName: secondUserObject.firstName, userAvatar : dataObj.userAvatar});
     }
     getUserData();
     getSecondUserData();
   }, []);
-
-  console.log(avatar)
 
    //Function matching the shared chatroom between the two users if it exists. 
   //If so, it updates the Room key in state - if not, it remains "room not found"
@@ -103,6 +106,7 @@ export default function ChatRoom(props) {
         //pushing the new contact inside of those arrays
         updatedUserContacts.push(secondUserObj);
         updatedSecondUserContacts.push(currentUserObj);
+        console.log(updatedUserContacts)
 
         const currentUserRef = firestore.collection("users").doc(_id);
         const res1 = await currentUserRef.update({
