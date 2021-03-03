@@ -11,7 +11,7 @@ import { withOrientation } from "react-navigation";
 export default function App(props) {
   const { navigation } = props;
   const [avatar, setAvatar] = useState(
-    "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+    "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg"
   );
   const [addBio, setAddBio] = useState(true);
   const [bio, onChangeText] = useState("");
@@ -81,7 +81,7 @@ export default function App(props) {
 
   return !readOnlyProfile ? (
     <View style={styles.container}>
-      
+
       <Image
         style={styles.avatar}
         source={{ height: 180, width: 180, uri: avatar }}
@@ -142,7 +142,19 @@ export default function App(props) {
 
           </TouchableHighlight>
           <View>
-            <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+            <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+            <Text style={styles.gigTitles}>Miley Cyrus</Text>
+            <Text style={styles.textGigs}>
+              May 28th 2019 Leeds Direct Arena{"\n"}
+            </Text>
+            <Text style={styles.gigTitles}>Slipknot</Text>
+            <Text style={styles.textGigs}>
+              March 1st 2019 Leeds Direct Arena{"\n"}
+            </Text>
+            <Text style={styles.gigTitles}>Beatles HoloGram Tour</Text>
+            <Text style={styles.textGigs}>
+              December 15th 2017 Las Vegas MGM hotel
+            </Text>
           </View>
           
         </>
@@ -222,7 +234,19 @@ export default function App(props) {
         )}
       </View>
       <View>
-        <Text style={styles.previousGigTitle}>Previous Gigs</Text>
+        <Text style={styles.previousGigTitle}>Previous Gigs{"\n"}</Text>
+        <Text style={styles.gigTitles}>Miley Cyrus</Text>
+        <Text style={styles.textGigs}>
+          May 28th 2019 Leeds Direct Arena{"\n"}
+        </Text>
+        <Text style={styles.gigTitles}>Slipknot</Text>
+        <Text style={styles.textGigs}>
+          March 1st 2019 Leeds Direct Arena{"\n"}
+        </Text>
+        <Text style={styles.gigTitles}>Beatles HoloGram Tour</Text>
+        <Text style={styles.textGigs}>
+          December 15th 2017 Las Vegas MGM hotel
+        </Text>
       </View>
     </View>
   );
@@ -304,8 +328,16 @@ const styles = StyleSheet.create({
   },
   previousGigTitle: {
     marginTop: 20,
-    fontSize: 20,
+    fontSize: 25,
     marginLeft: 5,
+  },
+  textGigs: {
+    marginLeft: 5,
+  },
+  gigTitles: {
+    marginLeft: 5,
+    fontWeight: "bold",
+    fontSize: 17,
   },
   chatButton: {
     marginLeft: 5,

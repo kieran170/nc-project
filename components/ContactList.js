@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { firestore } from "../my-app/config/firebase";
 import ChatRoom from "../components/ChatRoom";
 
@@ -28,10 +28,13 @@ export default function ContactList(props) {
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
-        <Text style={{fontWeight: "bold",fontSize: 32}}>{item.firstName}</Text>
-        <ChatRoom
-        sizeChange={true}
-          currentUser={{
+        <Text style={{fontWeight: "bold",fontSize: 32}}>{item.firstName}</Text>       
+
+        <Image style={styles.avatar} source={{uri:item.userAvatar}} />
+        <Text>{item.firstName}</Text>
+        <ChatRoom style={styles.addUser}
+         sizeChange={true}
+         currentUser={{
             firstName: currentUser.firstName,
             _id: uid,
             contacts: userContacts,
@@ -42,6 +45,7 @@ export default function ContactList(props) {
       </View>
     );
   };
+  console.log(userContacts)
 
   return (
     <View style={{flex: 1, backgroundColor:"#33e4ff"}}>
