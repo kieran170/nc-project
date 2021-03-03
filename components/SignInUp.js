@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { registration, signIn } from "../my-app/config/fireBaseMethods";
 import * as colours from "../my-app/config/colours";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 
 //set matching password - maybe some verification steps?
 export default function App({ navigation, login }) {
@@ -110,11 +110,11 @@ export default function App({ navigation, login }) {
         secureTextEntry={true}
       />
 
-      <TouchableHighlight onPress={handlePressSignIn}>
+      <TouchableOpacity onPress={handlePressSignIn}>
         <View style={styles.signButton}>
-          <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Sign In</Text>
+          <Text style={styles.signText}>Sign In</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
  
       <Text style={styles.swapText}>Don't have an account yet? <Text onPress={handleClick} style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign Up Here!</Text></Text>
       </View>
@@ -178,11 +178,11 @@ export default function App({ navigation, login }) {
         secureTextEntry={true}
       />
 
-      <TouchableHighlight onPress={handlePressSignUp}>
+      <TouchableOpacity onPress={handlePressSignUp}>
         <View style={styles.signButton}>
-        <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Sign Up</Text>
+        <Text style={styles.signText}>Sign Up</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
 
       <Text style={styles.swapText} onPress={handleClick}>Already have an account? <Text style={{textDecorationLine: "underline", fontWeight: "bold"}}>Sign In Here!</Text></Text>
 
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   subTitle: {
     color: '#FF2400',
     fontSize: 20,
-    fontFamily: Platform.OS === "android" ? "notoserif" : "Times New Roman", // alternate for iOS ?? 
+    fontFamily: Platform.OS === "android" ? "notoserif" : "Times New Roman",
     fontStyle: "italic",
     fontWeight: "bold",
     alignSelf: 'center'
@@ -219,13 +219,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 2,
     width: 180,
-    height: 35,
+    height: 38,
     marginBottom: 10,
     textAlign: "center",
     borderColor: '#991400',
     borderRadius: 10,
     backgroundColor: '#FF2400',
     color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   image: {
     height: 175,
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
   },
   bottomImage: {
     alignSelf: 'flex-end',
-    height: 350,
+    height: 330,
     width: 300,
     zIndex: -1,
   },
@@ -248,10 +250,10 @@ const styles = StyleSheet.create({
   inputSection: {
     flex: 1,
     justifyContent: 'center',
-    paddingTop: 80
+    paddingTop: 60
   },
   bottomSection: {
-    flex: 1,
+    flex: 0.6,
     justifyContent: 'center',
     paddingBottom: 120
   },
@@ -263,14 +265,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10,
-    paddingTop: 10,
     paddingBottom: 10,
     borderColor: '#991400',
     borderWidth: 1,
   },
   swapText: {
     fontSize: 18,
-    paddingTop: 20,
     paddingBottom: 10
+  },
+  signText: {
+    color: 'white', 
+    textAlign: 'center', 
+    fontWeight: 'bold',
+    fontSize: 22
   }
 });

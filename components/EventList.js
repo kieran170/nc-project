@@ -17,7 +17,7 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import * as colours from "../my-app/config/colours";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 
 export default class EventList extends Component {
   // need to return to this and adjust the default map values so it looks good on both platforms!!!
@@ -168,11 +168,11 @@ export default class EventList extends Component {
                     <Text style={{fontWeight: 'bold'}}>Venue: </Text>{event.venue}
                   </Text>
 
-                  <TouchableHighlight onPress={() => this.props.navigation.navigate("Event Details", event)}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("Event Details", event)}>
                     <View style={styles.findBuddy}>
                       <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17}}>Find A Gig Buddy!</Text>
                     </View>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
 
                 </View>
               );
