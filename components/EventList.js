@@ -11,10 +11,13 @@ import {
   Button,
   Platform,
   Alert,
+  Image
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import * as colours from "../my-app/config/colours";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 export default class EventList extends Component {
   // need to return to this and adjust the default map values so it looks good on both platforms!!!
@@ -26,8 +29,8 @@ export default class EventList extends Component {
         ? {
             latitude: 0,
             longitude: 0,
-            latitudeDelta: 250,
-            longitudeDelta: 250,
+            latitudeDelta: -50,
+            longitudeDelta: -50,
           }
         : {
             latitude: 0,
@@ -39,6 +42,7 @@ export default class EventList extends Component {
     errMsg: "",
     userInput: "",
     userLocation: {},
+    radius: ""
   };
 
   componentDidMount() {
@@ -67,21 +71,47 @@ export default class EventList extends Component {
       errMsg,
       userInput,
       userLocation,
+      radius
     } = this.state;
 
     return (
       <SafeAreaView style={styles.page}>
-        <Button title="Events Near Me" onPress={this.handleLocationSearch} />
+
+        <View style={styles.search}>
+
+        <View style={styles.inputArea}>
+
+        <TextInput
+          style={styles.textInput}
+          value={radius}
+          placeholder='Search Radius (miles)'
+          onChangeText={(text) => this.setState({ radius: text })}
+        />
+
         <TextInput
           style={styles.textInput}
           value={userInput}
+          placeholder='City'
           onChangeText={(text) => this.setState({ userInput: text })}
         />
-        <Button
-          style={styles.button}
-          title="Manual Search"
-          onPress={this.handleSearch}
-        />
+        </View>
+
+        <View style={styles.touchableArea}>
+        <TouchableHighlight onPress={this.handleLocationSearch}>
+          <View style={styles.nearMe}>
+            <Text style={{color: '#fff', textAlign: 'center'}}>Events Near Me</Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress={this.handleSearch}>
+          <View style={styles.nearMe}>
+            <Text style={{color: '#fff', textAlign: 'center'}}>Manual Search</Text>
+          </View>
+        </TouchableHighlight>
+        </View>
+
+        </View>
+
         <MapView
           style={styles.map}
           region={newRegion.latitude ? newRegion : defaultRegion}
@@ -99,7 +129,7 @@ export default class EventList extends Component {
               <Marker
                 title={event.name}
                 description={`${event.date}`}
-                image={require("../my-app/assets/small-guitar-icon.png")}
+                image={require("../my-app/assets/mini-stratocaster.png")}
                 key={event.id}
                 coordinate={{
                   latitude: +event.location.latitude,
@@ -116,6 +146,9 @@ export default class EventList extends Component {
             );
           })}
         </MapView>
+        <View style={{justifyContent: 'center', flex: 0.3, borderColor: 'grey', borderBottomWidth: 1, borderTopWidth: 1}}>
+            <Image source={require('../my-app/assets/events-title.png')} style={styles.eventTitle} />
+        </View>
         <ScrollView style={styles.container}>
           {errMsg ? (
             <View style={styles.eventText}>
@@ -125,20 +158,23 @@ export default class EventList extends Component {
             events.map((event) => {
               return (
                 <View key={event.id} style={styles.eventText}>
-                  <Text>
+                  <Text style={{textAlign: 'center'}}>
                     <Text style={styles.eventName}>{event.name}</Text> {"\n"}
                     <Text style={styles.eventDate}>
-                      Date: {event.date} {event.time}
+                    <>
+                    <Text style={{fontWeight: 'bold'}}>Date: </Text>{event.date} {"\t"} <Text style={{fontWeight: 'bold'}}>Start Time: </Text>{event.time}
+                    </>
                     </Text>{" "}
                     {"\n"}
-                    Venue: {event.venue}
+                    <Text style={{fontWeight: 'bold'}}>Venue: </Text>{event.venue}
                   </Text>
-                  <Button
-                    title="more info"
-                    onPress={() =>
-                      this.props.navigation.navigate("Event Details", event)
-                    }
-                  />
+
+                  <TouchableHighlight onPress={() => this.props.navigation.navigate("Event Details", event)}>
+                    <View style={styles.findBuddy}>
+                      <Text style={{color: 'white', textAlign: 'center'}}>Find A Gig Buddy!</Text>
+                    </View>
+                  </TouchableHighlight>
+
                 </View>
               );
             })
@@ -162,9 +198,9 @@ export default class EventList extends Component {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           };
-          this.setState({ events: filteredEvents, newRegion });
+          this.setState({ events: filteredEvents, newRegion, radius: ''});
         } else {
-          this.setState({ errMsg: events.errMsg });
+          this.setState({ errMsg: events.errMsg, radius: ''});
         }
       });
     });
@@ -235,33 +271,17 @@ const styles = StyleSheet.create({
   page: {
     width: "100%",
     height: "100%",
-  },
-  header: {
-    flex: 0.2,
-    backgroundColor: "pink",
-    paddingBottom: 20,
-  },
-  textInput: {
-    flex: 0.1,
-    height: 1,
-    width: "75%",
-  },
-  button: {
-    flex: 0.1,
+    backgroundColor: '#33e4ff',
   },
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "pink",
+    zIndex: 0
   },
   map: {
     flex: 1,
   },
   eventText: {
     marginBottom: 25,
-    borderColor: "red",
-    borderStyle: "solid",
-    borderWidth: 1,
     flex: 1,
     width: "100%",
   },
@@ -269,4 +289,54 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
+  search: {
+    flexDirection: 'column',
+    padding: 5,
+    margin: 5,
+    justifyContent: 'space-evenly',
+    marginLeft: 15,
+    marginRight: 15
+  },
+  nearMe: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
+  },
+  textInput: {
+    backgroundColor: '#b3f5ff',
+    width: 150,
+    textAlign: 'center',
+    borderRadius: 10
+  },
+  touchableArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 4
+  },
+  eventTitle: {
+    position: 'absolute',
+    top: -15,
+    left: 115,
+    height: 100,
+    width: 150,
+    resizeMode: 'contain',
+    zIndex: 500
+  },
+  findBuddy: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: '#991400',
+    borderWidth: 1,
+    width: 150,
+    height: 30,
+    alignSelf: 'center'
+  }
 });

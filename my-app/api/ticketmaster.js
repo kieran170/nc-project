@@ -115,7 +115,7 @@ export const getEvents = (city = 'manchester', size = 20) => {
    })
 }
 
-export const getEventsNearUser = (lat, long, radius = 10, size = 20) => {
+export const getEventsNearUser = (lat, long, radius = 15, size = 20) => {
 
     return request.get(`/events.json?classificationName=music&latlong=${lat},${long}&radius=${radius}&size=${size}&${apiKey}`)
     .then(({data}) => {

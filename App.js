@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInUp from "./components/SignInUp";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Image, Dimensions } from "react-native";
 import EventList from "./components/EventList";
 import EventPage from "./components/EventPage";
 import Profile from "./components/Profile";
@@ -10,6 +10,7 @@ import { loggingOut, getUserInfo } from "./my-app/config/fireBaseMethods";
 import * as firebase from "firebase";
 import "firebase/auth";
 import GroupChat from "./components/GroupChat";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import ContactList from "./components/ContactList";
 
 const Stack = createStackNavigator();
@@ -33,50 +34,54 @@ export default class App extends Component {
   };
 
   render() {
+
     return (
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={({ navigation }) => ({
-            headerTitle: () => <Text>Logo</Text>,
-            headerRight: () => (
-              <>
-                <Button
-                  title="Chat"
-                  padding="20"
-                  color="black"
-                  onPress={() => {
-                    navigation.navigate("ContactList");
-                  }}
-                />
-                <Text>{"\t"}</Text>
 
-                <Button
-                  style={{ paddingLeft: 20 }}
-                  title="My Profile"
-                  color="black"
-                  onPress={() => {
-                    navigation.navigate("Profile");
-                  }}
-                />
-                <Text>{"\t"}</Text>
+      {/* Default header on all screens unless overwritten lower down*/}
+        <Stack.Navigator screenOptions={
+        ({navigation})=>({
+          headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 1},
+          headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} >
+            <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
+            </TouchableOpacity>,
+          headerTitle: () => 
+            <TouchableOpacity onPress={() => navigation.navigate("Events")} style={styles.logoOpacity}>
+              <Image style={styles.miniLogo} source={require('./my-app/assets/mini-logo.png')}/>
+            </TouchableOpacity>,
+          headerTitleAlign: 'center',
+          headerRight: () => (
+          <View style={styles.headerButtons}>
+          <TouchableOpacity onPress={() => navigation.navigate("ContactList")}>
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Messages</Text>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Profile</Text>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => { 
+            navigation.navigate("Home")
+            this.handleLogOut()
+            }}
+          >
+            <View style={styles.navButton}>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Log Out</Text>
+            </View>
+          </TouchableOpacity> 
+          </View>
+          ),
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15, justifyContent: 'space-evenly'},
+          headerMode: 'screen'
+        })}>
 
-                <Button
-                  title="Log Out"
-                  color="black"
-                  onPress={() => {
-                    navigation.navigate("Home"), this.handleLogOut();
-                  }}
-                />
-                <Text>{"\t"}</Text>
-              </>
-            ),
-            headerRightContainerStyle: {
-              flexDirection: "row",
-              marginBottom: 10,
-            },
-          })}
-        >
-          <Stack.Screen name={"Home"} options={{ headerShown: false }}>
+          {/* No header on home screen*/}
+          <Stack.Screen name={"Home"} options={{headerShown: false}}>
             {(props) => (
               <SignInUp
                 {...props}
@@ -87,7 +92,13 @@ export default class App extends Component {
             )}
           </Stack.Screen>
 
-          <Stack.Screen name={"Events"}>
+          {/* Disables back button onPress on events screen to prevent user accidentally logging out */}
+          <Stack.Screen name={"Events"} options={
+            {headerLeft: () => 
+            <TouchableOpacity>
+            <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
+            </TouchableOpacity>,}}
+            >
             {(props) => (
               <EventList
                 {...props}
@@ -124,11 +135,13 @@ export default class App extends Component {
           </Stack.Screen>
 
           <Stack.Screen name={"GroupChat"} component={GroupChat}></Stack.Screen>
+
           <Stack.Screen name={"ContactList"}>
             {(props) => (
               <ContactList {...props} user={this.state.currentUser} />
             )}
           </Stack.Screen>
+          
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -136,10 +149,33 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+    backButton: {
+      paddingBottom: 10,
+      paddingLeft: 5
+    },
+    backImage: {
+      height: 60,
+      width: 60
+    },
+    miniLogo: {
+      height: 70,
+      width: 70,
+      resizeMode: 'contain'
+    },
+    logoOpacity: {
+      paddingBottom: 110
+    },
+    headerButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      width: Dimensions.get('window').width - 55
+    },
+    navButton: {
+      backgroundColor: 'red',
+      padding: 5,
+      borderRadius: 10,
+      borderColor: '#991400',
+      borderWidth: 1,
+      width: 100
+    }
+})
