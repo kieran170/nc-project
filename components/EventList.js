@@ -101,13 +101,13 @@ export default class EventList extends Component {
         <View style={styles.touchableArea}>
         <TouchableHighlight onPress={this.handleLocationSearch}>
           <View style={styles.nearMe}>
-            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Events Near Me</Text>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>Events Near Me</Text>
           </View>
         </TouchableHighlight>
 
         <TouchableHighlight onPress={this.handleSearch}>
           <View style={styles.nearMe}>
-            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Manual Search</Text>
+            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>Manual Search</Text>
           </View>
         </TouchableHighlight>
         </View>
@@ -127,7 +127,8 @@ export default class EventList extends Component {
             />
           ) : null}
           {events.map((event) => {
-            return (
+            if (!event.location) return null
+            else return (
               <Marker
                 title={event.name}
                 description={`${event.date}`}
@@ -169,7 +170,7 @@ export default class EventList extends Component {
 
                   <TouchableHighlight onPress={() => this.props.navigation.navigate("Event Details", event)}>
                     <View style={styles.findBuddy}>
-                      <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Find A Gig Buddy!</Text>
+                      <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17}}>Find A Gig Buddy!</Text>
                     </View>
                   </TouchableHighlight>
 
@@ -302,12 +303,15 @@ const styles = StyleSheet.create({
     borderColor: '#991400',
     borderWidth: 1,
     width: 150,
+    height: 50,
+    justifyContent: 'center'
   },
   textInput: {
     backgroundColor: '#b3f5ff',
     width: 150,
     textAlign: 'center',
-    borderRadius: 10
+    borderRadius: 10,
+    height: 50
   },
   touchableArea: {
     flexDirection: 'row',
@@ -334,7 +338,7 @@ const styles = StyleSheet.create({
     borderColor: '#991400',
     borderWidth: 1,
     width: 150,
-    height: 35,
+    height: 38,
     alignSelf: 'center'
   }
 });

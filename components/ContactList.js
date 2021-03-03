@@ -28,8 +28,8 @@ export default function ContactList(props) {
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
-        <Text style={{fontWeight: "bold",fontSize: 32}}>{item.firstName}</Text>      
         <Image style={styles.avatar} source={{uri:item.userAvatar}} />
+        <Text style={{fontWeight: "bold",fontSize: 26}}>{item.firstName}</Text>      
         <ChatRoom style={styles.addUser}
          sizeChange={true}
          currentUser={{
@@ -48,7 +48,6 @@ export default function ContactList(props) {
     <View style={{flex: 1, backgroundColor:"#33e4ff"}}>
       <Text style={{alignSelf:"center", fontSize: 36, fontWeight: "bold", textDecorationLine: "underline"}}>Messages</Text>
       <FlatList
-        
         data={userContacts}
         renderItem={renderUser}
         keyExtractor={(item) => item.uid.toString()}
@@ -59,9 +58,11 @@ export default function ContactList(props) {
 
 const styles = StyleSheet.create({
   avatar: {
-    width: 50,
-    height: 50,
+    width: 65,
+    height: 65,
     marginRight: 10,
+    marginLeft: 10,
+    borderRadius: 100
   },
   row: {
     flexDirection: "row",
@@ -70,10 +71,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#cacaca",
     borderBottomWidth: 1,
     justifyContent: "space-between",
-    paddingLeft: "25%",
+    paddingLeft: "15%",
     paddingRight: "10%",
-    paddingBottom: 40,
-    paddingTop: 40,
+    paddingBottom: 30,
+    paddingTop: 30,
 
   },
   addUser: {

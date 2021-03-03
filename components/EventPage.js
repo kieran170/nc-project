@@ -8,8 +8,6 @@ import {
   View,
   Alert,
   Dimensions,
-  PlatformColor,
-  Platform
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import {
@@ -19,7 +17,7 @@ import {
   eventDocExists,
   createUserArrays,
 } from "../my-app/config/fireBaseMethods";
-import { FlatList, ScrollView, TouchableHighlight } from "react-native-gesture-handler";
+import { FlatList, TouchableHighlight } from "react-native-gesture-handler";
 import ChatRoom from "./ChatRoom.js";
 
 export default class EventPage extends Component {
@@ -150,8 +148,8 @@ export default class EventPage extends Component {
     const currentUid = this.props.app.currentUser.uid;
 
     const ListItem = ({ item }) => (
-      <View style={{flexDirection: 'row', paddingBottom: 10, alignItems: 'center', width: 120, justifyContent: 'space-between'}}>
-        <Text style={{marginRight: 10, fontWeight: 'bold', fontSize: 16}} onPress={() => navigation.navigate("Profile", item)}>
+      <View style={styles.itemView}>
+        <Text style={styles.itemText} onPress={() => navigation.navigate("Profile", item)}>
           {item.userData.firstName} {item.userData.lastName.slice(0, 1)}
         </Text>
         {item.uid !== currentUid ? (
@@ -172,6 +170,37 @@ export default class EventPage extends Component {
         ) : null}
       </View>
     );
+
+    const buddyText = () => {
+     const isClicked = buddySeekers.some((buddy) => buddy.uid === currentUid);
+
+     if (isClicked) {
+       return (
+         <Text style={styles.buddyButtonText}>Not Looking For Buddy</Text>
+       )
+     } else {
+       return (
+         <Text style={styles.buddyButtonText}>Looking For Buddy</Text>
+       )
+     }
+    }
+
+    const attendingText = () => {
+      const isClicked = attendees.some((attendee) => attendee.uid === currentUid);
+
+      if (isClicked) {
+        return (
+          <Text style={styles.buddyButtonText}>I'm Not Attending</Text>
+        )
+      } else {
+        return (
+          <Text style={styles.buddyButtonText}>I'm Attending</Text>
+        )
+      }
+    }
+
+
+
     return (
       <SafeAreaView style={styles.eventPage}>
         <View style={{flex: 1}}>
@@ -192,13 +221,13 @@ export default class EventPage extends Component {
         <View style={styles.touchableArea}>
           <TouchableHighlight onPress={() => this.handlePress("buddySeekers")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>Looking For Buddy</Text>
+              {buddyText()}
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={() => this.handlePress("attendees")}>
             <View style={styles.buddyButtons}>
-              <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>I'm Attending</Text>
+              {attendingText()}
             </View>
           </TouchableHighlight>
         </View>
@@ -210,10 +239,11 @@ export default class EventPage extends Component {
           </View>
         </TouchableHighlight>
 
-</View>
+        </View>
         {mapShown ? 
-        
-          <MapView
+          
+          !location ? <Text>Sorry, no location data available for this gig</Text>
+          : <MapView
           style={styles.map}
           region={{
             longitude: +location.longitude,
@@ -244,21 +274,31 @@ export default class EventPage extends Component {
           <View style={styles.listItems}>
 
           <View style={styles.buddyList}>
+          {buddySeekers.length ? 
           <FlatList
             styles={{ flex: 1 }}
             data={buddySeekers}
             renderItem={ListItem}
             keyExtractor={(item) => item.uid}
           />
+          : <View style={styles.itemView}>
+              <Text style={styles.itemTextBlank}>.</Text>
+            </View>
+          }
           </View>
 
           <View style={styles.attendeeList}>
+          {attendees.length ? 
           <FlatList
             styles={{ flex: 1}}
             data={attendees}
             renderItem={ListItem}
             keyExtractor={(item) => item.uid}
           />
+          : <View style={styles.itemView}>
+              <Text style={styles.itemTextBlank}>.</Text>
+            </View>
+          }
           </View>
 
           </View>
@@ -279,7 +319,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   map: {
-    flex: 1,
+    flex: 0.9,
     width: "100%",
     height: 200,
     marginBottom: 20
@@ -307,7 +347,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#991400',
     borderWidth: 1,
-    width: 150,
+    width: 178,
   },
   touchableArea: {
     flexDirection: 'row',
@@ -316,7 +356,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   lists: {
-    flex: 1,
+    flex: 0.9,
     paddingTop: 10,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
@@ -345,5 +385,31 @@ const styles = StyleSheet.create({
     borderColor: '#991400',
     borderWidth: 1,
     width: 150,
+  },
+  itemView: {
+    flexDirection: 'row', 
+    paddingBottom: 10, 
+    alignItems: 'center', 
+    width: 140, 
+    justifyContent: 'space-between'
+  },
+  itemText: {
+    marginRight: 10, 
+    fontWeight: 'bold', 
+    fontSize: 16
+  },
+  itemTextBlank: {
+    marginRight: 10,
+    color: "#33e4ff"
+  },
+  buddyButtonText: {
+    color: 'white', 
+    textAlign: 'center', 
+    fontWeight: 'bold', 
+    fontSize: 16
+  },
+  detailsView: {
+    width: "90%",
+    alignSelf: 'center'
   }
 });

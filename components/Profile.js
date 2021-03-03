@@ -60,8 +60,6 @@ export default function App(props) {
 
   useEffect(() => {
 
-    console.log(app.currentUser)
-
     async function getUserInfo() {
       let doc = await firebase
         .firestore()

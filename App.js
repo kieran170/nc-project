@@ -43,7 +43,7 @@ export default class App extends Component {
       {/* Default header on all screens unless overwritten lower down*/}
         <Stack.Navigator screenOptions={
         ({navigation})=>({
-          headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 1},
+          headerStyle: { backgroundColor: '#33e4ff', borderBottomColor: 'grey', borderBottomWidth: 2},
           headerLeft: () => 
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} >
             <Image style={styles.backImage} source={require('./my-app/assets/back-button.png')} />
@@ -57,13 +57,13 @@ export default class App extends Component {
           <View style={styles.headerButtons}>
           <TouchableOpacity onPress={() => navigation.navigate("ContactList")}>
             <View style={styles.navButton}>
-            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Messages</Text>
+            <Text style={styles.buttonText}>Messages</Text>
             </View>
           </TouchableOpacity>
           
           <TouchableOpacity onPress={() => navigation.navigate("Profile", currentUser)}>
             <View style={styles.navButton}>
-            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Profile</Text>
+            <Text style={styles.buttonText}>Profile</Text>
             </View>
           </TouchableOpacity>
           
@@ -73,12 +73,12 @@ export default class App extends Component {
             }}
           >
             <View style={styles.navButton}>
-            <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Log Out</Text>
+            <Text style={styles.buttonText}>Log Out</Text>
             </View>
           </TouchableOpacity> 
           </View>
           ),
-          headerRightContainerStyle: {flexDirection: "row", marginBottom: 15, justifyContent: 'space-evenly'},
+          headerRightContainerStyle: {flexDirection: "row", marginBottom: 10, justifyContent: 'space-evenly'},
           headerMode: 'screen'
         })}>
 
@@ -152,11 +152,11 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     backButton: {
-      paddingBottom: 10,
+      marginBottom: 20,
       paddingLeft: 5
     },
     backImage: {
-      height: 60,
+      height: 70,
       width: 60
     },
     miniLogo: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     headerButtons: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      width: Dimensions.get('window').width - 55
+      width: Dimensions.get('window').width - 60
     },
     navButton: {
       backgroundColor: 'red',
@@ -178,6 +178,14 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       borderColor: '#991400',
       borderWidth: 1,
-      width: 100
+      width: 100,
+      height: 45,
+      justifyContent: 'center'
+    },
+    buttonText: {
+      color: '#fff', 
+      textAlign: 'center', 
+      fontWeight: 'bold',
+      fontSize: 18
     }
 })
