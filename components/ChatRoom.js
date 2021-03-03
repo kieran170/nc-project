@@ -26,6 +26,8 @@ export default function ChatRoom(props) {
     uid: secondUserUid,
     firstName: secondUserObject.firstName,
   });
+  //avatar url held in state to pass down as props
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     //we get all the chatrooms of the connected user
@@ -34,16 +36,20 @@ export default function ChatRoom(props) {
 
       let dataObj = doc.data();
       setChatroomsCurrentUser(dataObj.chatrooms);
+      setAvatar(dataObj.userAvatar);
     }
     //we get all the chatrooms of the second user
     async function getSecondUserData() {
       let doc = await firestore.collection("users").doc(secondUserUid).get();
       let dataObj = doc.data();
       setChatroomsSecondUser(dataObj.chatrooms);
+      setAvatar(dataObj.userAvatar);
     }
     getUserData();
     getSecondUserData();
   }, []);
+
+  console.log(avatar)
 
    //Function matching the shared chatroom between the two users if it exists. 
   //If so, it updates the Room key in state - if not, it remains "room not found"
@@ -121,7 +127,7 @@ export default function ChatRoom(props) {
       chatsRef.doc(newRoom).set({});
       const chatsRefPassed = firestore.collection("chats").doc(newRoom);
       navigation.navigate("GroupChat", {
-        user: { name: firstName, _id },
+        user: { name: firstName, _id, avatar },
         chatsRef: chatsRefPassed,
       });
     } else {
@@ -129,7 +135,7 @@ export default function ChatRoom(props) {
       chatsRef.doc(Room).set({});
       const chatsRefPassed = firestore.collection("chats").doc(Room);
       navigation.navigate("GroupChat", {
-        user: { name: firstName, _id },
+        user: { name: firstName, _id, avatar },
         chatsRef: chatsRefPassed,
       });
     }
