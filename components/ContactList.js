@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { firestore } from "../my-app/config/firebase";
 import ChatRoom from "../components/ChatRoom";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ContactList(props) {
   //we only get the uid from props
@@ -28,8 +29,12 @@ export default function ContactList(props) {
   const renderUser = ({ item }) => {
     return (
       <View style={styles.row}>
+
+        <TouchableOpacity style={styles.opacity} onPress={() => navigation.navigate("Profile", item.uid)}>
         <Image style={styles.avatar} source={{uri:item.userAvatar}} />
-        <Text style={{fontWeight: "bold",fontSize: 26}}>{item.firstName}</Text>      
+        <Text style={styles.name}>{item.firstName}</Text>      
+        </TouchableOpacity>
+
         <ChatRoom style={styles.addUser}
          sizeChange={true}
          currentUser={{
@@ -71,15 +76,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#cacaca",
     borderBottomWidth: 1,
     justifyContent: "space-between",
-    paddingLeft: "15%",
+    paddingLeft: "10%",
     paddingRight: "10%",
     paddingBottom: 30,
     paddingTop: 30,
 
-  },
-  addUser: {
-    flexDirection: "row",
-    padding: 10,
   },
   input: {
     backgroundColor: "#cacaca",
@@ -87,4 +88,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 10,
   },
+  opacity: {
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly',
+    marginLeft: 20
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 24,
+    marginTop: 10,
+    marginLeft: 10
+  }
 });

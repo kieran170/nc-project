@@ -149,7 +149,7 @@ export default class EventPage extends Component {
 
     const ListItem = ({ item }) => (
       <View style={styles.itemView}>
-        <Text style={styles.itemText} onPress={() => navigation.navigate("Profile", item)}>
+        <Text style={styles.itemText} onPress={() => navigation.navigate("Profile", item.uid)}>
           {item.userData.firstName} {item.userData.lastName.slice(0, 1)}
         </Text>
         {item.uid !== currentUid ? (

@@ -6,6 +6,7 @@ import { firestore } from "../my-app/config/firebase";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
+import { getUserInfo } from '../my-app/config/fireBaseMethods';
 
 export default function App(props) {
   const { navigation, app } = props;
@@ -24,10 +25,10 @@ export default function App(props) {
 
   let readOnlyProfile;
 
-  if (app.currentUser.uid === props.route.params.uid) {
+  if (app.currentUser.uid === props.route.params) {
     readOnlyProfile = false;
   } else {
-    readOnlyProfile = props.route.params
+    readOnlyProfile = true;
   }
  
   const user = { userAvatar: avatar, userBio: bio };
@@ -42,12 +43,6 @@ export default function App(props) {
     setHaveBio(false);
   };
 
-  const handleLogOut = () => {
-    props.logout();
-    const res = firestore.collection("users").doc(userUid).update(user);
-    navigation.navigate("Home");
-  };
-
   const handleImageChange = () => {
     isDialogVisible(true);
     setImageSave(true);
@@ -60,37 +55,18 @@ export default function App(props) {
 
   useEffect(() => {
 
-    async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(userUid)
-        .get();
+    Promise.resolve(getUserInfo(props.route.params))
+      .then(({userData}) => {
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
 
-      if (!doc.exists) {
-        Alert.alert("No user data found!");
-      } else {
-        let dataObj = doc.data();
-        setFirstName(dataObj.firstName);
-        setLastName(dataObj.lastName);
-
-        if (dataObj.userAvatar && dataObj.userBio !== undefined) {
-          setAvatar(dataObj.userAvatar);
-          onChangeText(dataObj.userBio);
+        if (userData.userAvatar && userData.userBio !== undefined) {
+          setAvatar(userData.userAvatar);
+          onChangeText(userData.userBio);
           setHaveBio(true);
           setAddBio(false);
         }
-      }
-    }
-
-    if (!readOnlyProfile) {
-      getUserInfo();
-    } else {
-      setAvatar(app.currentUser.userData.userAvatar)
-      onChangeText(app.currentUser.userData.userBio)
-      setHaveBio(true)
-      setAddBio(false)
-    }
+      })
   }, []);
 
   return !readOnlyProfile ? (
@@ -195,16 +171,7 @@ export default function App(props) {
     </View>
   ) : (
     <View style={styles.container}>
-      {readOnlyProfile.userData.userAvatar ? (
-        <Image
-          style={styles.avatar}
-          source={{
-            height: 180,
-            width: 180,
-            uri: readOnlyProfile.userData.userAvatar,
-          }}
-        />
-      ) : (
+      {avatar ? (
         <Image
           style={styles.avatar}
           source={{
@@ -213,17 +180,26 @@ export default function App(props) {
             uri: avatar,
           }}
         />
+      ) : (
+        <Image
+          style={styles.avatar}
+          source={{
+            height: 180,
+            width: 180,
+            uri: "https://image.freepik.com/free-vector/sitting-man-playing-guitar_24877-62236.jpg",
+          }}
+        />
       )}
       <Text style={styles.name}>
-        {readOnlyProfile.userData.firstName} {readOnlyProfile.userData.lastName}
+        {firstName} {lastName}
         {"\n"}
       </Text>
       <View style={styles.aboutMeContainer}>
         <Text style={styles.aboutMeTitle}>About Me</Text>
-        {readOnlyProfile.userData.userBio ? (
-          <Text style={styles.aboutMe}>{readOnlyProfile.userData.userBio}</Text>
+        {bio ? (
+          <Text style={styles.aboutMe}>{bio}</Text>
         ) : (
-          <Text style={styles.noBio}>{readOnlyProfile.userData.firstName} has not written a bio yet</Text>
+          <Text style={styles.noBio}>{firstName} has not written a bio yet</Text>
         )}
       </View>
       <View>
@@ -315,7 +291,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   previousGigTitle: {
-    marginTop: 40,
+    marginTop: 20,
     fontSize: 25,
     marginLeft: 5,
     marginBottom: 10,

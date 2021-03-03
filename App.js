@@ -61,7 +61,7 @@ export default class App extends Component {
             </View>
           </TouchableOpacity>
           
-          <TouchableOpacity onPress={() => navigation.navigate("Profile", currentUser)}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile", currentUser.uid)}>
             <View style={styles.navButton}>
             <Text style={styles.buttonText}>Profile</Text>
             </View>
