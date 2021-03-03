@@ -180,28 +180,6 @@ export default function App(props) {
     </View>
   ) : (
     <View style={styles.container}>
-      <View
-        style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 30 }}
-      >
-        <TouchableHighlight
-          onPress={() => {
-            const res = firestore.collection("users").doc(userUid).update(user);
-          }}
-          style={styles.chatButton}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Chats</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.buttonLogoutContainer}
-          onPress={handleLogOut}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </View>
-        </TouchableHighlight>
-      </View>
       {readOnlyProfile.userData.userAvatar ? (
         <Image
           style={styles.avatar}

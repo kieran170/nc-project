@@ -35,6 +35,8 @@ export default class App extends Component {
 
   render() {
 
+    const { currentUser } = this.state;
+
     return (
       <NavigationContainer>
 
@@ -59,7 +61,7 @@ export default class App extends Component {
             </View>
           </TouchableOpacity>
           
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile", currentUser)}>
             <View style={styles.navButton}>
             <Text style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Profile</Text>
             </View>
