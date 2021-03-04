@@ -86,13 +86,16 @@ export default function App(props) {
       </TouchableHighlight>
 
       {imageChange === true && (
+        <>
+        <Text>{"\n"}</Text>
         <TouchableHighlight
           onPress={handleImageConfirm}
         >
           <View style={styles.button}>
-            <Text style={styles.ImageButtonText}>Confirm Image</Text>
+            <Text style={styles.buttonText}>Confirm Image</Text>
           </View>
         </TouchableHighlight>
+        </>
       )}
       </View>
         
