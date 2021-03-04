@@ -4,29 +4,27 @@
     "slug": "nc-project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/my-app/assets/icon.png",
     "splash": {
-      "image": "./my-app/assets/splash.png",
+      "image": "./my-app/assets/mini-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#33e4ff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./my-app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./my-app/assets/mini-logo-square.png",
+        "backgroundColor": "#33e4ff"
       }
     },
     "web": {
-      "favicon": "./my-app/assets/favicon.png"
+      "favicon": "./my-app/assets/mini-logo.png"
     }
   }
 }
